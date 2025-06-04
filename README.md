@@ -2,8 +2,6 @@
 
 This is a personal portfolio website built using **Angular**, designed to showcase projects, skills, and contact information in a clean, responsive layout.
 
-![Demo Screenshot](https://via.placeholder.com/1000x500?text=Portfolio+Screenshot) <!-- Replace with actual screenshot later -->
-
 ---
 
 ## 🧰 Technologies Used
