@@ -28,6 +28,6 @@ _(Replace this link with your actual deployed URL)_
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/your-username/angular-portfolio.git
-cd angular-portfolio
+git clone https://github.com/Kranthi0307/portefeuille.git
+cd portefeuille
 npm install
