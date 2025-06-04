@@ -18,8 +18,7 @@ This is a personal portfolio website built using **Angular**, designed to showca
 
 ## 🚀 Live Demo
 
-👉 [View Live](https://kranthi0307.github.io/portefeuille/)  
-_(Replace this link with your actual deployed URL)_
+👉 [View Live](https://kranthi0307.github.io/portefeuille/)
 
 ---
 
