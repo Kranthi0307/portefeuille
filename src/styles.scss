@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: sans-serif;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  background-color: #000;
+  color: #fff;
+}
+
+header {
+  position: relative;
+  top: 0;
+  text-align: center;
+  background-color: #808080;
+  padding: 15px;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  text-align: center;
+  background-color: #808080;
+  padding: 15px;
+}
+
+.content {
+  margin-bottom: 100px;
+}
