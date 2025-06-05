@@ -1,10 +1,10 @@
 <app-header></app-header>
-<section class="projects">
-  <h2>Projects</h2>
+<main class="content">
+  <h2>PROJECTS</h2>
   <div class="project-card" *ngFor="let project of projects">
     <h3>{{project.name}}</h3>
     <p>{{project.description}}</p>
     <a [href]="project.link" target="_blank">View Project</a>
   </div>
-</section>
+</main>
 <app-footer></app-footer>

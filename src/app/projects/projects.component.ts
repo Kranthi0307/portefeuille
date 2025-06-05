@@ -13,19 +13,19 @@ import { HeaderComponent } from "../header/header.component";
 export class ProjectsComponent {
   projects = [
     {
-      name: 'Project-1',
-      description: 'description of Project-1.',
-      link: 'https://github.com/Kranthi0307/rendez-vous-core'
+      name: 'My Portfolio',
+      description: 'This is a display of my expertise, seamlessly showcasing in action.',
+      link: 'https://github.com/Kranthi0307/portefeuille'
     },
     {
-      name: 'Project-2',
-      description: 'description of Project-2.',
-      link: 'https://github.com/Kranthi0307/rendez-vous-core'
+      name: 'rendez-vous',
+      description: 'A website that is used for seamless booking of appointments to specific doctor.',
+      link: 'https://github.com/Kranthi0307'
     },
     {
-      name: 'Project-3',
-      description: 'description of Project-3.',
-      link: 'https://github.com/Kranthi0307/rendez-vous-core'
+      name: 'elasticsearch',
+      description: 'An open source project that I am contributing.',
+      link: 'https://github.com/Kranthi0307/elasticsearch'
     }
   ]
 }
