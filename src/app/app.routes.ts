@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ContactComponent } from './contact/contact.component';
+import { SkillsComponent } from './skills/skills.component';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,7 @@ export const routes: Routes = [
     component: ProjectsComponent
   },
   {
-    path: 'contact',
-    component: ContactComponent
+    path: 'skills',
+    component: SkillsComponent
   }
 ];
