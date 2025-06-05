@@ -29,5 +29,5 @@ git clone https://github.com/Kranthi0307/portefeuille.git
 cd portefeuille
 npm install
 
-**start-the-server**
+## Start the server
 npm start
