@@ -1,4 +1,4 @@
-# 🌐 Angular Portfolio Website
+# 🌐 Portfolio Website
 
 This is a personal portfolio website built using **Angular**, designed to showcase projects, skills, and contact information in a clean, responsive layout.
 
