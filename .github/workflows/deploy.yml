@@ -23,9 +23,3 @@ jobs:
 
       - name: Build latest repository
         run: npm run build -- --configuration production --base-href=/portefeuille/
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: dist/portefeuille
