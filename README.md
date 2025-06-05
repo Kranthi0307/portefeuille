@@ -28,4 +28,5 @@ Clone the repository and install dependencies:
 git clone https://github.com/Kranthi0307/portefeuille.git
 cd portefeuille
 npm install
+**To start**
 npm start
