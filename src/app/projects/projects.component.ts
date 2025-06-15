@@ -18,13 +18,23 @@ export class ProjectsComponent {
       link: 'https://github.com/Kranthi0307/portefeuille'
     },
     {
+      name: 'B2BKaro',
+      description: 'An e-commerce website that I am contributing as a freelancer.',
+      link: 'https://b2bkaro.com/b2bkaro/login'
+    },
+    {
+      name: 'Boulanger',
+      description: 'An e-commerce related insurance wesite that I am contributing as a freelancer.',
+      link: 'https://www.boulanger.com/'
+    },
+    {
       name: 'rendez-vous',
-      description: 'A website that is used for seamless booking of appointments to specific doctor.',
+      description: 'A website that is used for seamless booking of appointments to specific doctor. This is an under-developed website which is yet to be deployed.',
       link: 'https://github.com/Kranthi0307'
     },
     {
       name: 'elasticsearch',
-      description: 'An open source project that I am contributing.',
+      description: 'An open source project that I am exploring to contribute.',
       link: 'https://github.com/Kranthi0307/elasticsearch'
     }
   ]
