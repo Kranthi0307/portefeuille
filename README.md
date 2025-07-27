@@ -19,12 +19,3 @@ This is a personal portfolio website built using **Angular**, designed to showca
 👉 [View Live](https://kranthi0307.github.io/portefeuille/)
 
 ---
-
-## 📦 Installation
-
-Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/Kranthi0307/portefeuille.git
-cd portefeuille
-npm install
