@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -29,3 +32,8 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/portefeuille/browser/
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl request to Render
+        run: curl -s https://portfolio-service-a0nm.onrender.com/ > /dev/null
