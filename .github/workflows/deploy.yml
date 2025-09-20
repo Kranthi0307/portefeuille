@@ -36,4 +36,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Curl request to Render
-        run: curl -s https://portfolio-service-a0nm.onrender.com/ > /dev/null
+        run: curl -s https://porfolio-service-latest.onrender.com/ > /dev/null
