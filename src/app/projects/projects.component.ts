@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
+import { ProjectsService } from './projects.service';
 
 @Component({
   selector: 'app-projects',
@@ -10,7 +11,17 @@ import { HeaderComponent } from "../header/header.component";
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
+
+  constructor(private projectsService: ProjectsService) { }
+
+  ngOnInit(): void {
+    this.projectsService.getProjects().subscribe({
+      next: (response: any) => console.log(response),
+      error: (error: any) => console.log(error)
+    });
+  }
+
   projects = [
     {
       name: 'My Portfolio',
