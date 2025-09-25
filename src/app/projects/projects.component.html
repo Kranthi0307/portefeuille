@@ -1,10 +1,17 @@
 <app-header></app-header>
 <main class="content">
   <h2>PROJECTS</h2>
+  <div *ngIf="loading$ | async" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   <div class="project-card" *ngFor="let project of projects">
     <h3>{{project.name}}</h3>
     <p>{{project.description}}</p>
-    <a [href]="project.link" target="_blank">View Project</a>
+    <a [href]="project.url" target="_blank">View Project</a>
+  </div>
+  <div *ngIf="projects.length < 1">
+    <p>API is under maintenance.</p>
+    <p>Sorry for the inconvenience</p>
   </div>
 </main>
 <app-footer></app-footer>
