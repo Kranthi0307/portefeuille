@@ -1,105 +1,19 @@
 <app-header></app-header>
 <main class="content">
+  <div class="grid-container">
+    <div class="grid-item" *ngFor="let skill of skills">
+      <h2>{{ skill?.label }}</h2>
+      <ul *ngFor="let name of skill.names">
+        <li><p>{{ name }}</p></li>
+      </ul>
+    </div>
+  </div>
   <div *ngIf="loading$ | async" class="loading-overlay">
     <div class="spinner"></div>
   </div>
-  <div class="grid-container">
-    <div class="grid-item">
-      <h2>CLIENT SIDE</h2>
-      <ul>
-        <li>
-          <p>Angular</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>TypeScript</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>HTML5</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>CSS</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9734;&#9734;</p>
-        </li>
-      </ul>
-    </div>
-    <div class="grid-item">
-      <h2 class="headings">SERVER SIDE</h2>
-      <ul>
-        <li>
-          <p>Java</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Spring Boot</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Liquibase</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Microservices</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</p>
-        </li>
-        <li>
-          <p>Kafka</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</p>
-        </li>
-      </ul>
-    </div>
-    <div class="grid-item">
-      <h2 class="headings">DATABASES</h2>
-      <ul>
-        <li>
-          <p>MySQL</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>PostgreSQL</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</p>
-        </li>
-        <li>
-          <p>OracleDB</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</p>
-        </li>
-        <li>
-          <p>MongoDB</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9734;&#9734;</p>
-        </li>
-      </ul>
-    </div>
-    <div class="grid-item">
-      <h2 class="headings">TOOLS</h2>
-      <ul>
-        <li>
-          <p>VSCode</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>IntelliJ</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Eclipse</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>DBeaver</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Postman</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        </li>
-        <li>
-          <p>Docker</p>
-          <p class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</p>
-        </li>
-      </ul>
-    </div>
+  <div *ngIf="skills.length < 1">
+    <p>API is under maintenance.</p>
+    <p>Sorry for the inconvenience</p>
   </div>
 </main>
 <app-footer></app-footer>
