@@ -1,14 +1,16 @@
 <app-header></app-header>
 <main class="content">
-  <div>
-    <h2>WORK EXPERIENCE</h2>
-    <h3>SOWEDID SOLUTIONS</h3>
-    <p>Almost 3 years of experience as a SOFTWARE DEVELOPER in developing scalable web applications.</p>
+  <br>
+  <h2>WORK EXPERIENCE</h2>
+  <div *ngFor="let w of work">
+    <h3>{{w.company}}&nbsp;-&nbsp;{{w.title}}</h3>
+    <i>{{w.description}}</i>
   </div>
-  <div>
-    <h2>EDUCATION</h2>
-    <i>Bachelor's in Engineering from Anna University, 2016 to 2020.</i>
-    <p>Master's in Engineering from Dalhousie University, 2023 to 2025.</p>
+  <h2>EDUCATION</h2>
+  <div *ngFor="let edu of education">
+    <p>{{edu.school}}&nbsp;|&nbsp;{{edu.startDate}}&nbsp;to&nbsp;{{edu.endDate}}</p>
+    <p>{{edu.degree}}&nbsp;specialized in the field of&nbsp;{{edu.field}}</p>
+    <i>{{edu.description}}</i>
   </div>
   <div>
     <h2>CONTACT DETAILS</h2>
