@@ -6,8 +6,12 @@ ul {
 }
 
 li {
-  display: inline;
   float: left;
+}
+
+li.last {
+  float: right;
+  padding-right: 20px;
 }
 
 li a {

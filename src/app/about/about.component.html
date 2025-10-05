@@ -1,24 +1,55 @@
 <app-header></app-header>
 <main class="content">
-  <br>
-  <h2>WORK EXPERIENCE</h2>
-  <div *ngFor="let w of work">
-    <h3>{{w.company}}&nbsp;-&nbsp;{{w.title}}</h3>
-    <i>{{w.description}}</i>
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <h2 class="section-title">Experience</h2>
+    <div class="details" *ngIf="work.length < 1">
+      <p>API is under development.</p>
+      <p>Sorry for the inconvenience</p>
+    </div>
+    <div class="card" *ngFor="let job of work">
+      <div class="details">
+        <h3 class="title">{{job.title}}</h3>
+        <h4 class="name">{{job.company}}</h4>
+        <p class="date-location">
+          {{job.startDate}}&nbsp;–&nbsp;{{job.endDate}}&nbsp;•&nbsp;{{job.location}}
+        </p>
+        <p class="description">{{job.description}}</p>
+      </div>
+    </div>
   </div>
-  <h2>EDUCATION</h2>
-  <div *ngFor="let edu of education">
-    <p>{{edu.school}}&nbsp;|&nbsp;{{edu.startDate}}&nbsp;to&nbsp;{{edu.endDate}}</p>
-    <p>{{edu.degree}}&nbsp;specialized in the field of&nbsp;{{edu.field}}</p>
-    <i>{{edu.description}}</i>
+  <!-- EDUCATION -->
+  <div class="section">
+    <h2 class="section-title">Education</h2>
+    <div class="details" *ngIf="education.length < 1">
+      <p>API is under development.</p>
+      <p>Sorry for the inconvenience</p>
+    </div>
+    <div class="card" *ngFor="let edu of education">
+      <div class="details">
+        <h3 class="title">{{edu.school}}</h3>
+        <h4 class="name">{{edu.degree}}</h4>
+        <p class="date-location">
+          {{edu.startDate}}&nbsp;–&nbsp;{{edu.endDate}}
+        </p>
+        <p class="description">{{edu.description}}</p>
+      </div>
+    </div>
   </div>
-  <div>
-    <h2>CONTACT DETAILS</h2>
+  <!-- CONTACT DETAILS -->
+  <div class="section">
+    <h2 class="section-title">Contact Details</h2>
     <p>You can find me in
       <a href="https://www.linkedin.com/in/a-k-488a75129/" target="_blank" rel="noopener">LinkedIn</a>
     </p>
     <p>If you miss me there, here is my e-mail</p>
-    <p>kranthia24&#64;gmail.com</p>
+    <p class="email-text">
+      {{ email }}
+      <button class="copy-btn" (click)="copy()" aria-label="copy">
+        <span class="material-icons">content_copy</span>
+      </button>
+      <span class="tooltip" *ngIf="isTooltip">Copied!</span>
+    </p>
   </div>
 </main>
 <app-footer></app-footer>

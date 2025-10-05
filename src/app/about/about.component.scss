@@ -1,9 +1,88 @@
 div {
-  text-align: justify;
+  text-align: left;
   padding-bottom: 20px;
 }
 
 .headings {
   font-weight: bold;
   font-style: italic;
+}
+
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  //font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.details {
+  flex: 1;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #bbbfbf;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 2px 0 5px;
+  color: #eeeeee;
+}
+
+.date-location {
+  font-size: 13px;
+  color: #bbbfbf;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 14px;
+  color: #eeeeee;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+
+.email-text {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.copy-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.copy-btn:hover {
+  color: #e0e0e0;
+}
+
+.material-icons {
+  font-size: 18px;
 }
