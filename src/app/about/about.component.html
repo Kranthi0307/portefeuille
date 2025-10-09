@@ -3,38 +3,45 @@
   <!-- EXPERIENCE -->
   <div class="section">
     <h2 class="section-title">Experience</h2>
-    <div class="details" *ngIf="work.length < 1">
-      <p>API is under development.</p>
-      <p>Sorry for the inconvenience</p>
-    </div>
     <div class="card" *ngFor="let job of work">
       <div class="details">
         <h3 class="title">{{job.title}}</h3>
         <h4 class="name">{{job.company}}</h4>
         <p class="date-location">
-          {{job.startDate}}&nbsp;–&nbsp;{{job.endDate}}&nbsp;•&nbsp;{{job.location}}
+          <span>{{job.startDate | date: 'MMMM y'}}</span>
+          &nbsp;–&nbsp;
+          <span *ngIf="job.endDate; else present">{{job.endDate | date: 'MMMM y'}}</span>
+          &nbsp;•&nbsp;
+          <span>{{job.location}}</span>
         </p>
         <p class="description">{{job.description}}</p>
       </div>
+    </div>
+    <div class="details" *ngIf="work.length < 1">
+      <p>API is under maintenance.</p>
+      <p>Sorry for the inconvenience</p>
     </div>
   </div>
   <!-- EDUCATION -->
   <div class="section">
     <h2 class="section-title">Education</h2>
-    <div class="details" *ngIf="education.length < 1">
-      <p>API is under development.</p>
-      <p>Sorry for the inconvenience</p>
-    </div>
     <div class="card" *ngFor="let edu of education">
       <div class="details">
         <h3 class="title">{{edu.school}}</h3>
-        <h4 class="name">{{edu.degree}}</h4>
+        <h4 class="name">{{edu.degree}}&nbsp;in&nbsp;{{edu.field}}</h4>
         <p class="date-location">
-          {{edu.startDate}}&nbsp;–&nbsp;{{edu.endDate}}
+          {{edu.startDate | date: 'MMMM y'}}&nbsp;–&nbsp;{{edu.endDate | date: 'MMMM y'}}
         </p>
         <p class="description">{{edu.description}}</p>
       </div>
     </div>
+    <div class="details" *ngIf="education.length < 1">
+      <p>API is under maintenance.</p>
+      <p>Sorry for the inconvenience</p>
+    </div>
+  </div>
+  <div *ngIf="loading$ | async" class="loading-overlay">
+    <div class="spinner"></div>
   </div>
   <!-- CONTACT DETAILS -->
   <div class="section">
@@ -51,5 +58,6 @@
       <span class="tooltip" *ngIf="isTooltip">Copied!</span>
     </p>
   </div>
+  <ng-template #present>Present</ng-template>
 </main>
 <app-footer></app-footer>

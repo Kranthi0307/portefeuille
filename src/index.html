@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
 <head>
   <meta charset="utf-8">
@@ -8,6 +8,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script>
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'u', 's', 'a'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) {
+        e.preventDefault();
+      }
+    });
+
+    window.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    });
+  </script>
+
+  <style>
+    * {
+      -ms-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      pointer-events: none;
+    }
+  </style>
 </head>
 
 <body>
