@@ -26,7 +26,7 @@ export class SkillsComponent implements OnInit {
   ngOnInit(): void {
     this.loadingService.show();
     this.skillsService.getSkills().subscribe({
-      next: (response: any) => { this.skills = this.groupBySkill(response), console.log(this.skills), this.loadingService.hide() },
+      next: (response: any) => { this.skills = this.groupBySkill(response), this.loadingService.hide() },
       error: (error: any) => { console.log(error), this.loadingService.hide() }
     });
   }
