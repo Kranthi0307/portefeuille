@@ -13,6 +13,6 @@ export class SkillsService {
   constructor(private http: HttpClient) { }
 
   getSkills(): Observable<any> {
-    return this.http.get(this.skillapi + `getSkills`);
+    return this.http.get<string[]>(this.skillapi + `getSkills`);
   }
 }

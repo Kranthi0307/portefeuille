@@ -4,6 +4,7 @@ import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
 import { ProjectsService } from './projects.service';
 import { LoadingService } from '../common/services/loading.service';
+import { DecryptionService } from '../common/services/decryption.service';
 
 @Component({
   selector: 'app-projects',
@@ -18,7 +19,8 @@ export class ProjectsComponent implements OnInit {
   loading$: any;
 
   constructor(private projectsService: ProjectsService,
-    private readonly loadingService: LoadingService
+    private readonly loadingService: LoadingService,
+    private decryptionService: DecryptionService
   ) {
     this.loading$ = this.loadingService.loading$;
   }
@@ -26,7 +28,7 @@ export class ProjectsComponent implements OnInit {
   ngOnInit(): void {
     this.loadingService.show();
     this.projectsService.getProjects().subscribe({
-      next: (response: any) => { this.projects = response, this.loadingService.hide() },
+      next: (response: any) => { this.projects = response.map((item: any) => this.decryptionService.decrypt(item)), this.loadingService.hide() },
       error: (error: any) => { console.log(error), this.loadingService.hide() }
     });
   }

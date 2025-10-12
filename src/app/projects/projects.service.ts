@@ -13,6 +13,6 @@ export class ProjectsService {
   constructor(private http: HttpClient) { }
 
   getProjects(): Observable<any> {
-    return this.http.get(this.projectapi + `getProjects`);
+    return this.http.get<string[]>(this.projectapi + `getProjects`);
   }
 }

@@ -13,10 +13,10 @@ export class AboutService {
   constructor(private http: HttpClient) { }
 
   getWork(): Observable<any> {
-    return this.http.get(this.aboutapi + `getWork`);
+    return this.http.get<string[]>(this.aboutapi + `getWork`);
   }
 
   getEducation(): Observable<any> {
-    return this.http.get(this.aboutapi + `getEducation`);
+    return this.http.get<string[]>(this.aboutapi + `getEducation`);
   }
 }

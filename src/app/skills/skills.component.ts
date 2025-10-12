@@ -4,6 +4,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { SkillsService } from './skills.service';
 import { LoadingService } from '../common/services/loading.service';
 import { CommonModule } from '@angular/common';
+import { DecryptionService } from '../common/services/decryption.service';
 
 @Component({
   selector: 'app-skills',
@@ -18,7 +19,8 @@ export class SkillsComponent implements OnInit {
   loading$: any;
 
   constructor(private skillsService: SkillsService,
-    private readonly loadingService: LoadingService
+    private readonly loadingService: LoadingService,
+    private decryptionService: DecryptionService
   ) {
     this.loading$ = this.loadingService.loading$;
   }
@@ -26,7 +28,7 @@ export class SkillsComponent implements OnInit {
   ngOnInit(): void {
     this.loadingService.show();
     this.skillsService.getSkills().subscribe({
-      next: (response: any) => { this.skills = this.groupBySkill(response), this.loadingService.hide() },
+      next: (response: any) => { this.skills = this.groupBySkill(response.map((item: any) => this.decryptionService.decrypt(item))), this.loadingService.hide() },
       error: (error: any) => { console.log(error), this.loadingService.hide() }
     });
   }

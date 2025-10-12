@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingService } from '../common/services/loading.service';
 import { AboutService } from './about.service';
 import { forkJoin } from 'rxjs';
+import { DecryptionService } from '../common/services/decryption.service';
 
 @Component({
   selector: 'app-about',
@@ -22,7 +23,8 @@ export class AboutComponent implements OnInit {
   loading$: any;
 
   constructor(private aboutService: AboutService,
-    private readonly loadingService: LoadingService) {
+    private readonly loadingService: LoadingService,
+    private decryptionService: DecryptionService) {
     this.loading$ = this.loadingService.loading$;
   }
 
@@ -32,8 +34,8 @@ export class AboutComponent implements OnInit {
       this.aboutService.getWork(),
       this.aboutService.getEducation()
     ]).subscribe(([workResponse, educationRespsonse]) => {
-      this.work = workResponse;
-      this.education = educationRespsonse;
+      this.work = workResponse.map((item: any) => this.decryptionService.decrypt(item));
+      this.education = educationRespsonse.map((item: any) => this.decryptionService.decrypt(item));
       this.loadingService.hide()
     }, (error: any) => {
       console.log(error);
