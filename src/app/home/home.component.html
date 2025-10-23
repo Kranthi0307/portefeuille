@@ -16,7 +16,7 @@
   </div>
   <div>
     <a href="./assets/files/Resume.pdf" target="_blank">Resume</a>
-    <span class="info-icon" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
+    <span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
       <i>i</i>
       <span class="tooltip-box" *ngIf="showTooltip">
         Last updated on {{updatedDate | date: 'MMMM y'}}
