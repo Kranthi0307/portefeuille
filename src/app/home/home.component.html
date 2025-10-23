@@ -14,5 +14,14 @@
       <a routerLink="/skills">What do I know?</a>
     </p>
   </div>
+  <div>
+    <a href="../../assets/files/Resume.pdf" target="_blank">Resume</a>
+    <span class="info-icon" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
+      <i>i</i>
+      <span class="tooltip-box" *ngIf="showTooltip">
+        Last updated on {{updatedDate | date: 'MMMM y'}}
+      </span>
+    </span>
+  </div>
 </main>
 <app-footer></app-footer>
