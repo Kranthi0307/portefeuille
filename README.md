@@ -1,16 +1,16 @@
-# 🌐 Portfolio Website
+# 🌐 My Portfolio
 
-This is a personal portfolio website built using **Angular**, designed to showcase projects, skills, and contact information in a clean, responsive layout.
+A personal portfolio website built with **Angular** and hosted on **Github Pages**.
+This project showcases my skills, projects, and experience in web development.
 
 ---
 
-## 🧰 Technologies Used
+## 🧰 Tech
 
-- Angular 17+
-- TypeScript
-- HTML5 / CSS3
-- Angular CLI
-- GitHub Pages (for deployment)
+- **Framework:** Angular
+- **Language:** TypeScript
+- **Styling:** SCSS / CSS3
+- **Deployment:** GitHub Pages
 
 ---
 
