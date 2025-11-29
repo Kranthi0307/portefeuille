@@ -1,15 +1,39 @@
-<footer>
-  <ul>
-    <li>
+<footer class="my-footer">
+  <div class="footer-content">
+
+    <!-- Social links -->
+    <div class="social-links">
+
+      <!-- Github -->
       <a href="https://github.com/Kranthi0307" aria-label="Github" target="_blank" rel="noopener">
         <img src="./assets/imgs/github.svg" alt="Github" width="24" height="24">
       </a>
-    </li>
-    <li>
+
+      <!-- LinkedIn -->
       <a href="https://www.linkedin.com/in/a-k-488a75129/" aria-label="LinkedIn" target="_blank" rel="noopener">
         <img src="./assets/imgs/linkedin.svg" alt="LinkedIn" width="24" height="24">
       </a>
-    </li>
-    <li class="rights">copyright &copy; {{year}}</li>
-  </ul>
+    </div>
+
+    <!-- e-mail -->
+    <div class="email">
+      <button (click)="copy()" aria-label="copy">
+        {{ email }}
+      </button>
+      <span *ngIf="emailTooltip">Copied!</span>
+    </div>
+
+    <!-- Resume -->
+    <div class="resume">
+      <button (click)="openFile()">
+        Resume
+      </button>
+      <span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
+        <i>i</i>
+        <span *ngIf="resumeTooltip">
+          Last updated on {{updatedDate | date: 'MMMM y'}}
+        </span>
+      </span>
+    </div>
+  </div>
 </footer>
