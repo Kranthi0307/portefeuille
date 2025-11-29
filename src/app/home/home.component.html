@@ -2,7 +2,7 @@
   (touchend)="onTouchEnd()" (mousedown)="onTouchStart($event)" (mousemove)="onTouchMove($event)"
   (mouseup)="onTouchEnd()" (mouseleave)="onMouseLeave()">
   <!-- slides -->
-  <div class="slide" *ngFor="let image of images; let i=index" [class.active]="i===currentIndex">
+  <div class="slide" *ngFor="let image of images; let i=index" [class.active]="i===currentIndex" (click)="enroute(image?.route)">
     <img [src]="image?.url" alt="{{image?.title}}" class="slide-img">
   </div>
 

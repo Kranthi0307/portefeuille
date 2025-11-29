@@ -1,18 +1,22 @@
 [
   {
     "url": "../../assets/imgs/projects-home.gif",
-    "title": "Projects"
+    "title": "Projects",
+    "route": "projects"
   },
   {
     "url": "../../assets/imgs/skills-home.gif",
-    "title": "Skills"
+    "title": "Skills",
+    "route":"skills"
   },
   {
     "url": "../../assets/imgs/education-home.gif",
-    "title": "Education"
+    "title": "Education",
+    "route":"education"
   },
   {
     "url": "../../assets/imgs/experience-home.gif",
-    "title": "Experience"
+    "title": "Experience",
+    "route":"experience"
   }
 ]

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import imagesData from '../../assets/data/image.json';
 import { IImage } from '../common/models/image';
 import { FooterComponent } from '../footer/footer.component';
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentX = 0;
   isDragging = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.startAutoPlay();
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isDragging = true;
     this.startX = event.touches ? event.touches[0].clientX : event.clientX;
     this.currentX = this.startX;
-    clearInterval(this.interval); // pause autoplay while dragging
+    clearInterval(this.interval);
   }
 
   onTouchMove(event: any) {
@@ -85,5 +85,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onMouseLeave() {
     if (this.isDragging) this.onTouchEnd();
+  }
+
+  enroute(route?: string) {
+    if (!route) return;
+    this.router.navigate([route]);
   }
 }
