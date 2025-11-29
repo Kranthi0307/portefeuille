@@ -1,71 +1,7 @@
 html,
 body {
-  font-family: sans-serif;
   height: 100%;
   margin: 0;
+  padding: 0;
   background-color: #000;
-  color: #fff;
-}
-
-header {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  text-align: center;
-  background-color: #808080;
-  padding: 10px;
-  z-index: 1000;
-}
-
-footer {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  text-align: center;
-  background-color: #808080;
-  padding: 10px;
-}
-
-h2 {
-  font-family: Helvetica;
-}
-
-a {
-  text-decoration: none;
-  color: #fff;
-}
-
-.content {
-  padding: 20px;
-  padding-top: 60px;
-  padding-bottom: 100px;
-}
-
-/* styles.css */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.7);
-  z-index: 9999;
-}
-
-.spinner {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3f51b5;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
 }
