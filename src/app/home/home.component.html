@@ -1,27 +1,21 @@
-<app-header></app-header>
-<main class="content">
-  <div>
-    <i>Hello, This is Kranthi. And here you're in my portfolio.</i>
+<div class="slide-container" (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()" (mousedown)="onTouchStart($event)" (mousemove)="onTouchMove($event)"
+  (mouseup)="onTouchEnd()" (mouseleave)="onMouseLeave()">
+  <!-- slides -->
+  <div class="slide" *ngFor="let image of images; let i=index" [class.active]="i===currentIndex">
+    <img [src]="image?.url" alt="{{image?.title}}" class="slide-img">
   </div>
-  <div>
-    <p>
-      <a routerLink="/about">Want to know more about me?</a>
-    </p>
-    <p>
-      <a routerLink="/projects">What did I do?</a>
-    </p>
-    <p>
-      <a routerLink="/skills">What do I know?</a>
-    </p>
+
+  <!-- left arrow -->
+  <button class="arrow left" (click)="prevSlide()">&#10094;</button>
+
+  <!-- right arrow -->
+  <button class="arrow right" (click)="nextSlide()">&#10095;</button>
+
+  <!-- dots -->
+  <div class="dots">
+    <span *ngFor="let img of images; let i = index" [class.active]="i === currentIndex" (click)="goToSlide(i)"></span>
   </div>
-  <div>
-    <a href="./assets/files/Resume.pdf" target="_blank">Resume</a>
-    <span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
-      <i>i</i>
-      <span class="tooltip-box" *ngIf="showTooltip">
-        Last updated on {{updatedDate | date: 'MMMM y'}}
-      </span>
-    </span>
-  </div>
-</main>
+</div>
+
 <app-footer></app-footer>
