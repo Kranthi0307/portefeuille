@@ -1,0 +1,17 @@
+<div class="bg-image">
+  <div class="card" *ngFor="let job of work">
+    <div class="details">
+      <h3 class="title">{{job.title}}</h3>
+      <h4 class="name">{{job.company}}</h4>
+      <p class="date-location">
+        <span>{{job.startDate | date: 'MMMM y'}}</span>
+        &nbsp;–&nbsp;
+        <span *ngIf="job.endDate; else present">{{job.endDate | date: 'MMMM y'}}</span>
+        &nbsp;•&nbsp;
+        <span>{{job.location}}</span>
+      </p>
+      <p class="description">{{job.description}}</p>
+    </div>
+  </div>
+  <ng-template #present>Present</ng-template>
+</div>

@@ -1,0 +1,12 @@
+<div class="bg-image">
+  <div class="card" *ngFor="let edu of education">
+    <div class="details">
+      <h3 class="title">{{edu.school}}</h3>
+      <h4 class="name">{{edu.degree}}&nbsp;in&nbsp;{{edu.field}}</h4>
+      <p class="date-location">
+        {{edu.startDate | date: 'MMMM y'}}&nbsp;–&nbsp;{{edu.endDate | date: 'MMMM y'}}
+      </p>
+      <p class="description">{{edu.description}}</p>
+    </div>
+  </div>
+</div>
