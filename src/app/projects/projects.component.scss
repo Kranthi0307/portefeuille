@@ -25,9 +25,9 @@
   box-shadow: 8px 8px 5px rgba(201, 164, 61, 0.1);
 }
 
-.project-card :hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  transform: scale3d(1.10);
+.project-card:not(h3):hover {
+  box-shadow: 0 6px 18px rgba(201, 164, 61, 0.1);
+  transform: scale(0.90);
 }
 
 @media (max-width: 768px) {
@@ -41,7 +41,7 @@
 }
 
 @media (max-width: 480px) {
-  .box {
+  .project-card {
     flex: 1 1 100%;
   }
 }
