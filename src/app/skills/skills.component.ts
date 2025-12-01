@@ -2,24 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DecryptionService } from '../common/services/decryption.service';
 import { SkillsService } from './skills.service';
+import { FormsModule } from '@angular/forms';
 
 interface TreeNode {
   name: string;
-  size?: string;
-  type?: string;
   children?: TreeNode[];
-
-  // internal fields
-  level?: number;
   expanded?: boolean;
-  visible?: boolean;
-  parent?: TreeNode | null;
 }
 
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
@@ -27,37 +21,17 @@ export class SkillsComponent implements OnInit {
 
   skills: any = [];
 
-  rawData: TreeNode[] = [
-    {
-      name: 'Documents',
-      size: '2 MB',
-      type: 'folder',
-      children: [
-        { name: 'Resume.pdf', size: '120 KB', type: 'file' },
-        { name: 'Budget.xlsx', size: '340 KB', type: 'file' },
-      ],
-    },
-    {
-      name: 'Pictures',
-      size: '4 MB',
-      type: 'folder',
-      children: [
-        { name: 'Vacation.jpg', size: '2.1 MB', type: 'file' },
-      ],
-    },
-  ];
-
-  flatData: TreeNode[] = [];
+  searchText = '';
+  sortColumn: string = '';
+  sortAsc: boolean = true;
 
   constructor(private skillsService: SkillsService,
     private decryptionService: DecryptionService
-  ) {
-    this.flattenData();
-   }
+  ) { }
 
   ngOnInit(): void {
     this.skillsService.getSkills().subscribe({
-      next: (response: any) => { this.skills = this.groupBySkill(response.map((item: any) => this.decryptionService.decrypt(item))) },
+      next: (response: any) => { this.skills = this.groupToTreeNode(response.map((item: any) => this.decryptionService.decrypt(item))), console.log(this.skills) },
       error: (error: any) => { console.log(error) }
     });
   }
@@ -78,67 +52,46 @@ export class SkillsComponent implements OnInit {
     }));
   }
 
-  flattenData() {
-    this.flatData = [];
-    const traverse = (nodes: TreeNode[], level = 0, parent: TreeNode | null = null) => {
-      for (const node of nodes) {
-        node.level = level;
-        node.expanded = node.expanded ?? false;
-        node.visible = parent ? parent.expanded : true;
-        node.parent = parent;
-
-        this.flatData.push(node);
-
-        if (node.children) {
-          traverse(node.children, level + 1, node);
+  private groupToTreeNode(data: any[]): TreeNode[] {
+    return Object.values(
+      data.reduce((acc: any, item) => {
+        if (!acc[item.label]) {
+          acc[item.label] = {
+            name: item.label,
+            expanded: false,
+            children: []
+          };
         }
-      }
-    };
-    traverse(this.rawData);
-    console.log('Data ' + this.rawData + ', ' + this.flatData);
+
+        acc[item.label].children.push({
+          name: item.name
+        });
+
+        return acc;
+      }, {})
+    );
   }
 
-  /** Expand/collapse */
   toggle(node: TreeNode) {
     node.expanded = !node.expanded;
+  }
 
-    // Update children visibility
-    const updateVisibility = (n: TreeNode) => {
-      if (n.parent) {
-        n.visible = n.parent.expanded && n.parent.visible;
-      }
-      if (n.children) {
-        for (const child of n.children) {
-          updateVisibility(child);
-        }
-      }
-    };
-
-    for (const child of node.children ?? []) {
-      updateVisibility(child);
+  /*setSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortColumn = column;
+      this.sortAsc = true;
     }
-  }
 
-  /** Simple sorting */
-  sort(column: keyof TreeNode) {
-    this.rawData.sort((a, b) => (a[column] || '').toString().localeCompare((b[column] || '').toString()));
-    this.flattenData();
-  }
+    this.data.sort((a, b) => {
+      const A = (a as any)[column].toLowerCase();
+      const B = (b as any)[column].toLowerCase();
+      return this.sortAsc ? A.localeCompare(B) : B.localeCompare(A);
+    });
+  }*/
 
-  /** Simple filtering */
-  applyFilter(text: string) {
-    const q = text.toLowerCase();
-    for (const node of this.flatData) {
-      const match = node.name.toLowerCase().includes(q);
-      const parentMatch = this.findParentMatch(node, q);
-      node.visible = match || parentMatch;
-    }
+  matchesSearch(node: TreeNode) {
+    return node.name.toLowerCase().includes(this.searchText.toLowerCase());
   }
-
-  findParentMatch(node: TreeNode, q: string): boolean {
-    if (!node.parent) return false;
-    if (node.parent.name.toLowerCase().includes(q)) return true;
-    return this.findParentMatch(node.parent, q);
-  }
-
 }

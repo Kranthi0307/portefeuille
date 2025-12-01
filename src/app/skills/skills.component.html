@@ -1,37 +1,32 @@
 <div class="bg-image">
-  <!--div class="grid-container">
-    <div class="grid-item" *ngFor="let skill of skills">
-      <h2>{{ skill?.label }}</h2>
-      <ul *ngFor="let name of skill.names">
-        <li>
-          <p>{{ name }}</p>
-        </li>
-      </ul>
-    </div>
-  </div-->
-
   <div class="skills">
-    <div class="search-container">
-      <input type="text" placeholder="Search..." (input)="applyFilter(input.value)" #input />
+    <div>
+      <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-box" />
     </div>
-    <table class="tree-grid">
-      <thead>
-        <tr>
-          <th (click)="sort('name')">Name</th>
-        </tr>
-      </thead>
 
+    <table class="tree-table">
       <tbody>
-        <ng-container *ngFor="let node of flatData">
-          <tr *ngIf="node.visible" [style.padding-left.px]="(node.level ?? 0) * 20" class="tree-row">
-            <td>
-              <span class="toggle" *ngIf="node.children && node.children.length" (click)="toggle(node)">
-                {{ node.expanded ? '▼' : '▶' }}
-              </span>
+        <ng-container *ngFor="let skill of skills">
 
-              {{ node.name }}
+          <!-- Parent -->
+          <tr *ngIf="matchesSearch(skill)">
+            <td (click)="toggle(skill)">
+              <button class="toggle-btn">
+                {{ skill.expanded ? '-' : '+' }}
+              </button>
+              {{ skill.name }}
             </td>
           </tr>
+
+          <!-- Child -->
+          <ng-container *ngIf="skill.expanded">
+            <ng-container *ngFor="let child of skill.children">
+              <tr *ngIf="matchesSearch(child)" class="child-row">
+                <td>{{ child.name }}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+
         </ng-container>
       </tbody>
     </table>
