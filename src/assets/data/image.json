@@ -1,21 +1,21 @@
 [
   {
-    "url": "../../assets/imgs/projects-home.gif",
+    "url": "../../assets/imgs/projects-home-desktop.png",
     "title": "Projects",
     "route": "projects"
   },
   {
-    "url": "../../assets/imgs/skills-home.gif",
+    "url": "../../assets/imgs/skills-home-desktop.png",
     "title": "Skills",
     "route":"skills"
   },
   {
-    "url": "../../assets/imgs/education-home.gif",
+    "url": "../../assets/imgs/education-home-desktop.png",
     "title": "Education",
     "route":"education"
   },
   {
-    "url": "../../assets/imgs/experience-home.gif",
+    "url": "../../assets/imgs/experience-home-desktop.png",
     "title": "Experience",
     "route":"experience"
   }
