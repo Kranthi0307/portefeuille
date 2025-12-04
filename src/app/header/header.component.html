@@ -1,8 +1,18 @@
 <header>
-  <ul>
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/skills">Skills</a></li>
-    <li><a routerLink="/projects">Projects</a></li>
-    <li class="last"><a routerLink="/about">About</a></li>
-  </ul>
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <div class="content">KRANTHI</div>
+  </div>
 </header>
+
+<div class="overlay" *ngIf="isOpen" (click)="closeMenu()"></div>
+
+<div class="menu-container" [@slideDown]="isOpen ? 'open' : 'closed'">
+  <ul>
+    <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
+    <li><a routerLink="/skills" (click)="closeMenu()">Skills</a></li>
+    <li><a routerLink="/projects" (click)="closeMenu()">Projects</a></li>
+    <li><a routerLink="/education" (click)="closeMenu()">Education</a></li>
+    <li><a routerLink="/experience" (click)="closeMenu()">Experience</a></li>
+    <li class="close-option" (click)="closeMenu()">Close</li>
+  </ul>
+</div>

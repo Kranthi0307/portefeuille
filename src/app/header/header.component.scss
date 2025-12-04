@@ -1,27 +1,67 @@
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.overlay {
+  position: fixed;
+  inset: 0;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: blur(30px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
-li {
-  float: left;
+header {
+  display: grid;
+  place-items: center;
 }
 
-li.last {
-  float: right;
-  padding-right: 20px;
+.menu-toggle {
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 236, 172, 0.6);
+  padding-top: 5px;
+  height: 30px;
+  width: 300px;
 }
 
-li a {
-  display: block;
-  color: white;
+.content {
+  cursor: pointer;
   text-align: center;
-  padding: 15px;
+  font-family: "Segoe Script", "Apple Chancery", "Lucida Handwriting", "URW Chancery L", cursive;
+}
+
+.close-option {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.menu-container {
+  position: fixed;
+  justify-content: center;
+  left: calc(50% - 150px);
+  color: rgba(255, 236, 172, 0.6);
+  font-family: "Segoe Script", "Apple Chancery", "Lucida Handwriting", "URW Chancery L", cursive;
+  z-index: 20;
+  width: 300px;
+}
+
+.menu-container a {
+  color: inherit;
   text-decoration: none;
 }
 
-li a:hover {
-  background-color: #000;
+.menu-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.menu-container li {
+  cursor: pointer;
+  font-size: 15px;
+  padding: 15px 0;
+  width: 300px;
+}
+
+.menu-container li:hover {
+  background: rgba(255, 236, 172, 0.1);;
+  border-radius: 15px;
 }
