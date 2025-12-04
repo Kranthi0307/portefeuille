@@ -1,6 +1,6 @@
-<header>
-  <div class="menu-toggle" (click)="toggleMenu()">
-    <div class="content">KRANTHI</div>
+<header class="my-header">
+  <div class="header-content" (click)="toggleMenu()">
+    KRANTHI
   </div>
 </header>
 
@@ -8,11 +8,11 @@
 
 <div class="menu-container" [@slideDown]="isOpen ? 'open' : 'closed'">
   <ul>
-    <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
-    <li><a routerLink="/skills" (click)="closeMenu()">Skills</a></li>
-    <li><a routerLink="/projects" (click)="closeMenu()">Projects</a></li>
-    <li><a routerLink="/education" (click)="closeMenu()">Education</a></li>
-    <li><a routerLink="/experience" (click)="closeMenu()">Experience</a></li>
+    <li routerLink="/home" (click)="closeMenu()">Home</li>
+    <li routerLink="/skills" (click)="closeMenu()">Skills</li>
+    <li routerLink="/projects" (click)="closeMenu()">Projects</li>
+    <li routerLink="/education" (click)="closeMenu()">Education</li>
+    <li routerLink="/experience" (click)="closeMenu()">Experience</li>
     <li class="close-option" (click)="closeMenu()">Close</li>
   </ul>
 </div>
