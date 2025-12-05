@@ -23,11 +23,11 @@
   padding: 0 15px;
   font-size: 25px;
   font-weight: 400;
-  width: 300px;
+  width: 250px;
   height: 30px;
   text-align: center;
   font-family: "Segoe Script", "Apple Chancery", "Lucida Handwriting", "URW Chancery L", cursive;
-  border-radius: 12px;
+  border-radius: 15px;
 }
 
 .overlay {
@@ -63,9 +63,11 @@
 
 .menu-container li {
   cursor: pointer;
-  font-size: 15px;
   padding: 15px 0;
-  width: 300px;
+  font-size: 25px;
+  font-weight: 400;
+  width: 250px;
+  height: 30px;
 }
 
 .menu-container li:hover {
