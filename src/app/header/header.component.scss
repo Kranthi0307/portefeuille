@@ -1,3 +1,35 @@
+.my-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background: rgba(255, 236, 172, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.header-content {
+  cursor: pointer;
+  background: rgba(255, 236, 172, 0.9);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  font-size: 25px;
+  font-weight: 400;
+  width: 300px;
+  height: 30px;
+  text-align: center;
+  font-family: "Segoe Script", "Apple Chancery", "Lucida Handwriting", "URW Chancery L", cursive;
+  border-radius: 12px;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -5,26 +37,6 @@
   backdrop-filter: blur(30px);
   background: rgba(0, 0, 0, 0.3);
   z-index: 10;
-}
-
-header {
-  display: grid;
-  place-items: center;
-}
-
-.menu-toggle {
-  border: none;
-  border-radius: 8px;
-  background: rgba(255, 236, 172, 0.6);
-  padding-top: 5px;
-  height: 30px;
-  width: 300px;
-}
-
-.content {
-  cursor: pointer;
-  text-align: center;
-  font-family: "Segoe Script", "Apple Chancery", "Lucida Handwriting", "URW Chancery L", cursive;
 }
 
 .close-option {
@@ -42,11 +54,6 @@ header {
   width: 300px;
 }
 
-.menu-container a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .menu-container ul {
   list-style: none;
   margin: 0;
@@ -62,6 +69,6 @@ header {
 }
 
 .menu-container li:hover {
-  background: rgba(255, 236, 172, 0.1);;
+  background: rgba(255, 236, 172, 0.1);
   border-radius: 15px;
 }
