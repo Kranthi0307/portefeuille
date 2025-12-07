@@ -1,35 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from "../footer/footer.component";
-import { HeaderComponent } from "../header/header.component";
-import { ProjectsService } from './projects.service';
-import { LoadingService } from '../common/services/loading.service';
 import { DecryptionService } from '../common/services/decryption.service';
+import { ProjectsService } from './projects.service';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, FooterComponent, HeaderComponent],
+  imports: [CommonModule],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
 export class ProjectsComponent implements OnInit {
 
   projects: any = [];
-  loading$: any;
 
   constructor(private projectsService: ProjectsService,
-    private readonly loadingService: LoadingService,
     private decryptionService: DecryptionService
-  ) {
-    this.loading$ = this.loadingService.loading$;
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.loadingService.show();
     this.projectsService.getProjects().subscribe({
-      next: (response: any) => { this.projects = response.map((item: any) => this.decryptionService.decrypt(item)), this.loadingService.hide() },
-      error: (error: any) => { console.log(error), this.loadingService.hide() }
+      next: (response: any) => { this.projects = response.map((item: any) => this.decryptionService.decrypt(item)) },
+      error: (error: any) => { console.log(error) }
     });
+  }
+
+  openProject(url?: string) {
+    if (!url) return;
+    window.open(url, '_blank');
   }
 }

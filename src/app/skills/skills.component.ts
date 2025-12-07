@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
-import { SkillsService } from './skills.service';
-import { LoadingService } from '../common/services/loading.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { DecryptionService } from '../common/services/decryption.service';
+import { SkillsService } from './skills.service';
+import { FormsModule } from '@angular/forms';
+
+interface TreeNode {
+  name: string;
+  children?: TreeNode[];
+  expanded?: boolean;
+}
 
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
 export class SkillsComponent implements OnInit {
 
   skills: any = [];
-  loading$: any;
+
+  searchText = '';
+  sortColumn: string = '';
+  sortAsc: boolean = true;
 
   constructor(private skillsService: SkillsService,
-    private readonly loadingService: LoadingService,
     private decryptionService: DecryptionService
-  ) {
-    this.loading$ = this.loadingService.loading$;
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.loadingService.show();
     this.skillsService.getSkills().subscribe({
-      next: (response: any) => { this.skills = this.groupBySkill(response.map((item: any) => this.decryptionService.decrypt(item))), this.loadingService.hide() },
-      error: (error: any) => { console.log(error), this.loadingService.hide() }
+      next: (response: any) => { this.skills = this.groupToTreeNode(response.map((item: any) => this.decryptionService.decrypt(item))) },
+      error: (error: any) => { console.log(error) }
     });
   }
 
@@ -47,5 +50,48 @@ export class SkillsComponent implements OnInit {
       label: skill,
       names: result[skill]
     }));
+  }
+
+  private groupToTreeNode(data: any[]): TreeNode[] {
+    return Object.values(
+      data.reduce((acc: any, item) => {
+        if (!acc[item.label]) {
+          acc[item.label] = {
+            name: item.label,
+            expanded: false,
+            children: []
+          };
+        }
+
+        acc[item.label].children.push({
+          name: item.name
+        });
+
+        return acc;
+      }, {})
+    );
+  }
+
+  toggle(node: TreeNode) {
+    node.expanded = !node.expanded;
+  }
+
+  /*setSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortColumn = column;
+      this.sortAsc = true;
+    }
+
+    this.data.sort((a, b) => {
+      const A = (a as any)[column].toLowerCase();
+      const B = (b as any)[column].toLowerCase();
+      return this.sortAsc ? A.localeCompare(B) : B.localeCompare(A);
+    });
+  }*/
+
+  matchesSearch(node: TreeNode) {
+    return node.name.toLowerCase().includes(this.searchText.toLowerCase());
   }
 }
