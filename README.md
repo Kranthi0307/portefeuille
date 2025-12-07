@@ -22,7 +22,8 @@ This project showcases my skills, projects, and experience in web development.
 
 ## References
 
-- Github
-- webdev
+- Canvas for custom images
+- web.dev for css
+- Github projects like ngx-admin, ng-simple-slideshow
 
 Inspired by Nothing • Big fan of Nothing
