@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DecryptionService } from '../common/services/decryption.service';
 import { SkillsService } from './skills.service';
 import { FormsModule } from '@angular/forms';
+import { ErrorComponent } from '../error/error.component';
 
 interface TreeNode {
   name: string;
@@ -13,7 +14,7 @@ interface TreeNode {
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ErrorComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
@@ -24,6 +25,7 @@ export class SkillsComponent implements OnInit {
   searchText = '';
   sortColumn: string = '';
   sortAsc: boolean = true;
+  isError: boolean = false;
 
   constructor(private skillsService: SkillsService,
     private decryptionService: DecryptionService
@@ -32,7 +34,7 @@ export class SkillsComponent implements OnInit {
   ngOnInit(): void {
     this.skillsService.getSkills().subscribe({
       next: (response: any) => { this.skills = this.groupToTreeNode(response.map((item: any) => this.decryptionService.decrypt(item))) },
-      error: (error: any) => { console.log(error) }
+      error: (error: any) => { this.isError = true }
     });
   }
 
