@@ -20,7 +20,7 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectsService.getProjects().subscribe({
-      next: (response: any) => { this.projects = response.map((item: any) => this.decryptionService.decrypt(item)) },
+      next: (response: any) => { this.projects = response.data.map((item: any) => this.decryptionService.decrypt(item)) },
       error: (error: any) => { console.log(error) }
     });
   }
