@@ -22,7 +22,7 @@ export class EducationComponent implements OnInit {
 
   ngOnInit(): void {
     this.aboutService.getEducation().subscribe({
-      next: (response: any) => { this.education = response.map((item: any) => this.decryptionService.decrypt(item)) },
+      next: (response: any) => { this.education = response.data.map((item: any) => this.decryptionService.decrypt(item)) },
       error: (error: any) => { this.isError = true }
     });
   }

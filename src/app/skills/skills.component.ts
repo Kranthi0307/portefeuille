@@ -33,7 +33,7 @@ export class SkillsComponent implements OnInit {
 
   ngOnInit(): void {
     this.skillsService.getSkills().subscribe({
-      next: (response: any) => { this.skills = this.groupToTreeNode(response.map((item: any) => this.decryptionService.decrypt(item))) },
+      next: (response: any) => { this.skills = this.groupToTreeNode(response.data.map((item: any) => this.decryptionService.decrypt(item))) },
       error: (error: any) => { this.isError = true }
     });
   }
