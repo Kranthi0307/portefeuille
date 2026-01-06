@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environment/environment';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AboutService {
 
-  private aboutapi: string = `${environment.apiUrl}/about/`
+  private readonly aboutapi: string = `${environment.apiUrl}/about/`
 
   constructor(private http: HttpClient) { }
 
