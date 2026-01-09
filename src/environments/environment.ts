@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://portfolio-service:8081'
+  apiUrl: 'https://portfolio-api.kranthi-tech.com/portfolio'
 };
