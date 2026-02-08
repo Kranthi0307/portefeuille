@@ -1,6 +1,6 @@
 <div class="bg-image">
   <div class="skills">
-    <div>
+    <div *ngIf="!isError">
       <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-box" />
     </div>
 
@@ -30,5 +30,6 @@
         </ng-container>
       </tbody>
     </table>
+    <app-error [isError]="isError"></app-error>
   </div>
 </div>
