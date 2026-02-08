@@ -21,7 +21,12 @@ export class ExperienceComponent implements OnInit {
 
   ngOnInit(): void {
     this.aboutService.getWork().subscribe({
-      next: (response: any) => { this.work = response.data.map((item: any) => this.decryptionService.decrypt(item)) },
+      next: (response: any) => {
+        if (response)
+          this.work = response.data.map((item: any) => this.decryptionService.decrypt(item))
+        else
+          this.isError = true
+      },
       error: (error: any) => { this.isError = true }
     });
   }

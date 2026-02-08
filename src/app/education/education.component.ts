@@ -7,7 +7,7 @@ import { ErrorComponent } from '../error/error.component';
 @Component({
   selector: 'app-education',
   standalone: true,
-  imports: [CommonModule,  ErrorComponent],
+  imports: [CommonModule, ErrorComponent],
   templateUrl: './education.component.html',
   styleUrl: './education.component.scss'
 })
@@ -22,7 +22,12 @@ export class EducationComponent implements OnInit {
 
   ngOnInit(): void {
     this.aboutService.getEducation().subscribe({
-      next: (response: any) => { this.education = response.data.map((item: any) => this.decryptionService.decrypt(item)) },
+      next: (response: any) => {
+        if (response)
+          this.education = response.data.map((item: any) => this.decryptionService.decrypt(item))
+        else
+          this.isError = true
+      },
       error: (error: any) => { this.isError = true }
     });
   }
