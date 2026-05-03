@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
 
@@ -9,11 +9,15 @@ import { ErrorComponent } from '../error/error.component';
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
 
   private publicService = inject(PublicService);
 
   protected projects: any = this.publicService.projects();
+
+  ngOnInit(): void {
+    this.publicService.getProjects();
+  }
 
   openProject(url?: string) {
     if (!url) return;

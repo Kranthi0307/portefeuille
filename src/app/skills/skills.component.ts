@@ -27,6 +27,7 @@ export class SkillsComponent implements OnInit {
   //sortAsc: boolean = true;
 
   ngOnInit(): void {
+    this.publicService.getSkills();
     this.skills = this.groupToTreeNode(this.skills);
   }
 
