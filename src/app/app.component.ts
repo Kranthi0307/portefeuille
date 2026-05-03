@@ -11,5 +11,14 @@ import { HeaderComponent } from './header/header.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  private publicService = inject(PublicService);
+
+  ngOnInit(): void {
+    this.publicService.getProjects();
+    this.publicService.getSkills();
+    this.publicService.getWork();
+    this.publicService.getEducation();
+  }
 }
