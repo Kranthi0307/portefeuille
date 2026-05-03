@@ -4,7 +4,9 @@
   </div>
 </header>
 
-<div class="overlay" *ngIf="isOpen" (click)="closeMenu()"></div>
+@if (isOpen) {
+<div class="overlay" (click)="closeMenu()"></div>
+}
 
 <div class="menu-container" [@slideDown]="isOpen ? 'open' : 'closed'">
   <ul>

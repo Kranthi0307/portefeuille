@@ -1,6 +1,7 @@
 <div class="bg-image">
   <div class="education">
-    <div class="education-card" *ngFor="let edu of education">
+    @for (edu of education; track edu) {
+    <div class="education-card">
       <h3 class="title">{{edu.school}}</h3>
       <h4 class="name">{{edu.degree}}&nbsp;in&nbsp;{{edu.field}}</h4>
       <p class="date-location">
@@ -8,6 +9,7 @@
       </p>
       <p class="description">{{edu.description}}</p>
     </div>
+    }
   </div>
-  <app-error [isError]="isError"></app-error>
+  <app-error [isError]="!(education?.length > 0)"></app-error>
 </div>

@@ -1,33 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { AboutService } from '../about/about.service';
-import { DecryptionService } from '../common/services/decryption.service';
+import { Component, inject } from '@angular/core';
+import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-experience',
   standalone: true,
-  imports: [CommonModule, ErrorComponent],
+  imports: [DatePipe, ErrorComponent],
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss'
 })
-export class ExperienceComponent implements OnInit {
+export class ExperienceComponent {
 
-  work: any = [];
-  isError: boolean = false;
+  private publicService = inject(PublicService);
 
-  constructor(private aboutService: AboutService,
-    private decryptionService: DecryptionService) { }
-
-  ngOnInit(): void {
-    this.aboutService.getWork().subscribe({
-      next: (response: any) => {
-        if (response)
-          this.work = response.data.map((item: any) => this.decryptionService.decrypt(item))
-        else
-          this.isError = true
-      },
-      error: (error: any) => { this.isError = true, console.log(error) }
-    });
-  }
+  protected work: any = this.publicService.work();
 }

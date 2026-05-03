@@ -20,7 +20,9 @@
       <button (click)="copy()" aria-label="copy">
         {{ email }}
       </button>
-      <span *ngIf="emailTooltip">Copied!</span>
+      @if (emailTooltip) {
+      <span>Copied!</span>
+      }
     </div>
 
     <!-- Resume -->
@@ -30,9 +32,11 @@
       </button>
       <span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
         <i>i</i>
-        <span *ngIf="resumeTooltip">
+        @if (resumeTooltip) {
+        <span>
           Last updated on {{updatedDate | date: 'MMMM y'}}
         </span>
+        }
       </span>
     </div>
   </div>
