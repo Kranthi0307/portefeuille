@@ -1,15 +1,19 @@
 <div class="bg-image">
   <div class="skills">
-    <div *ngIf="!isError">
+    @if (skills?.length > 0) {
+    <div>
       <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-box" />
     </div>
+    }
 
     <table class="tree-table">
       <tbody>
-        <ng-container *ngFor="let skill of skills">
+        @for (skill of skills; track skill) {
+        <ng-container>
 
           <!-- Parent -->
-          <tr *ngIf="matchesSearch(skill)">
+          @if (matchesSearch(skill)) {
+          <tr>
             <td (click)="toggle(skill)">
               <button class="toggle-btn">
                 {{ skill.expanded ? '-' : '+' }}
@@ -17,19 +21,28 @@
               {{ skill.name }}
             </td>
           </tr>
+          }
 
           <!-- Child -->
-          <ng-container *ngIf="skill.expanded">
-            <ng-container *ngFor="let child of skill.children">
-              <tr *ngIf="matchesSearch(child)" class="child-row">
+          @if(skill.expanded) {
+          <ng-container>
+            @for (child of skill.children; track child) {
+            <ng-container>
+              @if (matchesSearch(child)) {
+              <tr class="child-row">
                 <td>{{ child.name }}</td>
               </tr>
+              }
             </ng-container>
+            }
           </ng-container>
+          }
 
         </ng-container>
+        }
       </tbody>
     </table>
-    <app-error [isError]="isError"></app-error>
+
+    <app-error [isError]="!(skills?.length > 0)"></app-error>
   </div>
 </div>

@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import imagesData from '../../assets/data/image.json';
 import { IImage } from '../common/models/image';
@@ -7,11 +6,12 @@ import { IImage } from '../common/models/image';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+  private router = inject(Router);
 
   images: IImage[] = imagesData;
   currentIndex = 0;
@@ -20,8 +20,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   startX = 0;
   currentX = 0;
   isDragging = false;
-
-  constructor(private router: Router) { }
 
   ngOnInit() {
     this.startAutoPlay();

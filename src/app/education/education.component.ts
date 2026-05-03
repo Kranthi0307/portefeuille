@@ -1,34 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { AboutService } from '../about/about.service';
-import { DecryptionService } from '../common/services/decryption.service';
+import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-education',
   standalone: true,
-  imports: [CommonModule, ErrorComponent],
+  imports: [DatePipe, ErrorComponent],
   templateUrl: './education.component.html',
   styleUrl: './education.component.scss'
 })
-export class EducationComponent implements OnInit {
+export class EducationComponent {
 
-  education: any = [];
-  isError: boolean = false;
+  private publicService = inject(PublicService);
 
-  constructor(private aboutService: AboutService,
-    private decryptionService: DecryptionService
-  ) { }
-
-  ngOnInit(): void {
-    this.aboutService.getEducation().subscribe({
-      next: (response: any) => {
-        if (response)
-          this.education = response.data.map((item: any) => this.decryptionService.decrypt(item))
-        else
-          this.isError = true
-      },
-      error: (error: any) => { this.isError = true, console.log(error) }
-    });
-  }
+  protected education: any = this.publicService.education();
 }

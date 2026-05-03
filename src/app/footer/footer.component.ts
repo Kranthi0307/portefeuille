@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DatePipe],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
@@ -14,7 +14,7 @@ export class FooterComponent {
   emailTooltip: boolean = false;
   resumeTooltip: boolean = false;
   tooltipLocked = false;
-  updatedDate = new Date(2025, 8);
+  updatedDate = new Date(2026, 3);
 
   copy() {
     navigator.clipboard.writeText(this.email).then(() => {

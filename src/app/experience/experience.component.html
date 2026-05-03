@@ -1,18 +1,23 @@
 <div class="bg-image">
   <div class="work">
-    <div class="work-card" *ngFor="let job of work">
+    @for (job of work; track job) {
+    <div class="work-card">
       <h3 class="title">{{job.title}}</h3>
       <h4 class="name">{{job.company}}</h4>
       <p class="date-location">
         <span>{{job.startDate | date: 'MMMM y'}}</span>
         &nbsp;–&nbsp;
-        <span *ngIf="job.endDate; else present">{{job.endDate | date: 'MMMM y'}}</span>
+        @if (job.endDate) {
+        <span>{{job.endDate | date: 'MMMM y'}}</span>
+        } @else {
+        <span>Present</span>
+        }
         &nbsp;•&nbsp;
         <span>{{job.location}}</span>
       </p>
       <p class="description">{{job.description}}</p>
     </div>
+    }
   </div>
-  <app-error [isError]="isError"></app-error>
-  <ng-template #present>Present</ng-template>
+  <app-error [isError]="!(work?.length > 0)"></app-error>
 </div>

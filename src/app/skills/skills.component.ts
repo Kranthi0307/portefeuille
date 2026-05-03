@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DecryptionService } from '../common/services/decryption.service';
+import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
-import { SkillsService } from './skills.service';
 
 interface TreeNode {
   name: string;
@@ -14,33 +12,22 @@ interface TreeNode {
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule, FormsModule, ErrorComponent],
+  imports: [FormsModule, ErrorComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
 export class SkillsComponent implements OnInit {
 
-  skills: any = [];
+  private publicService = inject(PublicService);
+
+  protected skills: any = this.publicService.skills();
 
   searchText = '';
-  sortColumn: string = '';
-  sortAsc: boolean = true;
-  isError: boolean = false;
-
-  constructor(private skillsService: SkillsService,
-    private decryptionService: DecryptionService
-  ) { }
+  //sortColumn: string = '';
+  //sortAsc: boolean = true;
 
   ngOnInit(): void {
-    this.skillsService.getSkills().subscribe({
-      next: (response: any) => {
-        if (response)
-          this.skills = this.groupToTreeNode(response.data.map((item: any) => this.decryptionService.decrypt(item)))
-        else
-          this.isError = true
-      },
-      error: (error: any) => { this.isError = true, console.log(error) }
-    });
+    this.skills = this.groupToTreeNode(this.skills);
   }
 
   private groupBySkill(response: { name: string, label: string }[]) {
