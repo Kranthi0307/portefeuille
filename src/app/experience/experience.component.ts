@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
 
@@ -10,13 +10,9 @@ import { ErrorComponent } from '../error/error.component';
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss'
 })
-export class ExperienceComponent implements OnInit {
+export class ExperienceComponent {
 
   private publicService = inject(PublicService);
 
-  protected work: any = this.publicService.work();
-
-  ngOnInit(): void {
-    this.publicService.getWork();
-  }
+  protected work: any = this.publicService.work;
 }

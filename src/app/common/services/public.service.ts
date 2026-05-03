@@ -13,10 +13,10 @@ export class PublicService {
   private readonly publicApi: string = `${environment.apiUrl}/public-api/v1`;
 
   //Create a writable signal for manual updates
-  private _projects = signal<any>([]);
-  private _skills = signal<any>([]);
-  private _education = signal<any>([]);
-  private _work = signal<any>([]);
+  private _projects = signal<any[]>([]);
+  private _skills = signal<any[]>([]);
+  private _education = signal<any[]>([]);
+  private _work = signal<any[]>([]);
 
   //Expose as Readonly signals for components
   projects = this._projects.asReadonly();
