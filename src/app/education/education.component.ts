@@ -14,5 +14,5 @@ export class EducationComponent {
 
   private publicService = inject(PublicService);
 
-  protected education: any = this.publicService.education();
+  protected education: any = this.publicService.education;
 }

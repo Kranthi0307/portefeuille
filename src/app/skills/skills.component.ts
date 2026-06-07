@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PublicService } from '../common/services/public.service';
 import { ErrorComponent } from '../error/error.component';
@@ -16,19 +16,14 @@ interface TreeNode {
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent {
 
   private publicService = inject(PublicService);
 
-  protected skills: any = this.publicService.skills();
+  protected skills: any = this.publicService.skills;
+  protected treeNodes: any = computed(() => this.groupToTreeNode(this.skills()));
 
   searchText = '';
-  //sortColumn: string = '';
-  //sortAsc: boolean = true;
-
-  ngOnInit(): void {
-    this.skills = this.groupToTreeNode(this.skills);
-  }
 
   private groupBySkill(response: { name: string, label: string }[]) {
     const result: { [key: string]: string[] } = {};
@@ -48,7 +43,7 @@ export class SkillsComponent implements OnInit {
 
   private groupToTreeNode(data: any[]): TreeNode[] {
     return Object.values(
-      data.reduce((acc: any, item) => {
+      data.reduce((acc: any, item: any) => {
         if (!acc[item.label]) {
           acc[item.label] = {
             name: item.label,
@@ -69,21 +64,6 @@ export class SkillsComponent implements OnInit {
   toggle(node: TreeNode) {
     node.expanded = !node.expanded;
   }
-
-  /*setSort(column: string) {
-    if (this.sortColumn === column) {
-      this.sortAsc = !this.sortAsc;
-    } else {
-      this.sortColumn = column;
-      this.sortAsc = true;
-    }
-
-    this.data.sort((a, b) => {
-      const A = (a as any)[column].toLowerCase();
-      const B = (b as any)[column].toLowerCase();
-      return this.sortAsc ? A.localeCompare(B) : B.localeCompare(A);
-    });
-  }*/
 
   matchesSearch(node: TreeNode) {
     return node.name.toLowerCase().includes(this.searchText.toLowerCase());

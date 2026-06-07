@@ -13,7 +13,7 @@ export class ProjectsComponent {
 
   private publicService = inject(PublicService);
 
-  protected projects: any = this.publicService.projects();
+  protected projects: any = this.publicService.projects;
 
   openProject(url?: string) {
     if (!url) return;

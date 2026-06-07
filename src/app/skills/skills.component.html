@@ -1,6 +1,6 @@
 <div class="bg-image">
   <div class="skills">
-    @if (skills?.length > 0) {
+    @if (treeNodes()?.length > 0) {
     <div>
       <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-box" />
     </div>
@@ -8,7 +8,7 @@
 
     <table class="tree-table">
       <tbody>
-        @for (skill of skills; track skill) {
+        @for (skill of treeNodes(); track skill) {
         <ng-container>
 
           <!-- Parent -->
@@ -43,6 +43,6 @@
       </tbody>
     </table>
 
-    <app-error [isError]="!(skills?.length > 0)"></app-error>
+    <app-error [isError]="!(treeNodes()?.length > 0)"></app-error>
   </div>
 </div>
