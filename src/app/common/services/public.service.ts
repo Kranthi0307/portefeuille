@@ -1,70 +1,51 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { map } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { DecryptionService } from "./decryption.service";
 
 @Injectable({ providedIn: 'root' })
 export class PublicService {
 
-  private readonly httpClient = inject(HttpClient);
+  private readonly http_client = inject(HttpClient);
+  private readonly decryption_service = inject(DecryptionService);
 
-  private decryptionService = inject(DecryptionService);
+  private readonly public_api: string = `${environment.apiUrl}/public-api/v1`;
 
-  private readonly publicApi: string = `${environment.apiUrl}/public-api/v1`;
-
-  //Create a writable signal for manual updates
-  private _projects = signal<any[]>([]);
-  private _skills = signal<any[]>([]);
-  private _education = signal<any[]>([]);
-  private _work = signal<any[]>([]);
-
-  //Expose as Readonly signals for components
-  projects = this._projects.asReadonly();
-  skills = this._skills.asReadonly();
-  education = this._education.asReadonly();
-  work = this._work.asReadonly();
-
-  public getProjects() {
-    this.httpClient.get<any>(this.publicApi + '/getProjects')
-      .subscribe({
-        next: (response: any) => {
-          const projects = response.data.map((item: any) => this.decryptionService.decrypt(item))
-          this._projects.set(projects)
-        },
-        error: () => this._projects.set([])
+  public readonly projects = toSignal(
+    this.http_client.get<any>(`${this.public_api}/getProjects`).pipe(
+      map((response: any) => {
+        return response.data.map((item: any) => this.decryption_service.decrypt(item))
       })
-  }
+    ),
+    { initialValue: [] }
+  )
 
-  public getSkills() {
-    this.httpClient.get<any>(this.publicApi + '/getSkills')
-      .subscribe({
-        next: (response: any) => {
-          const skills = response.data.map((item: any) => this.decryptionService.decrypt(item))
-          this._skills.set(skills)
-        },
-        error: () => this._skills.set([])
+  public readonly skills = toSignal(
+    this.http_client.get<any>(`${this.public_api}/getSkills`).pipe(
+      map((response: any) => {
+        return response.data.map((item: any) => this.decryption_service.decrypt(item))
       })
-  }
+    ),
+    { initialValue: [] }
+  )
 
-  public getWork() {
-    this.httpClient.get<any>(this.publicApi + '/getWork')
-      .subscribe({
-        next: (response: any) => {
-          const work = response.data.map((item: any) => this.decryptionService.decrypt(item))
-          this._work.set(work)
-        },
-        error: () => this._work.set([])
+  public readonly work = toSignal(
+    this.http_client.get<any>(`${this.public_api}/getWork`).pipe(
+      map((response: any) => {
+        return response.data.map((item: any) => this.decryption_service.decrypt(item))
       })
-  }
+    ),
+    { initialValue: [] }
+  )
 
-  public getEducation() {
-    this.httpClient.get<any>(this.publicApi + '/getEducation')
-      .subscribe({
-        next: (response: any) => {
-          const education = response.data.map((item: any) => this.decryptionService.decrypt(item))
-          this._education.set(education)
-        },
-        error: () => this._education.set([])
+  public readonly education = toSignal(
+    this.http_client.get<any>(`${this.public_api}/getEducation`).pipe(
+      map((response: any) => {
+        return response.data.map((item: any) => this.decryption_service.decrypt(item))
       })
-  }
+    ),
+    { initialValue: [] }
+  )
 }

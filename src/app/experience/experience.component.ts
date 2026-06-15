@@ -5,14 +5,10 @@ import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-experience',
-  standalone: true,
   imports: [DatePipe, ErrorComponent],
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss'
 })
 export class ExperienceComponent {
-
-  private publicService = inject(PublicService);
-
-  protected work: any = this.publicService.work;
+  protected readonly public_service = inject(PublicService);
 }

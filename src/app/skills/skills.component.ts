@@ -11,17 +11,15 @@ interface TreeNode {
 
 @Component({
   selector: 'app-skills',
-  standalone: true,
   imports: [FormsModule, ErrorComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
 export class SkillsComponent {
 
-  private publicService = inject(PublicService);
+  protected readonly public_service = inject(PublicService);
 
-  protected skills: any = this.publicService.skills;
-  protected treeNodes: any = computed(() => this.groupToTreeNode(this.skills()));
+  protected treeNodes: any = computed(() => this.groupToTreeNode(this.public_service.skills()));
 
   searchText = '';
 

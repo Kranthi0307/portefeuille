@@ -1,6 +1,6 @@
 <div class="bg-image">
   <div class="education">
-    @for (edu of education(); track edu) {
+    @for (edu of public_service.education(); track edu) {
     <div class="education-card">
       <h3 class="title">{{edu.school}}</h3>
       <h4 class="name">{{edu.degree}}&nbsp;in&nbsp;{{edu.field}}</h4>
@@ -11,5 +11,5 @@
     </div>
     }
   </div>
-  <app-error [isError]="!(education()?.length > 0)"></app-error>
+  <app-error [isError]="!(public_service.education()?.length > 0)"></app-error>
 </div>

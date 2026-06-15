@@ -5,13 +5,12 @@ import { IImage } from '../common/models/image';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   images: IImage[] = imagesData;
   currentIndex = 0;
@@ -84,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isDragging) this.onTouchEnd();
   }
 
-  enroute(route?: string) {
+  protected enroute(route?: string): void {
     if (!route) return;
     this.router.navigate([route]);
   }

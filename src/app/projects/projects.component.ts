@@ -4,18 +4,15 @@ import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-projects',
-  standalone: true,
   imports: [ErrorComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
 export class ProjectsComponent {
 
-  private publicService = inject(PublicService);
+  protected readonly public_service = inject(PublicService);
 
-  protected projects: any = this.publicService.projects;
-
-  openProject(url?: string) {
+  protected openProject(url?: string): void {
     if (!url) return;
     window.open(url, '_blank');
   }
