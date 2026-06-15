@@ -14,7 +14,7 @@ export class FooterComponent {
   emailTooltip: boolean = false;
   resumeTooltip: boolean = false;
   tooltipLocked = false;
-  updatedDate = new Date(2026, 3);
+  updatedDate = new Date(2026, 5);
 
   copy() {
     navigator.clipboard.writeText(this.email).then(() => {
