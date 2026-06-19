@@ -1,5 +1,10 @@
 <div class="bg-image">
   <div class="education">
+    @if(public_service.is_loading()) {
+    <app-warning [is_warning]="true"></app-warning>
+    } @else if (public_service.info().educations.length === 0) {
+    <app-error [is_error]="true"></app-error>
+    } @else {
     @for (edu of public_service.info().educations; track edu) {
     <div class="education-card">
       <h3 class="title">{{edu.school}}</h3>
@@ -10,6 +15,6 @@
       <p class="description">{{edu.description}}</p>
     </div>
     }
+    }
   </div>
-  <app-error [isError]="!(public_service.info().educations.length > 0)"></app-error>
 </div>

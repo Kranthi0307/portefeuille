@@ -1,7 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ErrorComponent } from '../common/components/error/error.component';
+import { WarningComponent } from '../common/components/warning/warning.component';
 import { PublicService } from '../common/services/public.service';
-import { ErrorComponent } from '../error/error.component';
+
+const MODULES = [FormsModule]
+const COMPONENTS = [ErrorComponent, WarningComponent]
 
 interface TreeNode {
   name: string;
@@ -11,7 +15,10 @@ interface TreeNode {
 
 @Component({
   selector: 'app-skills',
-  imports: [FormsModule, ErrorComponent],
+  imports: [
+    MODULES,
+    COMPONENTS
+  ],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })

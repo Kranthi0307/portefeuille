@@ -7,7 +7,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './error.component.scss'
 })
 export class ErrorComponent {
-
-  @Input() isError: boolean = false;
-
+  @Input() is_error: boolean = false;
 }

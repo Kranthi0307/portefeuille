@@ -1,5 +1,10 @@
 <div class="bg-image">
   <div class="skills">
+    @if(public_service.is_loading()) {
+    <app-warning [is_warning]="true"></app-warning>
+    } @else if (treeNodes()?.length === 0) {
+    <app-error [is_error]="true"></app-error>
+    } @else {
     @if (treeNodes()?.length > 0) {
     <div>
       <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-box" />
@@ -42,7 +47,6 @@
         }
       </tbody>
     </table>
-
-    <app-error [isError]="!(treeNodes()?.length > 0)"></app-error>
+    }
   </div>
 </div>
