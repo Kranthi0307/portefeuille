@@ -19,7 +19,7 @@ export class SkillsComponent {
 
   protected readonly public_service = inject(PublicService);
 
-  protected treeNodes: any = computed(() => this.groupToTreeNode(this.public_service.skills()));
+  protected treeNodes: any = computed(() => this.groupToTreeNode(this.public_service.info().skills));
 
   searchText = '';
 
