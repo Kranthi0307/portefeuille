@@ -4,14 +4,12 @@ import { ErrorComponent } from '../common/components/error/error.component';
 import { WarningComponent } from '../common/components/warning/warning.component';
 import { PublicService } from '../common/services/public.service';
 
-const MODULES = [DatePipe]
-const COMPONENTS = [ErrorComponent, WarningComponent]
-
 @Component({
   selector: 'app-experience',
   imports: [
-    MODULES,
-    COMPONENTS
+    DatePipe,
+    ErrorComponent,
+    WarningComponent
   ],
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss'

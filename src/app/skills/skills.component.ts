@@ -4,9 +4,6 @@ import { ErrorComponent } from '../common/components/error/error.component';
 import { WarningComponent } from '../common/components/warning/warning.component';
 import { PublicService } from '../common/services/public.service';
 
-const MODULES = [FormsModule]
-const COMPONENTS = [ErrorComponent, WarningComponent]
-
 interface TreeNode {
   name: string;
   children?: TreeNode[];
@@ -16,8 +13,9 @@ interface TreeNode {
 @Component({
   selector: 'app-skills',
   imports: [
-    MODULES,
-    COMPONENTS
+    FormsModule,
+    ErrorComponent,
+    WarningComponent
   ],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'

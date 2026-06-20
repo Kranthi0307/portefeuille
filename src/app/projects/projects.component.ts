@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { ErrorComponent } from '../common/components/error/error.component';
-import { PublicService } from '../common/services/public.service';
 import { WarningComponent } from '../common/components/warning/warning.component';
-
-const COMPONENTS = [ErrorComponent, WarningComponent]
+import { PublicService } from '../common/services/public.service';
 
 @Component({
   selector: 'app-projects',
-  imports: [COMPONENTS],
+  imports: [
+    ErrorComponent,
+    WarningComponent
+  ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
