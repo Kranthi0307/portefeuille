@@ -1,6 +1,11 @@
 <div class="bg-image">
   <div class="work">
-    @for (job of work(); track job) {
+    @if(public_service.is_loading()) {
+    <app-warning [is_warning]="true"></app-warning>
+    } @else if (public_service.info().experiences.length === 0) {
+    <app-error [is_error]="true"></app-error>
+    } @else {
+    @for (job of public_service.info().experiences; track job) {
     <div class="work-card">
       <h3 class="title">{{job.title}}</h3>
       <h4 class="name">{{job.company}}</h4>
@@ -18,6 +23,6 @@
       <p class="description">{{job.description}}</p>
     </div>
     }
+    }
   </div>
-  <app-error [isError]="!(work()?.length > 0)"></app-error>
 </div>

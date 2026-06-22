@@ -3,20 +3,19 @@ import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
   imports: [DatePipe],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
 
-  email: string = 'kranthia24@gmail.com';
-  emailTooltip: boolean = false;
-  resumeTooltip: boolean = false;
-  tooltipLocked = false;
-  updatedDate = new Date(2026, 5);
+  protected email: string = 'kranthia24@gmail.com';
+  protected emailTooltip: boolean = false;
+  protected resumeTooltip: boolean = false;
+  protected tooltipLocked = false;
+  protected updatedDate = new Date(2026, 5);
 
-  copy() {
+  protected copy(): void {
     navigator.clipboard.writeText(this.email).then(() => {
       this.emailTooltip = true;
       setTimeout(() => {
@@ -25,29 +24,29 @@ export class FooterComponent {
     });
   }
 
-  openFile() {
+  protected openFile(): void {
     window.open('assets/files/Resume.pdf', '_blank');
   }
 
-  onMouseEnter() {
+  protected onMouseEnter(): void {
     if (!this.tooltipLocked) {
       this.resumeTooltip = true;
     }
   }
 
-  onMouseLeave() {
+  protected onMouseLeave(): void {
     if (!this.tooltipLocked) {
       this.resumeTooltip = false;
     }
   }
 
-  toggleTooltip() {
+  protected toggleTooltip(): void {
     this.tooltipLocked = !this.tooltipLocked;
     this.resumeTooltip = this.tooltipLocked || this.resumeTooltip;
   }
 
   @HostListener('document:click', ['$event'])
-  closeTooltip(event: Event) {
+  protected closeTooltip(event: Event): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.info-icon')) {
       this.tooltipLocked = false;

@@ -1,7 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ErrorComponent } from '../common/components/error/error.component';
+import { WarningComponent } from '../common/components/warning/warning.component';
 import { PublicService } from '../common/services/public.service';
-import { ErrorComponent } from '../error/error.component';
 
 interface TreeNode {
   name: string;
@@ -11,17 +12,19 @@ interface TreeNode {
 
 @Component({
   selector: 'app-skills',
-  standalone: true,
-  imports: [FormsModule, ErrorComponent],
+  imports: [
+    FormsModule,
+    ErrorComponent,
+    WarningComponent
+  ],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
 export class SkillsComponent {
 
-  private publicService = inject(PublicService);
+  protected readonly public_service = inject(PublicService);
 
-  protected skills: any = this.publicService.skills;
-  protected treeNodes: any = computed(() => this.groupToTreeNode(this.skills()));
+  protected treeNodes: any = computed(() => this.groupToTreeNode(this.public_service.info().skills));
 
   searchText = '';
 

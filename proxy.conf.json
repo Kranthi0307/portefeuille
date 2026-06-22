@@ -1,8 +1,0 @@
-{
-  "/portfolio": {
-    "target": "https://portfolio-service-latest.onrender.com",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
-}
