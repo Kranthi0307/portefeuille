@@ -13,7 +13,7 @@ export class FooterComponent {
   protected emailTooltip: boolean = false;
   protected resumeTooltip: boolean = false;
   protected tooltipLocked = false;
-  protected updatedDate = new Date(2026, 5);
+  protected updatedDate = new Date(2026, 6);
 
   protected copy(): void {
     navigator.clipboard.writeText(this.email).then(() => {
