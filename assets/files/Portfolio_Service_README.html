@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 align="center">
+  <img src="https://skillicons.dev/icons?i=spring" width="30" />
+  PORTFOLIO SERVICE
+</h1>
+<p>The backend engine powering my personal portfolio web application. Built with <code>Java 17</code> and <code>Spring Boot 3.5.5</code>, this service exposes secure <code>REST</code> endpoints for managing my professional skills, projects, education and experiences.</p>
+<p><em><strong>Frontend Reference:</strong></em> Looking for the UI client? Check out the <a href="https://github.com/Kranthi0307/portefeuille">portfolio-ui</a> repository.</p>
+<h1 id="architecture--tech-stack">Architecture &amp; Tech Stack</h1>
+<ul>
+<li><strong>Language &amp; Core Framework:</strong> <code>Java 17 LTS</code>, <code>Spring Boot 3.5.5</code>, <code>Maven</code></li>
+<li><strong>Database:</strong> <code>PostgreSQL</code> (Hosted on a free cloud instance)</li>
+<li><strong>Database Migration:</strong> <code>Liquibase</code> Core</li>
+<li><strong>Security:</strong> <code>Spring Security</code> (<code>OAuth2 Resource Server</code> via <code>JWT</code> validation)</li>
+<li><strong>Documentation:</strong> <code>springdoc-openapi</code> v2.7.0 (<code>Swagger UI</code> available in development)</li>
+<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling, and custom validation groups)</li>
+<li><strong>Monitoring &amp; Lifecycle:</strong> <code>spring-boot-starter-actuator</code> (for zero-downtime deployment health checks)</li>
+</ul>
+<h1 id="architectural-decision-records-adr">Architectural Decision Records (ADR)</h1>
+<p><strong>ADR 1: PostgreSQL over MySQL</strong></p>
+<ul>
+<li><strong>Decision:</strong> Chose <code>PostgreSQL</code> as the primary database engine.</li>
+<li><strong>Rationale:</strong> <code>PostgreSQL</code> supports transactional <code>DDL</code>, meaning if a database migration (<code>Liquibase</code>) fails halfway through, the structural changes roll back cleanly. Furthermore, excellent free tiers are readily available for hosting small-scale <code>PostgreSQL</code> instances.</li>
+</ul>
+<p><strong>ADR 2: Client-Generated Entity Keys (<code>my_key</code> via <code>UUID</code>)</strong></p>
+<ul>
+<li><strong>Decision:</strong> Use a business-layer generated <code>UUID</code> (<code>my_key</code>) instead of relying on auto-incrementing database primary keys for external references.</li>
+<li><strong>Rationale:</strong> Guarantees entity stability before the record hits the persistence layer. Prevents ID enumeration attacks and decouples the domain entities from database-specific auto-increment sequence side-effects.</li>
+</ul>
+<p><strong>ADR 3: Data Transfer Objects (<code>DTO</code>) Isolation via Java <code>Records</code></strong></p>
+<ul>
+<li><strong>Decision:</strong> Fully isolate the entity model layer. All <code>HTTP</code> requests and responses use <code>Java 17 Records</code>.</li>
+<li><strong>Rationale:</strong> Prevents entity-leaking side effects, enforces immutability for web transport, and limits over-posting/security vulnerabilities.</li>
+</ul>
+<p><strong>ADR 4: Stateless Authentication &amp; Targeted <code>CSRF</code> Disabling</strong></p>
+<ul>
+<li><strong>Decision:</strong> Application authentication is strictly <code>STATELESS</code>. And, <code>CSRF</code> protection is explicitely disabled (<code>.csrf(csrf -&gt; csrf.disable())</code>).</li>
+<li><strong>Rationale:</strong> Since the service is stateless and does not use session cookies for authentication, it is fundamentally immune to traditional <code>CSRF</code> attacks. While the client app runs on Angular, administrative (mutative) requests are guarded by <code>OAuth2 JWT tokens</code>, while the rest of the endpoints remain completely public.</li>
+</ul>
+<p><strong>ADR 5: OpenAPI &amp; Swagger UI for Development</strong></p>
+<ul>
+<li><strong>Decision:</strong> Expose Springdoc <code>OpenAPI</code>/<code>Swagger UI</code> endpoints exclusively during local development.</li>
+<li><strong>Rationale:</strong> It allows rapid endpoint testing, request/response verification using <code>Java Records</code>, and quick frontend-to-backend integration without needing an external tool like <code>Postman</code>. These endpoints are strictly locked down or omitted in production profiles to avoid leaking <code>API</code> signatures.</li>
+</ul>
+<h1 id="code-conventions--design-patterns">Code Conventions &amp; Design Patterns</h1>
+<p><strong>Entity Lifecycle Hooks (<code>@PrePersist</code> and <code>@PreUpdate</code>)</strong></p>
+<p>To ensure auditing fields remain clean and automated, entities utilize JPA lifestyle annotations rather than manual controller/service-level date mapping.</p>
+<ul>
+<li><strong><code>@PrePersist</code>:</strong> Generates a random <code>UUID</code> for <code>my_key</code> and populates <code>created_at</code> with <code>Instant.now()</code>.</li>
+<li><strong><code>@PreUpdate</code>:</strong> Automatically overrides <code>updated_at</code> with <code>Instant.now()</code>.</li>
+</ul>
+<p><strong>Standardized Domain Handling</strong></p>
+<ul>
+<li><strong>Fixed Domain Values:</strong> <code>Enums</code> are enforced across models for strict categorization (e.g., <code>SkillType</code> for filtering skills by category).</li>
+<li><strong>Optimized Queries:</strong> Precise data queries are extracted directly using focused <code>JpaRepository</code> methods (e.g., <code>findBySkillType(SkillType type)</code>).</li>
+<li><strong>Logging:</strong> Enforced via Lombok's <code>@Slf4j</code> annotation for cohesive console/file outputs.</li>
+<li><strong>Web Response Structure:</strong> Every <code>REST</code> endpoint strictly standardizes execution outputs utilizing Spring's native <code>ResponseEntity.status(...).body(...)</code>.</li>
+</ul>
+<h1 id="database-migration-setup">Database Migration Setup</h1>
+<p>Liquibase handles all schema initializations and schema upgrades prior to application runtime bootstrap.</p>
+<p>Master Changelog (<code>src/main/resources/db/changelog/changelog-master.xml</code>)</p>
+<pre class="hljs"><code><div>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;databaseChangeLog
+        xmlns=&quot;http://www.liquibase.org/xml/ns/dbchangelog&quot;
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xsi:schemaLocation=&quot;http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd&quot;&gt;
+
+    &lt;include file=&quot;db/changelog/changelog-v1.0.sql&quot; /&gt;
+
+&lt;/databaseChangeLog&gt;
+</div></code></pre>
+<p><em><strong>NOTE:</strong></em> The referenced <code>.sql</code> changelog files must contain precise Liquibase SQL format headers (e.g., <code>--liquibase formatted sql</code>) followed by distinct changeSet IDs (<code>--changeset author:id</code>), otherwise the migration parser will crash during compilation.</p>
+<h1 id="logback-configuration">Logback Configuration</h1>
+<p>The system records console behaviors alongside rolling physical files partitioned on a monthly timeline.</p>
+<pre class="hljs"><code><div>&lt;configuration&gt;
+    &lt;appender name=&quot;CONSOLE&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;file&gt;logs/portfolio_service.log&lt;/file&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;logs/portfolio_service.%d{yyyy-MM}.log.gz&lt;/fileNamePattern&gt;
+            &lt;maxHistory&gt;12&lt;/maxHistory&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;root level=&quot;INFO&quot;&gt;
+        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;
+        &lt;appender-ref ref=&quot;FILE&quot;/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</div></code></pre>
+<h1 id="cicd-flow-from-local-dev-to-production"><code>CI/CD</code> Flow: From <code>Local Dev</code> to <code>Production</code></h1>
+<p><strong>Pipeline Overview</strong></p>
+<p>When a commit lands on the <code>render</code> branch, the automated <code>GitHub Actions</code> workflow kicks off:</p>
+<ul>
+<li>Sets up custom <code>settings.xml</code> on the runner to authorize access to the private <code>shared-service</code> repository using a <code>GitHub secret token</code>.</li>
+<li>Compiles and builds the runnable fat <code>.jar</code> file using <code>Maven</code>.</li>
+<li>Pushes the image tags (<code>latest</code> and <code>commit-sha</code>) to <code>Docker Hub</code>.</li>
+<li>Triggers a <code>Render Webhook</code> to notify the hosting instance to pull the updated image and restart.</li>
+</ul>
+<p><strong>Local Compilation</strong></p>
+<p>To compile the package locally (bypassing unit validations if necessary):</p>
+<pre class="hljs"><code><div>mvn clean package -DskipTests
+</div></code></pre>
+<p><strong>Production Resource Profile (<code>application-prod.yaml</code>)</strong></p>
+<p>Configured to seamlessly bind with the hosting infrastructure environment variables:</p>
+<pre class="hljs"><code><div>server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://auth-server.com/.well-known/jwks.json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never #Keeps it lightweight and secure for production
+</div></code></pre>
+<p><em><strong>NOTE:</strong></em> Make sure <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_NAME</code>, <code>DB_USER</code>, and <code>DB_PASSWORD</code> are configured securely within Render’s dashboard environment variables.</p>
+<p><strong>Dockerization (<code>Dockerfile</code>)</strong></p>
+<pre class="hljs"><code><div>FROM openjdk:25-ea-26-jdk-oraclelinux8
+
+ADD target/portfolio-service.jar portfolio-service.jar
+
+ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/portfolio-service.jar&quot;]
+</div></code></pre>
+<p><strong>Automated Pipeline Blueprint (<code>.github/workflows/deploy.yml</code>)</strong></p>
+<pre class="hljs"><code><div>name: Build, Push, Deploy
+
+on:
+  push:
+    branches:
+      - render
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout portfolio-service
+        uses: actions/checkout@v3
+
+      - name: Create Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat &gt; ~/.m2/settings.xml &lt;&lt;EOF
+          &lt;settings&gt;
+            &lt;servers&gt;
+              &lt;server&gt;
+                &lt;id&gt;github&lt;/id&gt;
+                &lt;username&gt;Kranthi0307&lt;/username&gt;
+                &lt;password&gt;${{ secrets.SHARED_SERVICE }}&lt;/password&gt;
+              &lt;/server&gt;
+            &lt;/servers&gt;
+          &lt;/settings&gt;
+          EOF
+        
+      - name: Build portfolio-service
+        run: mvn clean package -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            docker.io/${{ secrets.DOCKER_USERNAME }}/portfolio-service:latest
+            docker.io/${{ secrets.DOCKER_USERNAME }}/portfolio-service:${{ github.sha }}
+
+      - name: Deploy to Render
+        run: |
+          curl -X POST \
+          -H &quot;Accept: application/json&quot; \
+          -H &quot;Authorization: Bearer ${{ secrets.RENDER_API_KEY }}&quot; \
+          -H &quot;Content-Type: application/json&quot; \
+          -d '{}' \
+          https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+</div></code></pre>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<ul>
+<li>
+<p><strong>Liquibase Migration Failures:</strong></p>
+<ul>
+<li><strong>Symptom:</strong> Migration failed for <code>change set</code> or application crashes instantly at boot.</li>
+<li><strong>Fix:</strong> Verify that raw <code>SQL changesets</code> have valid headers (<code>--liquibase formatted sql</code>). If manual testing dirtied the metadata tracking schema, verify the status of the <code>DATABASECHANGELOG</code> tracking table directly.</li>
+</ul>
+</li>
+<li>
+<p><strong>The <code>CORS</code> Blocked Errors (<code>Development</code> vs. <code>Production</code>):</strong></p>
+<ul>
+<li><strong>Symptom:</strong> Angular application cannot fetch resources; browser console prints standard <code>CORS</code> error.</li>
+<li><strong>Fix:</strong> Separate configurations. In <code>Security</code> configuration, allow <code>localhost:4200</code> under an explicit <code>@Profile(&quot;dev&quot;)</code> bean, while reserving production configuration exclusively for <code>GitHub Pages deployment URL</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Docker Registry Authentication Failures:</strong></p>
+<ul>
+<li><strong>Symptom:</strong> <code>GitHub Action</code> logs fail at the <code>docker/login-action</code> step.</li>
+<li><strong>Fix:</strong> Ensure <code>DOCKER_ACCESS_TOKEN</code> is a <code>Personal Access Token (PAT)</code> generated from <code>Docker Hub settings</code> with write access, not the standard account password.</li>
+</ul>
+</li>
+<li>
+<p><strong>Render Deployment Timeout / Port Binding Error:</strong></p>
+<ul>
+<li><strong>Symptom:</strong> <code>Render</code> logs state that the service failed to bind to a port within the allotted time.</li>
+<li><strong>Fix:</strong> Ensure <code>server.address</code> is configured exactly to <code>0.0.0.0</code> in production (as defined in <code>application-prod.yaml</code>), allowing the container to receive external routing traffic on Render's assigned dynamic port.</li>
+</ul>
+</li>
+</ul>
+<h1 id="future-enhancements">Future Enhancements</h1>
+<ul>
+<li><strong>Standardize Docker Base Image:</strong> Transition the <code>Dockerfile</code> from an <code>Early Access</code> build (<code>openjdk:25-ea-26-jdk-oraclelinux8</code>) to a stable, long-term support release runtime matching compilation settings (e.g., <code>eclipse-temurin:17-jre</code>).</li>
+<li><strong>Optimize CI Pipeline Steps:</strong> Modernize actions versions across <code>.github/workflows/deploy.yml</code> (e.g., updating checkout actions to <code>@v4</code> and <code>login/buildx</code> actions to eliminate deprecation warnings).</li>
+<li><strong>Custom Lightweight Health Endpoint:</strong> Implement a minimal <code>@RestController</code> mapping to <code>/health</code> that returns <code>ResponseEntity.status(HttpStatus.OK).body(&quot;Service is UP&quot;)</code> to satisfy Render's zero-downtime health check requirements without pulling in the full <code>spring-boot-starter-actuator</code> library.</li>
+<li><strong>Graceful Shutdown Integration:</strong> Add <code>server.shutdown: graceful</code> to <code>application-prod.yaml</code> to allow the portfolio service to cleanly wrap up any active in-flight <code>HTTP</code> requests before <code>Render</code> tears down the old container instance during a deployment.</li>
+</ul>
+
+</body>
+</html>
