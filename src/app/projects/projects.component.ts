@@ -17,7 +17,6 @@ export class ProjectsComponent {
   protected readonly public_service = inject(PublicService);
 
   protected openProject(url?: string): void {
-    debugger;
     if (!url) return;
     window.open(url, '_blank');
   }
