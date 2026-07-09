@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README(1).md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 align="center">
+  <img src="https://skillicons.dev/icons?i=spring" width="30" />
+  SHARED LIBRARY
+</h1>
+<h1 id="project-overview">Project Overview</h1>
+<p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups, and robust error-handling mechanisms to ensure consistency, eliminate code duplication, and enforce best practices across both Servlet and Reactive microservices.</p>
+<h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
+<ul>
+<li><strong>Java Version:</strong> 17</li>
+<li><strong>Spring Boot Version:</strong> 3.5.5</li>
+<li><strong>Build Tool:</strong> Maven</li>
+<li><strong>Core Dependency:</strong> <code>spring-boot-autoconfigure</code></li>
+<li><strong>Optional Dependecies:</strong> <code>spring-boot-configuration-processor</code>, <code>spring-boot-starter-web</code>, <code>spring-boot-starter-webflux</code></li>
+<li><strong>Compatibility Matrix:</strong> Fully compatible with Spring Boot 3.5.x and Java 17+</li>
+</ul>
+<h1 id="key-features">Key Features</h1>
+<p><strong>Zero-Touch Activation &amp; Configuration</strong></p>
+<ul>
+<li><em><strong>config:</strong></em> Holds internal <code>@AutoConfiguration</code> files targeting specific runtime profiles.</li>
+<li><em><strong>Zero-Touch Activation:</strong></em> Automatically wires up beans depending on the host application's environment without requiring manual bean declarations.</li>
+<li><em><strong>properties:</strong></em> Provides resilient, type-safe configuration classes utilizing <code>Java 17 RECORDS</code> for modern, immutable property mapping.</li>
+</ul>
+<p><strong>Stack Support &amp; Exception Handling</strong></p>
+<ul>
+<li><em><strong>Dual-Stack Support:</strong></em> Offers specialized conditional configurations tailored for both MVC (Servlet) and WebFlux (Reactive) environments.</li>
+<li><em><strong>exceptions:</strong></em> Defines a core operational hierarchy containing abstract base exceptions to ensure unified error structures.</li>
+<li><em><strong>handlers:</strong></em> Features target-specific global exception interceptors that dynamically adapt to the active stack (Servlet vs. Reactive).</li>
+</ul>
+<p><strong>Reusable Domains &amp; Utils</strong></p>
+<ul>
+<li><em><strong>Reusable Domains &amp; Utils:</strong></em> Centralizes common data models and high-efficiency utility classes shared across the ecosystem.</li>
+<li><em><strong>domains:</strong></em> Houses shared entities, DTOs, and global models to maintain data contract consistency across multiple microservices.</li>
+<li><em><strong>utils:</strong></em> Delivers high-performance, thread-safe utility classes optimized for shared ecosystem tasks.</li>
+</ul>
+<p><strong>Advanced Validation</strong></p>
+<ul>
+<li><em><strong>Advanced Validation:</strong></em> Implements pre-configured validation groups for fine-grained request lifecycle control.</li>
+<li><em><strong>validation:</strong></em> Contains custom validation markers, constraints, and validation groups to enforce robust data integrity at the edge.</li>
+</ul>
+<h1 id="developer-authentication-setup">Developer Authentication Setup</h1>
+<p>Before consuming or deploying this library, one must authenticate Maven or Gradle with GitHub Packages using a Personal Access Token (PAT).</p>
+<p><strong>Generating Token</strong></p>
+<ul>
+<li>In the GitHub UI, navigate to: GitHub Settings → Developer Settings → Personal Access Tokens → Tokens (classic).</li>
+<li>Click Generate new token (classic).</li>
+<li>Select the write:packages and read:packages scopes.</li>
+<li>Copy the generated token (ghp_xxxxxxxxxxxx).</li>
+</ul>
+<p><em>For Maven project:</em>
+Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
+<h6 id="settingsxml">settings.xml</h6>
+<pre class="hljs"><code><div>&lt;settings&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
+      &lt;username&gt;GITHUB_USERNAME&lt;/username&gt;
+      &lt;password&gt;TOKEN_ghp_xxxxxxxxx&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;
+</div></code></pre>
+<p><em>For Gradle project:</em>
+Copy the token into global <code>~/.gradle/gradle.properties</code> file:</p>
+<h6 id="gradleproperties">gradle.properties</h6>
+<pre class="hljs"><code><div>gpr.user=GITHUB_USERNAME
+gpr.key=TOKEN_ghp_xxxxxxxxx
+</div></code></pre>
+<h1 id="deployment">Deployment</h1>
+<p>To publish this library to private package registry,</p>
+<p><em>For Maven</em>, add <code>maven-deploy-plugin</code> plugin and configure <code>distributionManagement</code> inside <code>pom.xml</code></p>
+<pre class="hljs"><code><div>&lt;distributionManagement&gt;
+    &lt;repository&gt;
+        &lt;id&gt;github&lt;/id&gt;
+        &lt;name&gt;GitHub Packages&lt;/name&gt;
+        &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/distributionManagement&gt;
+
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.1.1&lt;/version&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</div></code></pre>
+<p><em>For Gradle</em>, add <code>maven-publish</code> plugin and configure the <code>publishing</code> block inside <code>build.gradle</code></p>
+<pre class="hljs"><code><div>plugins {
+    id 'maven-publish'
+    id 'java'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = &quot;GitHubPackages&quot;
+            url = uri(&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;)
+            credentials {
+                username = project.findProperty(&quot;gpr.user&quot;)
+                password = project.findProperty(&quot;gpr.key&quot;)
+            }
+        }
+    }
+}
+</div></code></pre>
+<p>Run the following command to deploy securely via CI/CD pipeline:
+<br>
+<br>
+<em>For Maven</em>,</p>
+<pre class="hljs"><code><div>mvn clean deploy
+</div></code></pre>
+<p><em>For Gradle</em>,</p>
+<pre class="hljs"><code><div>gradle clean publish
+</div></code></pre>
+<blockquote>
+<p>Update the version before deploying.</p>
+</blockquote>
+<h1 id="installation">Installation</h1>
+<p>Integrating the library is seamless. Simply add the following dependency to the hosting application:</p>
+<blockquote>
+<p>Authentication and the source of library needs to be configured</p>
+</blockquote>
+<p><em>For Maven</em></p>
+<pre class="hljs"><code><div>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;github&lt;/id&gt;
+        &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;com.kranthi&lt;/groupId&gt;
+  &lt;artifactId&gt;shared-service&lt;/artifactId&gt;
+  &lt;version&gt;1.x.x&lt;/version&gt;
+&lt;/dependency&gt;
+</div></code></pre>
+<p><em>For Gradle</em></p>
+<pre class="hljs"><code><div>repositories {
+    mavenCentral()
+    maven {
+        url = uri(&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;)
+        credentials {
+            username = project.findProperty(&quot;gpr.user&quot;)
+            password = project.findProperty(&quot;gpr.key&quot;)
+        }
+    }
+}
+
+implementation 'com.kranthi:shared-service:1.x.x'
+</div></code></pre>
+<blockquote>
+<p>No additional annotations (like <code>@Enable*</code>) or explicit configuration scans are required. The library auto-configures itself upon building the application.</p>
+</blockquote>
+<h1 id="prerequisites--configuration">Prerequisites &amp; Configuration</h1>
+<p>To provide compilation-time IDE support (like autocomplete for configuration properties) in hosting applications, ensure the <code>spring-boot-configuration-processor</code> is included in the build.</p>
+<p><strong>Intelligent Defaults:</strong> The library utilizes <code>@ConfigurationProperties</code> bundled with <code>@DefaultValue</code> to provide plug-and-play defaults (e.g., allowedEndpoints=&quot;/actuator/health&quot;) without polluting the host application's properties file.</p>
+<pre class="hljs"><code><div>@ConfigurationProperties(prefix = &quot;config.web&quot;)
+public record MyWebProperties(
+        @DefaultValue(&quot;/actuator/health&quot;)
+        String[] publicEndPoints
+) {
+}
+</div></code></pre>
+<h1 id="project-structure">Project Structure</h1>
+<pre class="hljs"><code><div>├───config/ #Framework AutoConfigurations
+├───domains/ #Reusable domains, DTOs, and common models
+├───exceptions/ #Abstract ecosystem RuntimeExceptions
+├───handlers/ #WebMVC/WebFlux @RestControllerAdvice instances
+├───properties/ #Java 17 configuration records
+├───utils/ #Common thread-safe helper utilities
+└───validation/ #Validation groups (CreateValidation, UpdateValidation)
+</div></code></pre>
+<h3 id="reference-implementation-examples">Reference Implementation Examples</h3>
+<p><strong>Validation Groups</strong></p>
+<pre class="hljs"><code><div>public interface CreateValidation {}
+public interface UpdateValidation {}
+</div></code></pre>
+<p><strong>Domain</strong></p>
+<pre class="hljs"><code><div>public record ResponseRecord&lt;T&gt;(String message,
+                                T data) {
+}
+</div></code></pre>
+<p><strong>Exception</strong></p>
+<pre class="hljs"><code><div>public abstract class BaseException extends RuntimeException {
+
+    private final String errorCode;
+
+    protected BaseException(String message, String errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+    protected BaseException(String message, String errorCode, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+}
+</div></code></pre>
+<p><strong>Handler</strong></p>
+<pre class="hljs"><code><div>@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(BaseException.class)
+    public final String handleBaseException(BaseException exception) {
+        //My exceptions Logic
+        return exception.getMessage();
+    }
+}
+</div></code></pre>
+<h1 id="error-handling">Error Handling</h1>
+<p>The library provides a structured, centralized error-handling architecture that standardizes API error responses ecosystem-wide without capturing unintended framework or generic runtime exceptions.</p>
+<ul>
+<li><strong>Ecosystem Base Exception:</strong> An abstract <code>BaseException</code> class that extends <code>RuntimeException</code>. All custom business exceptions across the microservices should inherit from this class.</li>
+<li><strong>Targeted Interception:</strong> Instead of blindly catching generic Java <code>Exception.class</code> instances, the global exception handlers explicitly targets the base domain exception:</li>
+</ul>
+<pre class="hljs"><code><div>@ExceptionHandler(BaseException.class)
+</div></code></pre>
+<ul>
+<li><strong>Context Aware:</strong> The library automatically provisions separate <code>@RestControllerAdvice</code> implementations tailored for <code>SERVLET</code> and <code>REACTIVE</code> applications, ensuring appropriate response serialization regardless of the underlying web stack.</li>
+</ul>
+<blockquote>
+<p><strong>Crucial: Bean Naming Collisions</strong><br>Since this library provisions beans automatically via <code>@AutoConfiguration</code>, one must prevent duplicate bean names between different stack variants (Servlet vs. Reactive).<br>If a hosting application attempts to build its own bean with a conflicting name (e.g., a generic <code>globalExceptionHandler</code>), Spring Boot's context initialization will fail.<br> <strong>Rule:</strong> Always namespace, auto-configured internal beans clearly (e.g., <code>servletGlobalExceptionHandler</code> vs <code>reactiveGlobalExceptionHandler</code>) within conditional configuration classes.</p>
+</blockquote>
+<h1 id="local-development">Local Development</h1>
+<p>To make changes to this library and test them locally in a hosting application:</p>
+<ul>
+<li>Clone the repository.</li>
+<li>Build and publish the artifact to the local .m2 repository:</li>
+</ul>
+<pre class="hljs"><code><div>mvn clean install
+</div></code></pre>
+<ul>
+<li>Update the version in the hosting application if necessary, and re-import dependencies.</li>
+</ul>
+<h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
+<p><strong>ADR 1: Decoupled Architecture via Optional Dependencies</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> We need to keep this core library lightweight and decoupled from rigid transitive dependency chains.</li>
+<li><em><strong>Decision:</strong></em> Used <code>&lt;optional&gt;true&lt;/optional&gt;</code> for non-mandatory core dependencies. Hosting applications retain full control over their dependency versions without pollution.</li>
+</ul>
+<p><strong>ADR 2: Avoided <code>@PropertySource</code> for Default Configurations</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> Loading properties via <code>@PropertySource</code> is a known anti-pattern in modern Spring Boot ecosystems.</li>
+<li><em><strong>Decision:</strong></em> Avoided <code>@PropertySource</code> entirely. It breaks smooth integration with Java 17 configuration record types and messes with Spring Boot's natural property loading order. Instead, we lean on <code>@ConfigurationProperties</code> with <code>@DefaultValue</code>.</li>
+</ul>
+<p><strong>ADR 3: Auto-Configuration Split (Servlet vs. Reactive)</strong></p>
+<ul>
+<li>
+<p><em><strong>Context:</strong></em> The library must safely support both WebMVC (Servlet) and WebFlux (Reactive) microservices without causing runtime bean definition conflicts or forcing developers to manually configure their stack type.</p>
+</li>
+<li>
+<p><em><strong>Decision:</strong></em> I made it easy for both Servlet and Reactive environments to work smoothly out of the box by leveraging Spring Boot's modern auto-configuration loading mechanism. The auto-configurations are registered via: <code>resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>. Inside the configuration classes, beans are dynamically and cleanly isolated using conditional boundaries based on the host application's runtime environment:</p>
+<ul>
+<li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)</code></li>
+<li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)</code></li>
+</ul>
+<p>This ensures that hosting applications automatically get the correct bean implementations (such as the appropriate <code>GlobalExceptionHandler</code>) with zero manual setup.</p>
+</li>
+</ul>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<ul>
+<li><strong>Properties not auto-completing in IDE:</strong> Ensure the host application has the <code>spring-boot-configuration-processor</code> plugin active and IDE's annotation processing is enabled.</li>
+<li><strong>Bean conflicts between MVC and WebFlux:</strong> Ensure that both reactive and servlet dependencies on the host application's classpath are not mixed, which might confuse the conditional auto-configurations.</li>
+<li><strong>Stale code or version mismatch when switching versions:</strong> If switching from a newer version of the library back to an older version and the hosting application is picking up the wrong code, the local <code>.m2 cache</code> is likely polluted. Do not delete the entire <code>.m2 folder</code>. Instead, delete only this specific library's cache by navigating to <code>~/.m2/repository/</code> and deleting the specific library or version folder. After deleting, re-import the dependencies in the hosting application to pull the correct version.</li>
+</ul>
+<h1 id="future-enhancements">Future Enhancements</h1>
+<p>The following capabilities are planned for upcoming releases:</p>
+<ul>
+<li>Global Security Configurations &amp; Filters</li>
+<li>Centralized OpenAPI/Swagger documentation configurations</li>
+<li>Standardized Jackson Customizer/Object Mapper configurations</li>
+<li>Multi-Tenant Context Propagation using ThreadLocal (and reactive context equivalents)</li>
+</ul>
+
+</body>
+</html>
