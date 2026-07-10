@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>README(2).md</title>
+<title>README.md</title>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
 <style>
@@ -369,20 +369,14 @@ code {
   <img src="https://skillicons.dev/icons?i=spring" width="30" />
   GATEWAY
 </h1>
-<h1 id="project-overview">Project Overview</h1>
-<p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on Spring Cloud Gateway (Reactive), its primary responsibilities include:</p>
-<ul>
-<li>Centralized Edge Routing &amp; Load Balancing.</li>
-<li>Frontline Security Enforcement (<code>OAuth2 JWT Validation</code>, <code>CORS</code>, and <code>CSRF</code> mitigation).</li>
-<li>Tenant Context Extraction and Request Enrichment via custom filter chains.</li>
-</ul>
+<p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on the reactive Spring Cloud Gateway (WebFlux) framework, it provides high-throughput, non-blocking edge routing, load balancing, multi-tenant context enrichment, and frontline security enforcement.</p>
 <h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
 <ul>
 <li><strong>Java Version:</strong> <code>17</code></li>
 <li><strong>Spring Boot Version:</strong> <code>3.5.5</code></li>
+<li><strong>Spring Cloud Release Train:</strong> <code>2025.0.0</code></li>
 <li><strong>Build Tool:</strong> <code>Maven</code></li>
-<li><strong>Core Dependency:</strong> <code>spring-cloud-starter-gateway</code></li>
-<li><strong>Spring Cloud Release Train:</strong> <code>2023.0.0</code></li>
+<li><strong>Core Dependency:</strong> <code>spring-cloud-starter-gateway-server-webflux</code></li>
 <li><strong>Security Dependencies:</strong> <code>spring-boot-starter-security</code>, <code>spring-boot-starter-oauth2-resource-server</code></li>
 <li><strong>Internal Dependency:</strong> <code>shared-service</code></li>
 <li><strong>Compatibility Matrix:</strong> Fully compatible with <code>Spring Boot 3.5.x</code> and <code>Java 17+</code></li>
@@ -391,22 +385,22 @@ code {
 <p><strong>Security &amp; Token Validation</strong></p>
 <p>As the edge proxy, this application is configured as an <code>OAuth2 Resource Server</code> validating stateless JSON Web Tokens (JWTs).</p>
 <ul>
-<li><em><strong>Token Verification:</strong></em> Done automatically via the <code>JWK Set URI</code> configured under the identity provider properties.</li>
-<li><em><strong>Reactive Adapter:</strong></em> Uses <code>ReactiveJwtAuthenticationConverterAdapter</code> to map JWT claims into the reactive security context.</li>
+<li><em><strong>Token Verification:</strong></em> Automatically handled via a JSON Web Key Set (<code>JWKS</code>) endpoint.</li>
+<li><em><strong>Reactive Adapter:</strong></em> Utilizes <code>ReactiveJwtAuthenticationConverterAdapter</code> to extract claims from the <code>JWT</code> payload and map them directly to standard Spring Security <code>GrantedAuthority</code> roles.</li>
+<li><em><strong>Traffic Reduction:</strong></em> Requests missing a valid <code>JWT</code>, failing <code>CSRF</code> verification, or violating <code>CORS</code> policies are blocked immediately at the edge. This protects downstream microservices from processing unauthorized or malicious traffic.</li>
 </ul>
 <p><strong>Custom Gateway Filter Chain</strong></p>
-<p>Routing logic goes beyond basic path forwarding. We employ a custom <code>MyGatewayFilter</code> (implemented via <code>GatewayFilter</code>) applied explicitly inside a <code>RouteLocator</code> bean.</p>
+<p>Routing logic goes beyond basic path forwarding. Employed a custom <code>MyGatewayFilter</code> (implemented via <code>GatewayFilter</code>) applied explicitly inside a <code>RouteLocator</code> bean.</p>
 <p>The gateway filter sequence enforces the following pipeline:</p>
 <ul>
 <li><em><strong>Header Validation &amp; Guardrails:</strong></em> Validates that all mandatory headers are present on the incoming request (e.g., verifying the presence of the required <code>X-XSRF-TOKEN</code>, tenant identifiers, or expected metadata). If any required header is missing, the request is immediately rejected with an appropriate HTTP error status (e.g., <code>400 Bad Request</code> or <code>403 Forbidden</code>) without forwarding.</li>
 <li><em><strong>Authentication Double-Check:</strong></em> Validates the presence and validity of the security context.</li>
 <li><em><strong>Authorization:</strong></em> Checks user roles/scopes against the target path.</li>
-<li><em><strong>Tenant Extraction:</strong></em> Resolves multi-tenant variables (<code>TenantInfo</code>), injecting them into the downstream request headers.</li>
 <li><em><strong>Downstream Routing:</strong></em> Forwards the mutated request to the target destination.</li>
 </ul>
-<h1 id="prerequisites--configuration">Prerequisites &amp; Configuration</h1>
-<p><strong>Identity Provider (IdP) Integration</strong></p>
-<p>The gateway requires a running <code>JWKS</code> endpoint to decode and verify <code>JWT</code> signatures. Ensure application properties mirror the following structure:</p>
+<h1 id="configuration-and-code-implementation">Configuration and Code Implementation</h1>
+<p><strong>Identity Provider (IdP) Setup</strong></p>
+<p>Configure the application properties to locate the <code>JWKS</code> endpoint used to decode and verify signatures:</p>
 <pre class="hljs"><code><div>spring:
   security:
     oauth2:
@@ -420,16 +414,16 @@ code {
 <li><em><strong>CORS:</strong></em> Handled via a global <code>CorsWebFilter</code> bean to manage cross-origin traffic explicitly.</li>
 <li><em><strong>CSRF:</strong></em> Configured using a cookie-backed repository optimized for Single Page Applications (<code>SPAs</code>).</li>
 </ul>
-<h1 id="architectural-implementation-details">Architectural Implementation Details</h1>
 <p><strong>Security Configuration</strong></p>
-<p>The core security configuration sets up a stateless <code>SecurityWebFilterChain</code>. A crucial component here is the custom <code>CsrfFilter</code> (implementing standard WebFlux <code>WebFilter</code>) used to initialize and subvert deferred token issues by triggering the token on the first <code>GET</code> request.</p>
+<p>The gateway maintains a stateless <code>SecurityWebFilterChain</code> incorporating a global <code>CorsWebFilter</code> bean and cookie-backed <code>CSRF</code> mitigation optimized for Single Page Applications (<code>SPAs</code>).</p>
+<p>Because standard Spring Security <code>CSRF</code> tokens are deferred (lazy) by default in reactive environments, a custom <code>WebFilter</code> is placed in the pipeline to explicitly subscribe to and flush the token cookie (<code>CookieServerCsrfTokenRepository</code>) on the client's initial metadata <code>GET</code> request.</p>
 <pre class="hljs"><code><div>// Conceptualized CSRF &amp; Filter configuration within Configuration file
 .csrf(csrf -&gt; csrf
     .csrfTokenRepository(cookieServerCsrfTokenRepository()) // Bean method name
     .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler())
 )
 </div></code></pre>
-<p><em><strong>Filter Ordering:</strong></em> The custom <code>CsrfFilter</code> is explicitly configured to execute immediately after <code>SecurityWebFiltersOrder.CSRF</code> to ensure it subscribes to and forces the generation of the token cookie.</p>
+<p><em><strong>Filter Ordering:</strong></em> The custom <code>CSRF</code> activation filter is configured to execute immediately after <code>SecurityWebFiltersOrder.CSRF</code> to ensure it successfully forces token generation.</p>
 <p><strong>Dynamic Route Routing</strong></p>
 <p>Routes are explicitly managed as Java beans rather than raw configuration files to cleanly embed the custom filter logic.</p>
 <pre class="hljs"><code><div>@Bean
@@ -450,15 +444,21 @@ public RouteLocator customRouteLocator(RouteLocatorBuilder builder, MyGatewayFil
 <h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
 <p><strong>ADR 1: WebFlux over Spring MVC</strong></p>
 <ul>
-<li><em><strong>Context:</strong></em> Gateway apps experience high-concurrency I/O waiting on downstream microservices.</li>
-<li><em><strong>Decision:</strong></em> Use <code>spring-cloud-starter-gateway</code> (built on Netty/WebFlux) instead of the old Servlet-bound blocking gateway versions.</li>
+<li><em><strong>Context:</strong></em> Gateway applications handle massive concurrency while waiting on I/O responses from downstream microservices.</li>
+<li><em><strong>Decision:</strong></em> Leverage <code>spring-cloud-starter-gateway-server-webflux</code> built on Netty.</li>
 <li><em><strong>Consequence:</strong></em> BlockHound or reactive paradigms must be adhered to. Traditional <code>ThreadLocal</code> cannot be used safely for multi-tenancy context propagation.</li>
 </ul>
 <p><strong>ADR 2: Java Route Definitions over YAML</strong></p>
 <ul>
 <li><em><strong>Context:</strong></em> Routes require deep integration with a highly specific, imperative custom filter (<code>MyGatewayFilter</code>).</li>
-<li><em><strong>Decision:</strong></em> Define paths using the <code>RouteLocator</code> fluent Java API.</li>
+<li><em><strong>Decision:</strong></em> Define all paths using the fluent <code>RouteLocator</code> Java API.</li>
 <li><em><strong>Consequence:</strong></em> Changing routes requires a application rebuild/redeploy, but guarantees strict type-safety and robust filter ordering.</li>
+</ul>
+<p><strong>ADR 3: Edge-Enforced Multi-Tenancy Guardrails</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> Downstream microservices rely entirely on the gateway to provide a trusted tenant context. Processing a request without a specific tenant context can cause data leakage or critical errors across the microservice mesh.</li>
+<li><em><strong>Decision:</strong></em> Implement an aggressive &quot;Fail-Fast&quot; check at the gateway filter entry point. The gateway validates the presence of the tenant header before any authentication double-checks or authorization evaluations occur.</li>
+<li><em><strong>Consequence:</strong></em> Requests missing the mandatory multi-tenant identifiers are dropped instantly with an <code>HTTP</code> <code>400 Bad Request</code> or <code>403 Forbidden</code> status. This completely shields downstream applications from un-scoped multi-tenant traffic and minimizes unnecessary computing overhead.</li>
 </ul>
 <h1 id="troubleshooting">Troubleshooting</h1>
 <p><strong>Tracking Routing Decisions</strong></p>
