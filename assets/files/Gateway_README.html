@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 align="center">
+  <img src="https://skillicons.dev/icons?i=spring" width="30" />
+  GATEWAY
+</h1>
+<p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on the reactive Spring Cloud Gateway (WebFlux) framework, it provides high-throughput, non-blocking edge routing, load balancing, multi-tenant context enrichment, and frontline security enforcement.</p>
+<h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
+<ul>
+<li><strong>Java Version:</strong> <code>17</code></li>
+<li><strong>Spring Boot Version:</strong> <code>3.5.5</code></li>
+<li><strong>Spring Cloud Release Train:</strong> <code>2025.0.0</code></li>
+<li><strong>Build Tool:</strong> <code>Maven</code></li>
+<li><strong>Core Dependency:</strong> <code>spring-cloud-starter-gateway-server-webflux</code></li>
+<li><strong>Security Dependencies:</strong> <code>spring-boot-starter-security</code>, <code>spring-boot-starter-oauth2-resource-server</code></li>
+<li><strong>Internal Dependency:</strong> <code>shared-service</code></li>
+<li><strong>Compatibility Matrix:</strong> Fully compatible with <code>Spring Boot 3.5.x</code> and <code>Java 17+</code></li>
+</ul>
+<h1 id="key-features">Key Features</h1>
+<p><strong>Security &amp; Token Validation</strong></p>
+<p>As the edge proxy, this application is configured as an <code>OAuth2 Resource Server</code> validating stateless JSON Web Tokens (JWTs).</p>
+<ul>
+<li><em><strong>Token Verification:</strong></em> Automatically handled via a JSON Web Key Set (<code>JWKS</code>) endpoint.</li>
+<li><em><strong>Reactive Adapter:</strong></em> Utilizes <code>ReactiveJwtAuthenticationConverterAdapter</code> to extract claims from the <code>JWT</code> payload and map them directly to standard Spring Security <code>GrantedAuthority</code> roles.</li>
+<li><em><strong>Traffic Reduction:</strong></em> Requests missing a valid <code>JWT</code>, failing <code>CSRF</code> verification, or violating <code>CORS</code> policies are blocked immediately at the edge. This protects downstream microservices from processing unauthorized or malicious traffic.</li>
+</ul>
+<p><strong>Custom Gateway Filter Chain</strong></p>
+<p>Routing logic goes beyond basic path forwarding. Employed a custom <code>MyGatewayFilter</code> (implemented via <code>GatewayFilter</code>) applied explicitly inside a <code>RouteLocator</code> bean.</p>
+<p>The gateway filter sequence enforces the following pipeline:</p>
+<ul>
+<li><em><strong>Header Validation &amp; Guardrails:</strong></em> Validates that all mandatory headers are present on the incoming request (e.g., verifying the presence of the required <code>X-XSRF-TOKEN</code>, tenant identifiers, or expected metadata). If any required header is missing, the request is immediately rejected with an appropriate HTTP error status (e.g., <code>400 Bad Request</code> or <code>403 Forbidden</code>) without forwarding.</li>
+<li><em><strong>Authentication Double-Check:</strong></em> Validates the presence and validity of the security context.</li>
+<li><em><strong>Authorization:</strong></em> Checks user roles/scopes against the target path.</li>
+<li><em><strong>Downstream Routing:</strong></em> Forwards the mutated request to the target destination.</li>
+</ul>
+<h1 id="configuration-and-code-implementation">Configuration and Code Implementation</h1>
+<p><strong>Identity Provider (IdP) Setup</strong></p>
+<p>Configure the application properties to locate the <code>JWKS</code> endpoint used to decode and verify signatures:</p>
+<pre class="hljs"><code><div>spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://auth-server.com/auth/.well-known/jwks.json
+</div></code></pre>
+<p><strong>CORS &amp; CSRF Mitigation</strong></p>
+<p>Because this is a web-facing boundary, strict cross-origin rules apply:</p>
+<ul>
+<li><em><strong>CORS:</strong></em> Handled via a global <code>CorsWebFilter</code> bean to manage cross-origin traffic explicitly.</li>
+<li><em><strong>CSRF:</strong></em> Configured using a cookie-backed repository optimized for Single Page Applications (<code>SPAs</code>).</li>
+</ul>
+<p><strong>Security Configuration</strong></p>
+<p>The gateway maintains a stateless <code>SecurityWebFilterChain</code> incorporating a global <code>CorsWebFilter</code> bean and cookie-backed <code>CSRF</code> mitigation optimized for Single Page Applications (<code>SPAs</code>).</p>
+<p>Because standard Spring Security <code>CSRF</code> tokens are deferred (lazy) by default in reactive environments, a custom <code>WebFilter</code> is placed in the pipeline to explicitly subscribe to and flush the token cookie (<code>CookieServerCsrfTokenRepository</code>) on the client's initial metadata <code>GET</code> request.</p>
+<pre class="hljs"><code><div>// Conceptualized CSRF &amp; Filter configuration within Configuration file
+.csrf(csrf -&gt; csrf
+    .csrfTokenRepository(cookieServerCsrfTokenRepository()) // Bean method name
+    .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler())
+)
+</div></code></pre>
+<p><em><strong>Filter Ordering:</strong></em> The custom <code>CSRF</code> activation filter is configured to execute immediately after <code>SecurityWebFiltersOrder.CSRF</code> to ensure it successfully forces token generation.</p>
+<p><strong>Dynamic Route Routing</strong></p>
+<p>Routes are explicitly managed as Java beans rather than raw configuration files to cleanly embed the custom filter logic.</p>
+<pre class="hljs"><code><div>@Bean
+public RouteLocator customRouteLocator(RouteLocatorBuilder builder, MyGatewayFilter gatewayFilter) {
+    return builder.routes()
+            .route(&quot;portfolio-service&quot;, r -&gt; r.path(&quot;/portfolio/**&quot;)
+                    .filters(f -&gt; f.filter(gatewayFilter))
+                    .uri(&quot;https://my-portfolio.com&quot;)
+            )
+            .build();
+}
+</div></code></pre>
+<h1 id="project-structure">Project Structure</h1>
+<pre class="hljs"><code><div>├───config/ #SecurityWebFilterChain, CorsWebFilter, CSRF and RouteLocator beans configured
+├───filters/ #CSRF filter to trigger a token, Gatewat filter to validate authentication, authorization, tenant-info
+└───properties/ #Java 17 configuration records
+</div></code></pre>
+<h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
+<p><strong>ADR 1: WebFlux over Spring MVC</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> Gateway applications handle massive concurrency while waiting on I/O responses from downstream microservices.</li>
+<li><em><strong>Decision:</strong></em> Leverage <code>spring-cloud-starter-gateway-server-webflux</code> built on Netty.</li>
+<li><em><strong>Consequence:</strong></em> BlockHound or reactive paradigms must be adhered to. Traditional <code>ThreadLocal</code> cannot be used safely for multi-tenancy context propagation.</li>
+</ul>
+<p><strong>ADR 2: Java Route Definitions over YAML</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> Routes require deep integration with a highly specific, imperative custom filter (<code>MyGatewayFilter</code>).</li>
+<li><em><strong>Decision:</strong></em> Define all paths using the fluent <code>RouteLocator</code> Java API.</li>
+<li><em><strong>Consequence:</strong></em> Changing routes requires a application rebuild/redeploy, but guarantees strict type-safety and robust filter ordering.</li>
+</ul>
+<p><strong>ADR 3: Edge-Enforced Multi-Tenancy Guardrails</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> Downstream microservices rely entirely on the gateway to provide a trusted tenant context. Processing a request without a specific tenant context can cause data leakage or critical errors across the microservice mesh.</li>
+<li><em><strong>Decision:</strong></em> Implement an aggressive &quot;Fail-Fast&quot; check at the gateway filter entry point. The gateway validates the presence of the tenant header before any authentication double-checks or authorization evaluations occur.</li>
+<li><em><strong>Consequence:</strong></em> Requests missing the mandatory multi-tenant identifiers are dropped instantly with an <code>HTTP</code> <code>400 Bad Request</code> or <code>403 Forbidden</code> status. This completely shields downstream applications from un-scoped multi-tenant traffic and minimizes unnecessary computing overhead.</li>
+</ul>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<p><strong>Tracking Routing Decisions</strong></p>
+<p>If traffic is returning <code>404 Not Found</code> or hitting the incorrect microservice, elevate the logging thresholds in local configuration profile to expose the gateway's internal evaluation pipeline:</p>
+<pre class="hljs"><code><div>logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.security: DEBUG
+</div></code></pre>
+<p><strong>Missing CSRF Cookie on Initial Load</strong></p>
+<p>If front-end applications fail because of a missing <code>XSRF-TOKEN</code> cookie, verify that the client application sends an initial metadata <code>GET</code> request. The custom <code>CsrfFilter</code> will not flush the cookie to the client until a subscription is explicitly triggered on that initial connection loop.</p>
+<h1 id="future-enhancements">Future Enhancements</h1>
+<ul>
+<li>Migration of the <code>SecurityWebFilterChain</code>, <code>CorsWebFilter</code>, and generalized security definitions out of this local project and directly into the internal shared library (<code>shared-service</code>). This will ensure that if additional gateway instances are spun up for other sub-domains, security protocols remain identical.</li>
+</ul>
+
+</body>
+</html>
