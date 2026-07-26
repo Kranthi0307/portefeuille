@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>README(1).md</title>
+<title>README.md</title>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
 <style>
@@ -377,7 +377,14 @@ code {
 <li><strong>Spring Boot Version:</strong> 3.5.5</li>
 <li><strong>Build Tool:</strong> Maven</li>
 <li><strong>Core Dependency:</strong> <code>spring-boot-autoconfigure</code></li>
-<li><strong>Optional Dependecies:</strong> <code>spring-boot-configuration-processor</code>, <code>spring-boot-starter-web</code>, <code>spring-boot-starter-webflux</code></li>
+<li><strong>Optional Dependecies:</strong>
+<ul>
+<li><code>spring-boot-configuration-processor</code></li>
+<li><code>spring-boot-starter-web</code></li>
+<li><code>spring-boot-starter-webflux</code></li>
+<li><code>spring-boot-starter-data-jpa</code></li>
+</ul>
+</li>
 <li><strong>Compatibility Matrix:</strong> Fully compatible with Spring Boot 3.5.x and Java 17+</li>
 </ul>
 <h1 id="key-features">Key Features</h1>
@@ -386,6 +393,13 @@ code {
 <li><em><strong>config:</strong></em> Holds internal <code>@AutoConfiguration</code> files targeting specific runtime profiles.</li>
 <li><em><strong>Zero-Touch Activation:</strong></em> Automatically wires up beans depending on the host application's environment without requiring manual bean declarations.</li>
 <li><em><strong>properties:</strong></em> Provides resilient, type-safe configuration classes utilizing <code>Java 17 RECORDS</code> for modern, immutable property mapping.</li>
+</ul>
+<p><strong>Multi-Tenancy &amp; Context Management</strong></p>
+<ul>
+<li><em><strong>Multi-Tenancy Support:</strong></em> Enables multi-tenant data isolation by dynamically resolving tenant identifiers during database operations.</li>
+<li><em><strong>TenantIdentifierResolver:</strong></em> Plugs directly into Hibernate (<code>CurrentTenantIdentifierResolver</code> and <code>HibernatePropertiesCustomizer</code>) to enforce tenant boundary checks. Defaults to a fallback tenant (<code>0L</code>) during system bootstrap before switching to strict security verification.</li>
+<li><em><strong>UserInfoContext:</strong></em> A thread-safe, <code>ThreadLocal</code> backed context holder storing execution-scoped user and tenant metadata (<code>UserInfo</code>) across service calls.</li>
+<li><em><strong>AppStartup:</strong></em> A lifecycle component that listens for Spring's <code>ContextRefreshedEvent</code> to ensure startup tasks operate safely before enforcing tenant access checks.</li>
 </ul>
 <p><strong>Stack Support &amp; Exception Handling</strong></p>
 <ul>
@@ -635,6 +649,45 @@ public class GlobalExceptionHandler {
 <p>This ensures that hosting applications automatically get the correct bean implementations (such as the appropriate <code>GlobalExceptionHandler</code>) with zero manual setup.</p>
 </li>
 </ul>
+<p><strong>ADR 4: Thread-Safe State Management in Multi-Tenant</strong></p>
+<ul>
+<li>
+<p><em><strong>Context:</strong></em> Tenant identification depends on the application's lifecycle state (<code>isAppStarted</code>). Because Hibernate lifecycle hooks (<code>CurrentTenantIdentifierResolver</code>) invoke tenant resolution requests early during context creation, early web requests or background threads could read stale initialization states. Furthermore, exposing this logic via a shared library introduces risks of cross-context test pollution if shared global memory states are utilized.</p>
+</li>
+<li>
+<p><em><strong>Decision:</strong></em> Eliminate global static variables in favor of a Spring-managed bean instance. Mark the state variable as volatile to enforce cross-thread visibility, register it via Spring Boot auto-configuration mechanism, and utilize lazy dependency injection (<code>ObjectProvider&lt;T&gt;</code>) at the resolution layer.</p>
+</li>
+<li>
+<p><em><strong>Consequence:</strong></em></p>
+<ul>
+<li>Consuming applications automatically wire the lifecycle state without modifying explicit configuration packages.</li>
+<li>CPU-level caching is bypassed, forcing runtime worker threads to read real-time context states directly from main memory.</li>
+<li>Integration test suites executing multiple Spring Contexts sequentially or concurrently within a single <code>JVM</code> can run reliably without shared-state leaks or cross-contamination.</li>
+<li>Direct object injection during the early Hibernate boot pipeline is safely decoupled via lazy loading proxies to avoid circular dependencies.</li>
+</ul>
+</li>
+</ul>
+<p><strong>ADR 5: Decoupled Multi-Tenancy Data Dependencies</strong></p>
+<ul>
+<li><em><strong>Context:</strong></em> The shared library introduces a global <code>CurrentTenantIdentifierResolver</code> component hook for database isolation routing. However, this library is imported by multiple downstream microservices, some of which may be purely reactive (e.g., <code>WebFlux API Gateway</code>) or non-relational services that do not require full relational database management (<code>RDBMS</code>) drivers or Hibernate engines.</li>
+<li><em><strong>Decision:</strong></em> Declare the <code>spring-boot-starter-data-jpa</code> dependency utilizing both the <code>&lt;scope&gt;provided&lt;/scope&gt;</code> and <code>&lt;optional&gt;true&lt;/optional&gt;</code> configuration scopes.</li>
+</ul>
+<pre class="hljs"><code><div>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+    &lt;scope&gt;provided&lt;/scope&gt; 
+&lt;/dependency&gt;
+</div></code></pre>
+<ul>
+<li><em><strong>Consequence:</strong></em>
+<ul>
+<li><em><strong>No Transit Drag:</strong></em> Downstream microservices inheriting this library will not have the bulky <code>JPA/Hibernate</code> libraries forced into their dependency graphs unless they explicitly declare a JPA starter themselves.</li>
+<li><em><strong>Gateway Stability:</strong></em> Avoids runtime class loader pollution or database driver initialization errors inside Netty-based <code>Spring Cloud Gateway</code> applications.</li>
+<li><em><strong>Compile-Time Safety:</strong></em> Provides the required Hibernate engine classes (<code>CurrentTenantIdentifierResolver</code>) during the shared library's internal build lifecycle so it compiles seamlessly.</li>
+</ul>
+</li>
+</ul>
 <h1 id="troubleshooting">Troubleshooting</h1>
 <ul>
 <li><strong>Properties not auto-completing in IDE:</strong> Ensure the host application has the <code>spring-boot-configuration-processor</code> plugin active and IDE's annotation processing is enabled.</li>
@@ -647,7 +700,6 @@ public class GlobalExceptionHandler {
 <li>Global Security Configurations &amp; Filters</li>
 <li>Centralized OpenAPI/Swagger documentation configurations</li>
 <li>Standardized Jackson Customizer/Object Mapper configurations</li>
-<li>Multi-Tenant Context Propagation using ThreadLocal (and reactive context equivalents)</li>
 </ul>
 
 </body>
