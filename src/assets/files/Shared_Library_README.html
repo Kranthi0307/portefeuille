@@ -369,6 +369,9 @@ code {
   <img src="https://skillicons.dev/icons?i=spring" width="30" />
   SHARED LIBRARY
 </h1>
+<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
 <h1 id="project-overview">Project Overview</h1>
 <p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups, and robust error-handling mechanisms to ensure consistency, eliminate code duplication, and enforce best practices across both Servlet and Reactive microservices.</p>
 <h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
@@ -377,7 +380,7 @@ code {
 <li><strong>Spring Boot Version:</strong> 3.5.5</li>
 <li><strong>Build Tool:</strong> Maven</li>
 <li><strong>Core Dependency:</strong> <code>spring-boot-autoconfigure</code></li>
-<li><strong>Optional Dependecies:</strong>
+<li><strong>Optional Dependencies:</strong>
 <ul>
 <li><code>spring-boot-configuration-processor</code></li>
 <li><code>spring-boot-starter-web</code></li>
@@ -392,7 +395,7 @@ code {
 <ul>
 <li><em><strong>config:</strong></em> Holds internal <code>@AutoConfiguration</code> files targeting specific runtime profiles.</li>
 <li><em><strong>Zero-Touch Activation:</strong></em> Automatically wires up beans depending on the host application's environment without requiring manual bean declarations.</li>
-<li><em><strong>properties:</strong></em> Provides resilient, type-safe configuration classes utilizing <code>Java 17 RECORDS</code> for modern, immutable property mapping.</li>
+<li><em><strong>properties:</strong></em> Provides resilient, type-safe configuration classes utilizing <code>Java 17 records</code> for modern, immutable property mapping.</li>
 </ul>
 <p><strong>Multi-Tenancy &amp; Context Management</strong></p>
 <ul>
@@ -425,7 +428,7 @@ code {
 <li>In the GitHub UI, navigate to: GitHub Settings → Developer Settings → Personal Access Tokens → Tokens (classic).</li>
 <li>Click Generate new token (classic).</li>
 <li>Select the write:packages and read:packages scopes.</li>
-<li>Copy the generated token (ghp_xxxxxxxxxxxx).</li>
+<li>Copy the generated token (ghp_ACCESS_TOKEN).</li>
 </ul>
 <p><em>For Maven project:</em>
 Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
@@ -435,7 +438,7 @@ Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
     &lt;server&gt;
       &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
       &lt;username&gt;GITHUB_USERNAME&lt;/username&gt;
-      &lt;password&gt;TOKEN_ghp_xxxxxxxxx&lt;/password&gt;
+      &lt;password&gt;ghp_ACCESS_TOKEN&lt;/password&gt;
     &lt;/server&gt;
   &lt;/servers&gt;
 &lt;/settings&gt;
@@ -444,7 +447,7 @@ Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
 Copy the token into global <code>~/.gradle/gradle.properties</code> file:</p>
 <h6 id="gradleproperties">gradle.properties</h6>
 <pre class="hljs"><code><div>gpr.user=GITHUB_USERNAME
-gpr.key=TOKEN_ghp_xxxxxxxxx
+gpr.key=ghp_ACCESS_TOKEN
 </div></code></pre>
 <h1 id="deployment">Deployment</h1>
 <p>To publish this library to private package registry,</p>
@@ -541,7 +544,7 @@ implementation 'com.kranthi:shared-service:1.x.x'
 </blockquote>
 <h1 id="prerequisites--configuration">Prerequisites &amp; Configuration</h1>
 <p>To provide compilation-time IDE support (like autocomplete for configuration properties) in hosting applications, ensure the <code>spring-boot-configuration-processor</code> is included in the build.</p>
-<p><strong>Intelligent Defaults:</strong> The library utilizes <code>@ConfigurationProperties</code> bundled with <code>@DefaultValue</code> to provide plug-and-play defaults (e.g., allowedEndpoints=&quot;/actuator/health&quot;) without polluting the host application's properties file.</p>
+<p><strong>Intelligent Defaults:</strong> The library utilizes <code>@ConfigurationProperties</code> bundled with <code>@DefaultValue</code> to provide plug-and-play defaults (e.g., config.web.public-end-points=&quot;/actuator/health&quot;) without polluting the host application's properties file.</p>
 <pre class="hljs"><code><div>@ConfigurationProperties(prefix = &quot;config.web&quot;)
 public record MyWebProperties(
         @DefaultValue(&quot;/actuator/health&quot;)
@@ -593,9 +596,14 @@ public interface UpdateValidation {}
 public class GlobalExceptionHandler {
     
     @ExceptionHandler(BaseException.class)
-    public final String handleBaseException(BaseException exception) {
+    public ResponseEntity&lt;ResponseRecord&lt;String&gt;&gt; handleBaseException(BaseException exception) {
+        HttpStatus status;
         //My exceptions Logic
-        return exception.getMessage();
+        return ResponseEntity.status(status)
+                .body(new ResponseRecord&lt;&gt;(
+                        exception.getMessage(),
+                        exception.getErrorCode()
+                ));
     }
 }
 </div></code></pre>
