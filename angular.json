@@ -36,7 +36,12 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "src/assets/files",
+                "output": "my-files"
+              }
             ],
             "styles": [
               "src/styles.scss"
