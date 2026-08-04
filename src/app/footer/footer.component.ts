@@ -1,9 +1,8 @@
-import { DatePipe } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
-  imports: [DatePipe],
+  imports: [],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
@@ -14,6 +13,7 @@ export class FooterComponent {
   protected resumeTooltip: boolean = false;
   protected tooltipLocked = false;
   protected updatedDate = new Date(2026, 6);
+  private git_hub_url = 'https://github.com/Kranthi0307';
 
   protected copy(): void {
     navigator.clipboard.writeText(this.email).then(() => {
@@ -25,7 +25,7 @@ export class FooterComponent {
   }
 
   protected openFile(): void {
-    window.open('assets/files/Resume.pdf', '_blank');
+    window.open(this.git_hub_url, '_blank');
   }
 
   protected onMouseEnter(): void {
