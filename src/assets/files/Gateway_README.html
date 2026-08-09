@@ -369,7 +369,10 @@ code {
   <img src="https://skillicons.dev/icons?i=spring" width="30" />
   GATEWAY
 </h1>
-<p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on the reactive Spring Cloud Gateway (WebFlux) framework, it provides high-throughput, non-blocking edge routing, load balancing, multi-tenant context enrichment, and frontline security enforcement.</p>
+<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
+<p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on the reactive Spring Cloud Gateway (WebFlux) framework, it provides high-throughput, non-blocking edge routing, load balancing, multi-tenant context enrichment and frontline security enforcement.</p>
 <h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
 <ul>
 <li><strong>Java Version:</strong> <code>17</code></li>
@@ -387,13 +390,13 @@ code {
 <ul>
 <li><em><strong>Token Verification:</strong></em> Automatically handled via a JSON Web Key Set (<code>JWKS</code>) endpoint.</li>
 <li><em><strong>Reactive Adapter:</strong></em> Utilizes <code>ReactiveJwtAuthenticationConverterAdapter</code> to extract claims from the <code>JWT</code> payload and map them directly to standard Spring Security <code>GrantedAuthority</code> roles.</li>
-<li><em><strong>Traffic Reduction:</strong></em> Requests missing a valid <code>JWT</code>, failing <code>CSRF</code> verification, or violating <code>CORS</code> policies are blocked immediately at the edge. This protects downstream microservices from processing unauthorized or malicious traffic.</li>
+<li><em><strong>Traffic Reduction:</strong></em> Requests missing a valid <code>JWT</code>, failing <code>CSRF</code> verification or violating <code>CORS</code> policies are blocked immediately at the edge. This protects downstream microservices from processing unauthorized or malicious traffic.</li>
 </ul>
 <p><strong>Custom Gateway Filter Chain</strong></p>
 <p>Routing logic goes beyond basic path forwarding. Employed a custom <code>MyGatewayFilter</code> (implemented via <code>GatewayFilter</code>) applied explicitly inside a <code>RouteLocator</code> bean.</p>
 <p>The gateway filter sequence enforces the following pipeline:</p>
 <ul>
-<li><em><strong>Header Validation &amp; Guardrails:</strong></em> Validates that all mandatory headers are present on the incoming request (e.g., verifying the presence of the required <code>X-XSRF-TOKEN</code>, tenant identifiers, or expected metadata). If any required header is missing, the request is immediately rejected with an appropriate HTTP error status (e.g., <code>400 Bad Request</code> or <code>403 Forbidden</code>) without forwarding.</li>
+<li><em><strong>Header Validation &amp; Guardrails:</strong></em> Validates that all mandatory headers are present on the incoming request (e.g., verifying the presence of the required <code>X-XSRF-TOKEN</code>, tenant identifiers or expected metadata). If any required header is missing, the request is immediately rejected with an appropriate HTTP error status (e.g., <code>400 Bad Request</code> or <code>403 Forbidden</code>) without forwarding.</li>
 <li><em><strong>Authentication Double-Check:</strong></em> Validates the presence and validity of the security context.</li>
 <li><em><strong>Authorization:</strong></em> Checks user roles/scopes against the target path.</li>
 <li><em><strong>Downstream Routing:</strong></em> Forwards the mutated request to the target destination.</li>
@@ -472,7 +475,7 @@ public RouteLocator customRouteLocator(RouteLocatorBuilder builder, MyGatewayFil
 <p>If front-end applications fail because of a missing <code>XSRF-TOKEN</code> cookie, verify that the client application sends an initial metadata <code>GET</code> request. The custom <code>CsrfFilter</code> will not flush the cookie to the client until a subscription is explicitly triggered on that initial connection loop.</p>
 <h1 id="future-enhancements">Future Enhancements</h1>
 <ul>
-<li>Migration of the <code>SecurityWebFilterChain</code>, <code>CorsWebFilter</code>, and generalized security definitions out of this local project and directly into the internal shared library (<code>shared-service</code>). This will ensure that if additional gateway instances are spun up for other sub-domains, security protocols remain identical.</li>
+<li>Migration of the <code>SecurityWebFilterChain</code>, <code>CorsWebFilter</code> and generalized security definitions out of this gateway project into the internal shared library (<code>shared-service</code>). This will ensure that if additional gateway instances are spun up for other sub-domains, security protocols remain identical.</li>
 </ul>
 
 </body>
