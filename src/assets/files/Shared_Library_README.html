@@ -373,12 +373,19 @@ code {
 <img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
 <img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
 <h1 id="project-overview">Project Overview</h1>
-<p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups, and robust error-handling mechanisms to ensure consistency, eliminate code duplication, and enforce best practices across both Servlet and Reactive microservices.</p>
+<p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups and robust error-handling mechanisms to ensure consistency, eliminate code duplication and enforce best practices across both Servlet and Reactive microservices.</p>
+<h1 id="why">Why?</h1>
+<p>If you’ve ever managed a multi-service microservices architecture, you know how quickly things can get messy. Every new service ends up copying and pasting the same global exception handlers, security filters, tenant resolution logic and validation rules. Before you know it, you’re spending half your sprint fixing slight discrepancies across services instead of building features.</p>
+<p>I built this shared library to completely take that friction out of the equation. Here is the actual impact it has on day-to-day engineering:</p>
+<ul>
+<li>When a team spins up a new microservice, they shouldn't have to spend a week wiring up standard security, multi-tenancy and error responses. With our zero-touch auto-configuration, a new service inherits all enterprise plumbing the second it adds the dependency, no manual <code>@Enable</code> annotations or boilerplate configuration files required.</li>
+<li>Whether a service is built on blocking Spring MVC (Servlet) or non-blocking Spring WebFlux (Reactive), the error responses, validation structures and tenant rules look and act identical. This makes life infinitely easier for frontend developers and external clients consuming the APIs.</li>
+<li>Handling data isolation across tenants can get complicated fast, especially with Hibernate hooks and thread contexts. This library bakes thread-safe tenancy straight into the core, meaning developers don't have to reinvent the wheel or risk cross-tenant data leaks, every time they write a database query.</li>
+<li>If we need to patch a security flaw, update an error-handling rule or tweak our tenant resolution logic, we don't have to touch ten different microservices. We update it in one place, bump the library version and the entire ecosystem gets the fix instantly.</li>
+</ul>
+<p>Ultimately, this library lets product teams stop worrying about infrastructure boilerplate and focus entirely on shipping business features.</p>
 <h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
 <ul>
-<li><strong>Java Version:</strong> 17</li>
-<li><strong>Spring Boot Version:</strong> 3.5.5</li>
-<li><strong>Build Tool:</strong> Maven</li>
 <li><strong>Core Dependency:</strong> <code>spring-boot-autoconfigure</code></li>
 <li><strong>Optional Dependencies:</strong>
 <ul>
@@ -413,13 +420,13 @@ code {
 <p><strong>Reusable Domains &amp; Utils</strong></p>
 <ul>
 <li><em><strong>Reusable Domains &amp; Utils:</strong></em> Centralizes common data models and high-efficiency utility classes shared across the ecosystem.</li>
-<li><em><strong>domains:</strong></em> Houses shared entities, DTOs, and global models to maintain data contract consistency across multiple microservices.</li>
+<li><em><strong>domains:</strong></em> Houses shared entities, DTOs and global models to maintain data contract consistency across multiple microservices.</li>
 <li><em><strong>utils:</strong></em> Delivers high-performance, thread-safe utility classes optimized for shared ecosystem tasks.</li>
 </ul>
 <p><strong>Advanced Validation</strong></p>
 <ul>
 <li><em><strong>Advanced Validation:</strong></em> Implements pre-configured validation groups for fine-grained request lifecycle control.</li>
-<li><em><strong>validation:</strong></em> Contains custom validation markers, constraints, and validation groups to enforce robust data integrity at the edge.</li>
+<li><em><strong>validation:</strong></em> Contains custom validation markers, constraints and validation groups to enforce robust data integrity at the edge.</li>
 </ul>
 <h1 id="developer-authentication-setup">Developer Authentication Setup</h1>
 <p>Before consuming or deploying this library, one must authenticate Maven or Gradle with GitHub Packages using a Personal Access Token (PAT).</p>
@@ -554,7 +561,7 @@ public record MyWebProperties(
 </div></code></pre>
 <h1 id="project-structure">Project Structure</h1>
 <pre class="hljs"><code><div>├───config/ #Framework AutoConfigurations
-├───domains/ #Reusable domains, DTOs, and common models
+├───domains/ #Reusable domains, DTOs and common models
 ├───exceptions/ #Abstract ecosystem RuntimeExceptions
 ├───handlers/ #WebMVC/WebFlux @RestControllerAdvice instances
 ├───properties/ #Java 17 configuration records
@@ -630,7 +637,7 @@ public class GlobalExceptionHandler {
 <pre class="hljs"><code><div>mvn clean install
 </div></code></pre>
 <ul>
-<li>Update the version in the hosting application if necessary, and re-import dependencies.</li>
+<li>Update the version in the hosting application if necessary and re-import dependencies.</li>
 </ul>
 <h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
 <p><strong>ADR 1: Decoupled Architecture via Optional Dependencies</strong></p>
@@ -663,7 +670,7 @@ public class GlobalExceptionHandler {
 <p><em><strong>Context:</strong></em> Tenant identification depends on the application's lifecycle state (<code>isAppStarted</code>). Because Hibernate lifecycle hooks (<code>CurrentTenantIdentifierResolver</code>) invoke tenant resolution requests early during context creation, early web requests or background threads could read stale initialization states. Furthermore, exposing this logic via a shared library introduces risks of cross-context test pollution if shared global memory states are utilized.</p>
 </li>
 <li>
-<p><em><strong>Decision:</strong></em> Eliminate global static variables in favor of a Spring-managed bean instance. Mark the state variable as volatile to enforce cross-thread visibility, register it via Spring Boot auto-configuration mechanism, and utilize lazy dependency injection (<code>ObjectProvider&lt;T&gt;</code>) at the resolution layer.</p>
+<p><em><strong>Decision:</strong></em> Eliminate global static variables in favor of a Spring-managed bean instance. Mark the state variable as volatile to enforce cross-thread visibility, register it via Spring Boot auto-configuration mechanism and utilize lazy dependency injection (<code>ObjectProvider&lt;T&gt;</code>) at the resolution layer.</p>
 </li>
 <li>
 <p><em><strong>Consequence:</strong></em></p>

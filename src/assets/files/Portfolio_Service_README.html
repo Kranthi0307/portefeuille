@@ -374,14 +374,23 @@ code {
 <img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
 <p>The backend engine powering my personal portfolio web application. This service exposes secure <code>REST</code> endpoints for managing my professional skills, projects, education and experiences.</p>
 <p><em><strong>Frontend Reference:</strong></em> Looking for the UI client? Check out the <a href="https://github.com/Kranthi0307/portefeuille">portfolio-ui</a> repository.</p>
+<h1 id="why">Why?</h1>
+<p>When I built my portfolio application, I didn’t just want a static site. I wanted to treat it like a real-world, production-grade product. It’s designed to show clients and teams how I build software that is secure, cost-effective and built to scale.</p>
+<p>Here is why it matters:</p>
+<ul>
+<li>Free cloud hosting is great, but apps usually fall asleep after 15 minutes of inactivity, causing frustrating 50+ second load times. I solved this by setting up a GitHub Actions CRON job that pings the backend every 5 minutes. Instant, lightning-fast loads for anyone visiting my site, with $0 in hosting costs. Thanks to <code>Render</code> and <code>Github Pages</code> for making this possible.</li>
+<li>I implemented a strictly stateless backend using OAuth2 and JWT validation. Because it doesn't rely on session cookies, it's naturally immune to traditional CSRF attacks. Plus, by using Java 17 Records for DTOs, I've locked down data transport to prevent over-posting and accidental data leaks.</li>
+<li>On the frontend, I skipped older patterns and went straight to Angular 19 Signals. This gives me fine-grained reactivity without the headache of manual unsubscriptions or messy RxJS boilerplate, resulting in a snappy, zero-lag user experience.</li>
+<li>Using PostgreSQL alongside Liquibase means database migrations are transactional. If a schema update ever fails halfway through, it rolls back cleanly, meaning zero risk of database corruption during deployments.</li>
+<li>From the moment I push code to GitHub, automated workflows build the Maven project, containerize it with Docker, push the image and trigger a Render webhook to deploy it. No manual SSH-ing, no human error, just smooth, automated delivery.</li>
+</ul>
 <h1 id="architecture--tech-stack">Architecture &amp; Tech Stack</h1>
 <ul>
-<li><strong>Language &amp; Core Framework:</strong> <code>Java 17 LTS</code>, <code>Spring Boot 3.5.5</code>, <code>Maven</code></li>
 <li><strong>Database:</strong> <code>PostgreSQL</code> (Hosted on a free cloud instance)</li>
 <li><strong>Database Migration:</strong> <code>Liquibase</code> Core</li>
 <li><strong>Security:</strong> <code>Spring Security</code> (<code>OAuth2 Resource Server</code> via <code>JWT</code> validation)</li>
 <li><strong>Documentation:</strong> <code>springdoc-openapi</code> v2.7.0 (<code>Swagger UI</code> available in development)</li>
-<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling, and custom validation groups)</li>
+<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling and custom validation groups)</li>
 <li><strong>Monitoring &amp; Lifecycle:</strong> <code>spring-boot-starter-actuator</code> (for zero-downtime deployment health checks)</li>
 </ul>
 <h1 id="architectural-decision-records-adr">Architectural Decision Records (ADR)</h1>
@@ -408,7 +417,7 @@ code {
 <p><strong>ADR 5: OpenAPI &amp; Swagger UI for Development</strong></p>
 <ul>
 <li><strong>Decision:</strong> Expose Springdoc <code>OpenAPI</code>/<code>Swagger UI</code> endpoints exclusively during local development.</li>
-<li><strong>Rationale:</strong> It allows rapid endpoint testing, request/response verification using <code>Java Records</code>, and quick frontend-to-backend integration without needing an external tool like <code>Postman</code>. These endpoints are strictly locked down or omitted in production profiles to avoid leaking <code>API</code> signatures.</li>
+<li><strong>Rationale:</strong> It allows rapid endpoint testing, request/response verification using <code>Java Records</code> and quick frontend-to-backend integration without needing an external tool like <code>Postman</code>. These endpoints are strictly locked down or omitted in production profiles to avoid leaking <code>API</code> signatures.</li>
 </ul>
 <h1 id="code-conventions--design-patterns">Code Conventions &amp; Design Patterns</h1>
 <p><strong>Entity Lifecycle Hooks (<code>@PrePersist</code> and <code>@PreUpdate</code>)</strong></p>
@@ -504,7 +513,7 @@ management:
     health:
       show-details: never #Keeps it lightweight and secure for production
 </div></code></pre>
-<p><em><strong>NOTE:</strong></em> Make sure <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_NAME</code>, <code>DB_USER</code>, and <code>DB_PASSWORD</code> are configured securely within Render’s dashboard environment variables.</p>
+<p><em><strong>NOTE:</strong></em> Make sure <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_NAME</code>, <code>DB_USER</code> and <code>DB_PASSWORD</code> are configured securely within Render’s dashboard environment variables.</p>
 <p><strong>Dockerization (<code>Dockerfile</code>)</strong></p>
 <pre class="hljs"><code><div>FROM openjdk:25-ea-26-jdk-oraclelinux8
 

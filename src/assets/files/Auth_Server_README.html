@@ -367,100 +367,48 @@ code {
   </script>
 <h1 align="center">
   <img src="https://skillicons.dev/icons?i=spring" width="30" />
-  DATA MANAGEMENT SERVICE
+  AUTHENTICATION SERVER
 </h1>
 <p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
 <img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Gradle-blue" alt="Build"></p>
-<p>A private Spring Boot REST API designed for data management across the ecosystem. It uses a multi-tenant architecture to isolate data between different clients/tenants securely.</p>
-<p>Instead of managing ecosystem data (like products and categories) through manual SQL scripts, this service provides endpoints to create and manage these records dynamically.</p>
-<!-- Example -->
-<!--
-[REFERENTIAL_TYPE] (e.g., PRODUCT_TYPE)
-       └── [REFERENTIAL] (e.g., LAPTOPS, SMART-PHONES)
-                └── [PRODUCT] (e.g., HP, DELL, SAMSUNG, GOOGLE)
--->
+<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
+<p>I built a production-ready, highly secure multi-tenant backend that serves as the single source of truth for enterprise applications. It’s designed to handle strict data isolation, custom security flows and clean code practices out of the box.</p>
 <h1 id="why">Why?</h1>
 <ul>
-<li>Built with industry-standard OAuth2 and JWT validation + strict code-level permission checks. You won't have to worry about unauthorized access or security gaps.</li>
-<li>Features automated multi-tenancy that safely separates data for different users behind the scenes. Tenants will never accidentally (or intentionally) see each other's information.</li>
-<li>Instead of dealing with messy manual database scripts every time products or categories change, this provides clean, dynamic endpoints to manage data instantly.</li>
-<li>With advanced database configuration (like turning off Open-in-View(OSIV) to protect connection pools and using PostgreSQL for safe rollbacks), the service stays fast and stable even under heavy traffic. Additionally, automated audit logging tracks who did what and when.</li>
-<li>Fully documented with interactive Swagger UI and clear code comments, meaning any future developer can jump in, understand how it works and start building immediately without a steep learning curve.</li>
-</ul>
-<h1 id="latest-features">Latest Features</h1>
-<ul>
-<li>Added endpoints to archive, restore, or permanently delete records.</li>
+<li>Built with Hibernate 6 multi-tenancy, meaning one can scale to multiple clients efficiently without spinning up separate database instances for everyone.</li>
+<li>Implements modern OAuth2 standards with custom JWT claims and a public JWKS endpoint so the microservices or client applications can easily and securely validate user tokens.</li>
+<li>Uses a custom shared library for reusable domains, properties and utils, which cuts down on boilerplate code and speeds up future feature rollouts.</li>
+<li>Every database update is tracked, tested and deployed safely using Liquibase, preventing nasty production migration bugs.</li>
 </ul>
 <h1 id="key-features">Key Features</h1>
 <ul>
-<li><strong>OAuth2 Resource Server:</strong> Secures endpoints out-of-the-box by validating incoming JWTs against the identity provider using the configured <code>jwk-set-uri</code>.</li>
-<li><strong>Multi-Tenancy:</strong> Automatically pulls the <code>tenant-id</code> claim from the user's JWT and binds it to a request-scoped <code>ThreadLocal</code> context so tenants never cross paths.</li>
-<li><strong>Audit Logging:</strong> Keeps track of who did what and when by automatically populating <code>created_by</code>, <code>updated_by</code>, <code>created_at</code> and <code>updated_at</code> fields on the entities.</li>
-<li><strong>Method-Level Security:</strong> Secures business logic directly at the code level using Spring Security annotations like <code>@PreAuthorize</code> based on token claims and roles.</li>
-<li><strong>Swagger/OpenAPI Documentation:</strong> Comes with interactive API docs generated automatically, making it easy to test endpoints right in the browser.</li>
-<li><strong>Javadocs:</strong> Well-documented codebase with clear JavaDoc comments explaining core custom filters, resources, services, domain models, etc.</li>
+<li>Used Hibernate 6's <code>@TenantId</code> paired with a custom <code>OncePerRequestFilter</code> to automatically catch tenant headers on incoming requests and route data to the right place.</li>
+<li>Configured <code>io.jsonwebtoken</code> to issue tokens with modified, business-specific claims and exposed a secure <code>/.well-known/jwks.json</code> endpoint for seamless token validation.</li>
+<li>Built a flexible authorization layer(RBAC) to ensure users only access the endpoints and data they’re allowed to.</li>
+<li>Integrated my own custom shared-library to keep core domains, utilities and properties DRY (Don't Repeat Yourself) across projects/services.</li>
+<li>Configured MySQL alongside Liquibase to keep database schemas version-controlled and synchronized effortlessly.</li>
 </ul>
 <h1 id="technology-stack">Technology Stack</h1>
 <ul>
-<li><strong>Database:</strong> <code>PostgreSQL</code></li>
+<li><strong>Database:</strong> <code>MySQL</code></li>
 <li><strong>Migration Tool:</strong> <code>Liquibase</code></li>
-<li><strong>Security:</strong> <code>Spring Security</code> (<code>OAuth2 Resource Server</code> via <code>JWT</code> validation)</li>
-<li><strong>Documentation:</strong> <code>springdoc-openapi</code> v2.7.0 (<code>Swagger UI</code> available in development)</li>
+<li><strong>Dependencies:</strong>
+<ul>
+<li><code>spring-boot-starter-web</code></li>
+<li><code>spring-boot-starter-data-jpa</code></li>
+<li><code>spring-boot-starter-validation</code></li>
+<li><strong>Security:</strong>
+<ul>
+<li><code>spring-boot-starter-security</code></li>
+<li><code>spring-boot-starter-oauth2-client</code></li>
+<li><code>io.jsonwebtoken (jjwt-api, jjwt-impl, jjwt-jackson)</code></li>
+</ul>
+</li>
+<li><code>mysql-connector-j</code></li>
+<li><code>liquibase-core</code></li>
+</ul>
+</li>
 <li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling, and custom validation groups)</li>
-</ul>
-<h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
-<p><strong>ADR 1: PostgreSQL over MySQL</strong></p>
-<ul>
-<li><strong>Decision:</strong> Chose <code>PostgreSQL</code> as the primary relational database for this service's data hierarchy.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li><strong>Transactional DDL:</strong> Liquibase migrations execute safely. If a migration fails midway, PostgreSQL rolls back the entire schema change automatically (avoiding MySQL's risk of leaving the database in a partially broken state).</li>
-<li><strong>JSONB Support:</strong> Offers native, highly indexable JSON querying for flexible, semi-structured referential properties.</li>
-<li><strong>Index Efficiency:</strong> Provides optimized B-Tree indexing models that reduce RAM and storage overhead during heavy read operations.</li>
-</ul>
-</li>
-</ul>
-<p><strong>ADR 2: <code>OSIV</code> Disabled (<code>spring.jpa.open-in-view: false</code>)</strong></p>
-<ul>
-<li><strong>Decision:</strong> Restrict database connection streams to remain open exclusively during active database transactions.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li>Streamlines the request/response lifecycle and prevents connection pool starvation under heavy load.</li>
-<li>DTO mapping must occur strictly inside transactional boundaries to prevent <code>LazyInitializationException</code> issues.</li>
-</ul>
-</li>
-</ul>
-<p><strong>ADR 3: Domain Identity via <code>my_key</code></strong></p>
-<ul>
-<li><strong>Decision:</strong> Separate physical database auto-increment/sequence IDs from logical domain keys.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li>Ensures identity stability and reliable data mapping across cross-environment migrations, staging syncs and distributed state replication.</li>
-</ul>
-</li>
-</ul>
-<h1 id="support">Support</h1>
-<ul>
-<li>
-<p><strong>Liquibase Migration Failures:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> Migration failed for <code>change set</code> or application crashes instantly at boot.</li>
-<li><strong>Fix:</strong> Verify that raw <code>SQL changesets</code> have valid headers (<code>--liquibase formatted sql</code>). If manual testing dirtied the metadata tracking schema, verify the status of the <code>DATABASECHANGELOG</code> tracking table directly.</li>
-</ul>
-</li>
-<li>
-<p><strong>Cross-Tenant Access Issue:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> API requests return empty arrays (<code>[]</code>) or <code>404 Not Found</code>, even though the data exists in the database.</li>
-<li><strong>Fix:</strong> Verify that the global tenant filter is active and correctly capturing the tenant-id of the currently logged-in user. If testing locally, ensure development mode is enabled so the application properly handles mock or local tenant contexts. If dev-mode is misconfigured, the filter might default to a tenant ID that doesn't contain the test data.</li>
-</ul>
-</li>
-</ul>
-<h1 id="future-enhancements">Future Enhancements</h1>
-<ul>
-<li><strong>Library Migration:</strong> Decouple and migrate global infrastructure pieces (<code>TenantFilter</code>, <code>JwtAuthenticationConverter</code> and <code>OpenAPI</code> config) directly into a library to keep this business microservice lightweight.</li>
-<li><strong>Smart Updates:</strong> Transition updating logic from being solely field-name-based to utilizing a structured system key (<code>my_key</code>), enabling safer modifications including all field renames.</li>
 </ul>
 
 </body>

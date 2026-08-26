@@ -373,12 +373,17 @@ code {
 <img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
 <img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
 <p>This service acts as the API Gateway and sole entry point in a microservice ecosystem. Built on the reactive Spring Cloud Gateway (WebFlux) framework, it provides high-throughput, non-blocking edge routing, load balancing, multi-tenant context enrichment and frontline security enforcement.</p>
+<h1 id="why">Why?</h1>
+<ul>
+<li>By blocking unauthorized, malformed or suspicious traffic right at the front door, this gateway stops bad requests from ever wasting computing resources on the core microservices.</li>
+<li>Implements an immediate &quot;fail-fast&quot; check for tenant IDs. If a request doesn't have the right context, it’s dropped instantly by completely eliminating the risk of data leaks between different tenants.</li>
+<li>Leverages reactive Spring WebFlux and Netty to handle massive traffic spikes smoothly, keeping server costs low and performance snappy even under heavy loads.</li>
+<li>Pre-configured to handle modern Single Page Applications securely with robust CORS setup, stateless JWT validation and reliable cookie-backed CSRF protection out of the box.</li>
+<li>Uses type-safe Java route definitions instead of messy YAML files, giving total control over filter execution order and making the system easy to scale as the product grows.</li>
+</ul>
 <h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
 <ul>
-<li><strong>Java Version:</strong> <code>17</code></li>
-<li><strong>Spring Boot Version:</strong> <code>3.5.5</code></li>
 <li><strong>Spring Cloud Release Train:</strong> <code>2025.0.0</code></li>
-<li><strong>Build Tool:</strong> <code>Maven</code></li>
 <li><strong>Core Dependency:</strong> <code>spring-cloud-starter-gateway-server-webflux</code></li>
 <li><strong>Security Dependencies:</strong> <code>spring-boot-starter-security</code>, <code>spring-boot-starter-oauth2-resource-server</code></li>
 <li><strong>Internal Dependency:</strong> <code>shared-service</code></li>
