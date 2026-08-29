@@ -41,6 +41,11 @@
                 "glob": "**/*",
                 "input": "src/assets/files",
                 "output": "my-files"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/mp4/data-management",
+                "output": "data-management-clips"
               }
             ],
             "styles": [
