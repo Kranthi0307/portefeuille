@@ -375,7 +375,7 @@ code {
 <h1 id="project-overview">Project Overview</h1>
 <p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups and robust error-handling mechanisms to ensure consistency, eliminate code duplication and enforce best practices across both Servlet and Reactive microservices.</p>
 <h1 id="why">Why?</h1>
-<p>If you’ve ever managed a multi-service microservices architecture, you know how quickly things can get messy. Every new service ends up copying and pasting the same global exception handlers, security filters, tenant resolution logic and validation rules. Before you know it, you’re spending half your sprint fixing slight discrepancies across services instead of building features.</p>
+<p>If you’ve ever managed a multi-service microservices architecture, you know how quickly things can get messy. Every new service ends up copying and pasting the same security filters, tenant resolution logic and validation rules. Before you know it, you’re spending half your sprint fixing slight discrepancies across services instead of building features.</p>
 <p>I built this shared library to completely take that friction out of the equation. Here is the actual impact it has on day-to-day engineering:</p>
 <ul>
 <li>When a team spins up a new microservice, they shouldn't have to spend a week wiring up standard security, multi-tenancy and error responses. With our zero-touch auto-configuration, a new service inherits all enterprise plumbing the second it adds the dependency, no manual <code>@Enable</code> annotations or boilerplate configuration files required.</li>
@@ -411,11 +411,10 @@ code {
 <li><em><strong>UserInfoContext:</strong></em> A thread-safe, <code>ThreadLocal</code> backed context holder storing execution-scoped user and tenant metadata (<code>UserInfo</code>) across service calls.</li>
 <li><em><strong>AppStartup:</strong></em> A lifecycle component that listens for Spring's <code>ContextRefreshedEvent</code> to ensure startup tasks operate safely before enforcing tenant access checks.</li>
 </ul>
-<p><strong>Stack Support &amp; Exception Handling</strong></p>
+<p><strong>Stack Support</strong></p>
 <ul>
 <li><em><strong>Dual-Stack Support:</strong></em> Offers specialized conditional configurations tailored for both MVC (Servlet) and WebFlux (Reactive) environments.</li>
 <li><em><strong>exceptions:</strong></em> Defines a core operational hierarchy containing abstract base exceptions to ensure unified error structures.</li>
-<li><em><strong>handlers:</strong></em> Features target-specific global exception interceptors that dynamically adapt to the active stack (Servlet vs. Reactive).</li>
 </ul>
 <p><strong>Reusable Domains &amp; Utils</strong></p>
 <ul>
@@ -451,7 +450,7 @@ Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
 &lt;/settings&gt;
 </div></code></pre>
 <p><em>For Gradle project:</em>
-Copy the token into global <code>~/.gradle/gradle.properties</code> file:</p>
+Copy the token into global<code>~/.gradle/gradle.properties</code> file:</p>
 <h6 id="gradleproperties">gradle.properties</h6>
 <pre class="hljs"><code><div>gpr.user=GITHUB_USERNAME
 gpr.key=ghp_ACCESS_TOKEN
@@ -461,7 +460,7 @@ gpr.key=ghp_ACCESS_TOKEN
 <p><em>For Maven</em>, add <code>maven-deploy-plugin</code> plugin and configure <code>distributionManagement</code> inside <code>pom.xml</code></p>
 <pre class="hljs"><code><div>&lt;distributionManagement&gt;
     &lt;repository&gt;
-        &lt;id&gt;github&lt;/id&gt;
+        &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
         &lt;name&gt;GitHub Packages&lt;/name&gt;
         &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
     &lt;/repository&gt;
@@ -503,13 +502,11 @@ publishing {
 </div></code></pre>
 <p>Run the following command to deploy securely via CI/CD pipeline:
 <br>
-<br>
-<em>For Maven</em>,</p>
-<pre class="hljs"><code><div>mvn clean deploy
-</div></code></pre>
+<br></p>
+<p><em>For Maven</em>,</p>
+<p><code>mvn clean deploy</code></p>
 <p><em>For Gradle</em>,</p>
-<pre class="hljs"><code><div>gradle clean publish
-</div></code></pre>
+<p><code>gradle clean publish</code></p>
 <blockquote>
 <p>Update the version before deploying.</p>
 </blockquote>
@@ -521,7 +518,7 @@ publishing {
 <p><em>For Maven</em></p>
 <pre class="hljs"><code><div>&lt;repositories&gt;
     &lt;repository&gt;
-        &lt;id&gt;github&lt;/id&gt;
+        &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
         &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
     &lt;/repository&gt;
 &lt;/repositories&gt;
@@ -536,25 +533,25 @@ publishing {
 <pre class="hljs"><code><div>repositories {
     mavenCentral()
     maven {
-        url = uri(&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;)
+        url = uri(<span class="hljs-string">&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;</span>)
         credentials {
-            username = project.findProperty(&quot;gpr.user&quot;)
-            password = project.findProperty(&quot;gpr.key&quot;)
+            username = project.findProperty(<span class="hljs-string">&quot;gpr.user&quot;</span>)
+            password = project.findProperty(<span class="hljs-string">&quot;gpr.key&quot;</span>)
         }
     }
 }
 
-implementation 'com.kranthi:shared-service:1.x.x'
+implementation <span class="hljs-string">&#x27;com.kranthi:shared-service:1.x.x&#x27;</span>
 </div></code></pre>
 <blockquote>
-<p>No additional annotations (like <code>@Enable*</code>) or explicit configuration scans are required. The library auto-configures itself upon building the application.</p>
+<p>No additional annotations (like <code>@Enable*</code>) or explicit configuration scans are required. The library autoconfigures itself upon building the application.</p>
 </blockquote>
 <h1 id="prerequisites--configuration">Prerequisites &amp; Configuration</h1>
 <p>To provide compilation-time IDE support (like autocomplete for configuration properties) in hosting applications, ensure the <code>spring-boot-configuration-processor</code> is included in the build.</p>
 <p><strong>Intelligent Defaults:</strong> The library utilizes <code>@ConfigurationProperties</code> bundled with <code>@DefaultValue</code> to provide plug-and-play defaults (e.g., config.web.public-end-points=&quot;/actuator/health&quot;) without polluting the host application's properties file.</p>
-<pre class="hljs"><code><div>@ConfigurationProperties(prefix = &quot;config.web&quot;)
-public record MyWebProperties(
-        @DefaultValue(&quot;/actuator/health&quot;)
+<pre class="hljs"><code><div>@ConfigurationProperties(prefix = <span class="hljs-string">&quot;config.web&quot;</span>)
+public record WebProperties(
+        @DefaultValue(<span class="hljs-string">&quot;/actuator/health&quot;</span>)
         String[] publicEndPoints
 ) {
 }
@@ -563,7 +560,6 @@ public record MyWebProperties(
 <pre class="hljs"><code><div>├───config/ #Framework AutoConfigurations
 ├───domains/ #Reusable domains, DTOs and common models
 ├───exceptions/ #Abstract ecosystem RuntimeExceptions
-├───handlers/ #WebMVC/WebFlux @RestControllerAdvice instances
 ├───properties/ #Java 17 configuration records
 ├───utils/ #Common thread-safe helper utilities
 └───validation/ #Validation groups (CreateValidation, UpdateValidation)
@@ -606,7 +602,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity&lt;ResponseRecord&lt;String&gt;&gt; handleBaseException(BaseException exception) {
         HttpStatus status;
         //My exceptions Logic
-        return ResponseEntity.status(status)
+        <span class="hljs-built_in">return</span> ResponseEntity.status(status)
                 .body(new ResponseRecord&lt;&gt;(
                         exception.getMessage(),
                         exception.getErrorCode()
@@ -614,20 +610,6 @@ public class GlobalExceptionHandler {
     }
 }
 </div></code></pre>
-<h1 id="error-handling">Error Handling</h1>
-<p>The library provides a structured, centralized error-handling architecture that standardizes API error responses ecosystem-wide without capturing unintended framework or generic runtime exceptions.</p>
-<ul>
-<li><strong>Ecosystem Base Exception:</strong> An abstract <code>BaseException</code> class that extends <code>RuntimeException</code>. All custom business exceptions across the microservices should inherit from this class.</li>
-<li><strong>Targeted Interception:</strong> Instead of blindly catching generic Java <code>Exception.class</code> instances, the global exception handlers explicitly targets the base domain exception:</li>
-</ul>
-<pre class="hljs"><code><div>@ExceptionHandler(BaseException.class)
-</div></code></pre>
-<ul>
-<li><strong>Context Aware:</strong> The library automatically provisions separate <code>@RestControllerAdvice</code> implementations tailored for <code>SERVLET</code> and <code>REACTIVE</code> applications, ensuring appropriate response serialization regardless of the underlying web stack.</li>
-</ul>
-<blockquote>
-<p><strong>Crucial: Bean Naming Collisions</strong><br>Since this library provisions beans automatically via <code>@AutoConfiguration</code>, one must prevent duplicate bean names between different stack variants (Servlet vs. Reactive).<br>If a hosting application attempts to build its own bean with a conflicting name (e.g., a generic <code>globalExceptionHandler</code>), Spring Boot's context initialization will fail.<br> <strong>Rule:</strong> Always namespace, auto-configured internal beans clearly (e.g., <code>servletGlobalExceptionHandler</code> vs <code>reactiveGlobalExceptionHandler</code>) within conditional configuration classes.</p>
-</blockquote>
 <h1 id="local-development">Local Development</h1>
 <p>To make changes to this library and test them locally in a hosting application:</p>
 <ul>
@@ -661,7 +643,7 @@ public class GlobalExceptionHandler {
 <li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)</code></li>
 <li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)</code></li>
 </ul>
-<p>This ensures that hosting applications automatically get the correct bean implementations (such as the appropriate <code>GlobalExceptionHandler</code>) with zero manual setup.</p>
+<p>This ensures that hosting applications automatically get the correct bean implementations with zero manual setup.</p>
 </li>
 </ul>
 <p><strong>ADR 4: Thread-Safe State Management in Multi-Tenant</strong></p>
@@ -714,9 +696,46 @@ public class GlobalExceptionHandler {
 <ul>
 <li>Global Security Configurations &amp; Filters.</li>
 <li>Centralized OpenAPI/Swagger documentation configurations.</li>
-<li>Standardized Jackson Customizer/Object Mapper configurations.</li>
-<li>Implement a robust custom exception framework extending <code>RuntimeException</code> to provide clear, consistent error codes, user-friendly messages and structured logging across all multi-tenant and core application layers.</li>
+<li>Standardized Jackson Customizer/Object Mapper configurations</li>
 </ul>
+<h1 id="versions">Versions</h1>
+<p><em><strong>v1.2.0</strong></em></p>
+<ul>
+<li><strong>Domains:</strong> <code>ResponseRecord&lt;T&gt;</code> and <code>UserInfo</code></li>
+<li><strong>Models:</strong> <code>Events</code> and <code>EventInfo</code></li>
+<li><strong>Listeners:</strong> <code>EventsListener</code> and <code>EventInfoListener</code></li>
+<li><strong>Exceptions:</strong> <code>BaseException</code> that extends <code>RuntimeException</code> with other re-usable classes extending <code>BaseException</code>.</li>
+<li><strong>Properties:</strong> <code>SharedWebProperties</code>, <code>SharedDevProperties</code> and <code>SharedCorsProperties</code> with default properties are autoconfigured.</li>
+<li><strong>Components:</strong>
+<ul>
+<li><code>TenantIdentifierResolver</code> which is responsible to resolve the current tenant identifier for multi-tenant database operations and customizes Hibernate properties accordingly.</li>
+<li><code>AppStartup</code> that is responsible for tracking the initialization and startup lifecycle of the Spring application context.</li>
+</ul>
+</li>
+<li><strong>Filters:</strong>
+<ul>
+<li><code>TenantFilter</code> that extends <code>OncePerRequestFilter</code> responsible to set the tenant information.</li>
+</ul>
+</li>
+<li><strong>Context:</strong>
+<ul>
+<li><code>UserInfoContext</code> represents a thread-safe context holder utilizing a thread-local variable.</li>
+</ul>
+</li>
+<li><strong>Configuration:</strong>
+<ul>
+<li>Configured the following beans:<br>
+For Servlet,
+<ul>
+<li><code>AppStartup</code> if one is not already present in the application context.</li>
+<li><code>TenantIdentifierResolver</code> if the required property is set to true and if one is not already present in the application context.</li>
+<li><code>TenantFilter</code> if the required property is set to true and if one is not already present in the application context.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> Register the <code>TenantFilter</code> in Security Configuration if needed.</p>
 
 </body>
 </html>

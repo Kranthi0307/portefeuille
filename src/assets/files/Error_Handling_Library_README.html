@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
+<h1 id="error-handling-library">ERROR HANDLING LIBRARY</h1>
+<p>A spring boot library, for an enterprise-level error handling.</p>
+<h1 id="why">Why?</h1>
+<ul>
+<li><strong>Native Multi-Stack Support:</strong> Eliminate the friction of forcing reactive applications into servlet wrappers or
+dealing with clunky bridging logic. Both Servlet and Reactive worlds get native, first-class error handling.</li>
+<li><strong>Modular Flexibility:</strong> Avoid monolithic, tangled error handlers. By cleanly separating concerns into Security, Web
+and others modules, applications only adopt the exact slices they actually need.</li>
+<li><strong>Zero-Conflict Control:</strong> Stop worrying about drop-in libraries stepping on existing code. Granular
+<code>@ConfigurationProperties</code> toggles give developers the power to enable or disable any piece of the library on the fly
+without breaking custom setups.</li>
+<li><strong>Enterprise Consistency:</strong> Establish a predictable, standardized error structure(<code>ProblemDetail</code>) across teams and
+microservices right out of the box.</li>
+</ul>
+<h1 id="key-features">Key Features</h1>
+<ul>
+<li><strong>Dual-Stack Native Support (Servlet &amp; WebFlux):</strong> Built from the ground up for both worlds. Whether your application
+runs on traditional Spring MVC (Tomcat) or non-blocking reactive Spring WebFlux (Netty), it gets idiomatic,
+high-performance error handling without forced bridges or blocking wrappers.</li>
+<li><strong>Layered Modular Architecture:</strong> Cleanly separated into logical modules so you only include or reason about what you
+need:
+<ul>
+<li><strong>Security Module:</strong> Out-of-the-box, clean mapping for authentication (401 Unauthorized) and authorization (403
+Forbidden) failures.</li>
+<li><strong>Web Module:</strong> Seamless wrapping of framework-level issues (type mismatches, missing parameters, method
+arguments) using Spring’s <code>ResponseEntityExceptionHandler</code> equivalents.</li>
+<li><strong>Common Module:</strong> Reliable handling for custom domain exceptions, low-level database errors (
+<code>DataAccessException</code>) and global catch-all fallback safety nets.</li>
+</ul>
+</li>
+<li><strong>Granular <code>@ConfigurationProperties</code> Toggles:</strong> Total control at your fingertips. Every single sub-module across both
+Servlet and Reactive stacks can be independently enabled or disabled (true/false) in your <code>application.yml</code>,
+preventing conflicts with existing application code.</li>
+<li><strong>Standardized RFC 7807 (Problem Details) Responses:</strong> Ensures all error payloads follow a consistent,
+machine-readable standard (type, title, status, detail, instance) making life easier for API clients and frontend
+consumers.</li>
+<li><strong>Zero-Magic, Non-Invasive Integration:</strong> Designed to drop into enterprise projects seamlessly. It respects your
+application's existing configurations and custom overrides, letting you adopt it piece-by-piece.</li>
+</ul>
+<h1 id="architectural-decision-records">Architectural Decision Records</h1>
+<h3 id="adr-1-dual-stack-support-servlet-vs-reactive-architecture">ADR 1: Dual-Stack Support (Servlet vs. Reactive Architecture)</h3>
+<ul>
+<li><strong>Context:</strong> Spring developers are split across two worlds: the traditional Servlet world (Spring MVC with Tomcat) and
+the newer, non-blocking Reactive world (Spring WebFlux with Netty). Because these two environments handle exceptions
+completely differently under the hood, a one-size-fits-all approach doesn't work.</li>
+<li><strong>Decision:</strong> Instead of forcing a messy bridge between the two, I built two parallel tracks right from the start:
+<code>servlet</code> and <code>reactive</code>. Each stack uses its own native Spring error-handling mechanisms.</li>
+<li><strong>Pros:</strong> MVC developers get clean, idiomatic MVC code and WebFlux developers get true non-blocking reactive handling.
+Nobody suffers from slow performance or leaky abstractions.</li>
+<li><strong>Cons:</strong> We do have to maintain equivalent logic in two parallel places.</li>
+</ul>
+<h3 id="adr-2-modular-component-separation-security-web-etc">ADR 2: Modular Component Separation (Security, Web, etc.)</h3>
+<ul>
+<li><strong>Context:</strong> Error handling happens at different layers of an application. Security failures (like a 401 or 403) look
+very different from framework validation errors, which in turn look different from database crashes or custom domain
+rules. If we threw everything into one giant class, it would turn into a maintenance nightmare.</li>
+<li><strong>Decision:</strong> I split each stack into three clear, bite-sized modules:
+<ul>
+<li><strong>security:</strong> Manages authentication and permission issues (401s and 403s).</li>
+<li><strong>web:</strong> Handles all the standard framework headaches like missing request params, bad types and validation
+failures.</li>
+<li><strong>Others:</strong> Catches custom business logic exceptions, database errors (<code>DataAccessException</code>) and acts as the
+safety net for unexpected crashes.</li>
+</ul>
+</li>
+<li><strong>Pros:</strong> It keeps code clean, focused and super easy to test. It also means applications can pick and choose what
+they actually want to use.</li>
+</ul>
+<h3 id="adr-3-granular-feature-toggling-via-configurationproperties">ADR 3: Granular Feature Toggling via <code>@ConfigurationProperties</code></h3>
+<ul>
+<li><strong>Context:</strong> Drop-in libraries can sometimes be a little too aggressive. If an auto-configured error handler steps on
+the toes of an application's existing custom setup, it causes annoying startup conflicts or unexpected response
+changes.</li>
+<li><strong>Decision:</strong> I gave developers an escape hatch. Every single sub-module (servlet vs. reactive, across security, web
+and others) comes with its own <code>@ConfigurationProperties</code> toggle so you can flip them <code>true</code> or <code>false</code> independently.</li>
+<li><strong>Pros:</strong> Complete flexibility. If an application wants to use this web error handlers but keep its own custom
+security rules, it can just switch security off in the configuration. No magic friction.</li>
+</ul>
+<h1 id="future-enhancements">Future Enhancements</h1>
+<ul>
+<li><strong>Out-of-the-Box Observability:</strong> Automatically attach live Micrometer <code>traceId</code> values to every error response to
+drastically cut down debugging time in distributed systems.</li>
+<li><strong>Proactive Security &amp; Masking:</strong> Intercept and sanitize sensitive query parameters, secrets, raw SQL exceptions and
+internal stack traces before they leak out to clients.</li>
+<li><strong>Seamless Localization:</strong> Dynamically resolve error titles and descriptions based on incoming <code>Accept-Language</code>
+headers using standard Spring <code>MessageSource</code> configurations.</li>
+<li><strong>Advanced SPIs &amp; Custom Hooks:</strong> Expand Service Provider Interfaces (SPIs) and <code>@ConditionalOnMissingBean</code>
+integrations to let teams easily swap default behaviors for advanced enterprise rules.</li>
+</ul>
+<h1 id="versions">Versions</h1>
+<p><em><strong>v0.1.0</strong></em></p>
+<ul>
+<li><strong>Domains:</strong>
+<ul>
+<li><code>BusinessException</code> that serves as the parent for all custom, domain-specific exceptions throughout the ecosystem.</li>
+<li><code>ValidationError</code> with field and its message.</li>
+</ul>
+</li>
+<li><strong>Properties:</strong> Each property has enabled field making it accessible to disable the beans that are not needed.</li>
+<li><strong>Configurations:</strong>
+<ul>
+<li>For Servlet, beans enabled by default are <code>globalExceptionHandler</code>, <code>businessExceptionHandler</code>, <code>servletPersistenceExceptionHandler</code>, <code>servletAuthenticationEntryPoint</code>, <code>servletAccessDeniedHandler</code> and <code>servletWebExceptionHandler</code></li>
+<li>For Reactive, beans  enabled by default are <code>globalExceptionHandler</code>, <code>businessExceptionHandler</code>, <code>reactiveAuthenticationEntryPoint</code> and <code>reactiveAccessDeniedHandler</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>If <code>error.handling.reactive.security.enabled=true</code> or <code>error.handling.servlet.security.enabled=true</code>, the respective
+Security Configurations are to be implemented in the application.</p>
+<p>For example:</p>
+<pre class="hljs"><code><div>.authenticationEntryPoint(authenticationEntryPoint)
+.accessDeniedHandler(accessDeniedHandler)
+</div></code></pre>
+</blockquote>
+
+</body>
+</html>
