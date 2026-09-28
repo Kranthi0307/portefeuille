@@ -25,17 +25,14 @@ export class EducationComponent {
   work: any = [];
 
   constructor() {
-    console.log('Encrypted data')
     forkJoin([
       this.public_service.getWork(),
       this.public_service.getEducation()
     ]).subscribe(([workResponse, educationRespsonse]) => {
       this.work = workResponse.data.map((item: any) => this.decryption_service.decrypt(item));
-      console.log('Decrypted data', this.work)
       this.education = educationRespsonse.data.map((item: any) => this.decryption_service.decrypt(item));
-      console.log('Decrypted data', this.education)
     }, (error: any) => {
-      console.log(error);
+      console.error(error);
     });
   }
 }
