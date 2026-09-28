@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { catchError, map, of, tap } from "rxjs";
+import { catchError, map, Observable, of, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { Education } from "../domains/education";
 import { Experience } from "../domains/experience";
@@ -41,4 +41,12 @@ export class PublicService {
       }
     }
   )
+
+  public getWork(): Observable<any> {
+    return this.http_client.get<string[]>(`${this.public_api}/getWork`);
+  }
+
+  public getEducation(): Observable<any> {
+    return this.http_client.get<string[]>(`${this.public_api}/getEducation`);
+  }
 }
