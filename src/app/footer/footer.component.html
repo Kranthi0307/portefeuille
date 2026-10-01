@@ -20,7 +20,7 @@
       <button (click)="copy()" aria-label="copy">
         {{ email }}
       </button>
-      @if (emailTooltip) {
+      @if (email_tooltip) {
       <span>Copied!</span>
       }
     </div>
@@ -30,14 +30,14 @@
       <button (click)="openFile()">
         Resume
       </button>
-      <!--span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
+      <span class="info-icon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleTooltip()">
         <i>i</i>
-        @if (resumeTooltip) {
+        @if (resume_tooltip) {
         <span>
-          Last updated on {{updatedDate | date: 'MMMM y'}}
+          Last updated on {{updated_date | date: 'MMMM y'}}
         </span>
         }
-      </span-->
+      </span>
     </div>
   </div>
 </footer>
