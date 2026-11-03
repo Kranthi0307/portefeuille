@@ -13,8 +13,9 @@ export class FooterComponent {
   protected email_tooltip: boolean = false;
   protected resume_tooltip: boolean = false;
   protected tooltip_locked = false;
-  protected updated_date = new Date(2026, 9);
-  private git_hub_url = 'https://github.com/Kranthi0307';
+  protected updated_date = new Date(2026, 10);
+  protected git_hub_url = 'https://github.com/Kranthi0307';
+  protected linkedin_url = 'https://www.linkedin.com/in/kranthi0307/'
   private resume_url = 'assets/files/Resume.pdf';
 
   protected copy(): void {
