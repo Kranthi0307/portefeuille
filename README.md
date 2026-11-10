@@ -1,172 +1,128 @@
-# My Portfolio
+# Portefeuille - Personal Portfolio
 
-A high-performance, reactive personal portfolio website built with ```Angular 19``` and hosted on ```GitHub Pages```. This project showcases my skills, education, experience, and projects while serving as a playground for modern Angular features.
+![Angular 19](https://img.shields.io/badge/Angular-19-DD0031?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
+![SCSS](https://img.shields.io/badge/SCSS-Styles-CF649A?logo=sass&logoColor=white)
+![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-222222?logo=githubpages&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
 
-👉 [View Live](https://kranthi0307.github.io/portefeuille/)
+[![View Portfolio](https://img.shields.io/badge/View-Live%20Portfolio-222222?logo=githubpages&logoColor=white)](https://kranthi0307.github.io/portefeuille/)
 
-# Tech Stack & Key Features
+A single-page portfolio website for presenting projects, skills, education, and work experience.
 
-- **Framework:** ```Angular 19``` (Signals-driven architecture)
-- **Language:** ```TypeScript```
-- **Styling:** ```SCSS```
-- **Deployment:** ```GitHub Pages``` via ```GitHub Actions```
-- **Automated Keep-Alive:** Scheduled ```CRON``` job to prevent backend spin-down
+## Purpose
 
-# Architecture & Development Flow
+This application brings professional information such as projects, skills, education, and experience together in one place. It gives visitors a straightforward way to understand my background and explore examples of my work, while serving as a practical project for building and maintaining a modern web application.
 
-- **State Management via Angular Signals**
+## Features
 
-This portfolio uses native ```Angular Signals``` for reactive state management, data fetching, and handling global ```UI``` states like loading indicators.
+- Home page with an image carousel that supports timed transitions and touch or mouse swipes.
+- Separate pages for projects, skills, education, and experience.
+- Skills grouped by category, with text filtering.
+- Portfolio content loaded from a backend API.
+- Shared header and footer with navigation and contact links.
 
-```
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { catchError, map, of, tap } from "rxjs";
-import { environment } from "../../../environments/environment";
-import { Education } from "../domains/education";
-import { Experience } from "../domains/experience";
-import { Info } from "../domains/info";
-import { Project } from "../domains/project";
-import { Skill } from "../domains/skill";
+## Technology
 
-@Injectable({ providedIn: 'root' })
-export class PublicService {
+- **Angular 19** for the single-page application and routing.
+- **TypeScript** for application logic and typed domain models.
+- **SCSS** for component and global styles.
+- **RxJS** for HTTP request handling; Angular Signals expose shared portfolio data and loading state.
+- **CryptoJS** for client-side decryption of some API responses.
 
-  private readonly http_client = inject(HttpClient);
+## Architecture and data flow
 
-  private readonly public_api: string = `${environment.apiUrl}/public-api/v1`;
+Angular routes render the portfolio pages. The shared `PublicService` requests portfolio data from the configured API, then makes the response available to pages as reactive state.
 
-  public readonly is_loading = signal<boolean>(true);
+The `PublicService` loads the main portfolio response from the API and provides empty collections if that request fails.
 
-  public readonly info = toSignal(
-    this.http_client.get<Info>(`${this.public_api}/info`).pipe(
-      tap(() => this.is_loading.set(false)),
-      map(response => response.data),
-      catchError((error: any) => {
-        this.is_loading.set(false)
-        return of({
-          projects: [] as Project[],
-          skills: [] as Skill[],
-          experiences: [] as Experience[],
-          educations: [] as Education[]
-        })
-      })
-    ),
-    {
-      initialValue: {
-        projects: [] as Project[],
-        skills: [] as Skill[],
-        experiences: [] as Experience[],
-        educations: [] as Education[]
-      }
-    }
-  )
-}
-```
+## Project structure
 
-- **Multi-Environment Configuration**
-
-  To ensure clean isolation between ```development``` and ```production``` environments, the project utilizes standard ```Angular``` environment files.
-
-    - Development (src/environments/environment.development.ts):
-      ```
-      export const environment = {
-        production: false,
-        apiUrl: 'http://localhost:8082/portfolio'
-      };
-      ```
-    - Production (src/environments/environment.ts):
-      ```
-      export const environment = {
-        production: true,
-        apiUrl: 'https://portfolio-service-latest.onrender.com/portfolio'
-      };
-      ```
-
-# CI/CD & Deployment Flow
-
-The project is fully automated using ```GitHub Actions``` (```.github/workflows/deploy.yml```). It handles two distinct tracks: Build & Deploy on pushes to main, and a Scheduled Ping to keep the free-tier backend awake.
-
-```
-name: Going live!...
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *"
-
-jobs:
-  build-and-deploy:
-    if: github.event_name != 'schedule'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Build latest repository
-        run: npm run build -- --configuration production --base-href=/portefeuille/
-
-      - name: Deploying to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: dist/portefeuille/browser/
-
-  scheduled-task:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Api call
-        run: curl -X GET "https://portfolio-service-latest.onrender.com/portfolio/project/getProjects"
+```text
+src/
+  app/
+    common/
+      components/       Shared error and warning UI
+      domains/          Portfolio data interfaces
+      interceptors/     HTTP timeout handling
+      models/           Shared UI models
+      services/         API, loading, and decryption services
+    education/          Education page
+    experience/         Experience page
+    footer/             Shared footer
+    header/             Shared navigation
+    home/               Home page and carousel
+    projects/           Projects page
+    skills/             Skills page and category filtering
+    app.config.ts       Router, HTTP, animation, and application providers
+    app.routes.ts       Page routes
+  assets/               Images, icons, files, and media
+  environments/         Development and production API configuration
+  index.html             Browser document
+  main.ts                Angular application entry point
+.github/
+  workflows/
+    deploy.yml           Build, deployment, and scheduled API request
 ```
 
-# Architectural Decision Records (ADR)
+## Prerequisites
 
-**ADR 1: Use of Angular Signals over RxJS for Component State**
+- Node.js compatible with Angular 19. The deployment workflow uses Node.js 18.
+- npm.
 
-- **Context:** ```Angular 19``` emphasizes ```Signals``` for fine-grained reactivity.
-- **Decision:** Use ```Signals``` for all localized ```UI``` states (e.g., ```isLoading```, ```projects```) to minimize template subscription boilerplate (```| async```) and optimize change detection performance.
-- **Consequences:** Cleaner code, no manual unsubscriptions required, zone-less readiness.
+## Getting started
 
-**ADR 2: Keep-Alive CRON Job inside Deployment Workflow**
+Install dependencies and start the development server:
 
-- **Context:** The backend service is hosted on Render's free tier, which spins down after 15 minutes of inactivity, causing 50+ second cold-start delays for portfolio visitors.
-- **Decision:** Utilize the ```GitHub Actions``` workflow schedule trigger to execute a lightweight curl request every 5 minutes.
-- **Consequences:** The backend remains hot and ready, ensuring an instant load time for users looking at portfolio.
+```bash
+npm install --legacy-peer-deps
+npm start
+```
 
-# Troubleshooting
+The development server uses the development Angular environment configuration. Set its `apiUrl` to the base URL of an API instance you are authorized to use. The application adds its API paths to this base URL.
 
-- **GitHub Actions Permissions Error:** If the ```build-and-deploy``` job fails on the deployment step with a ```403 Forbidden``` error, check your repository settings: ```Settings -> Actions -> General -> Workflow permissions and change it to "Read and write permissions"```.
-- **Base-Href Routing Issues:** Because this app is deployed to a subfolder (```/portefeuille/```), the build command must include ```--base-href=/portefeuille/```. If asset paths break or routing fails on refresh, verify that the ```dist/``` subfolder structure exactly matches ```dist/portefeuille/browser/```.
+To create a production build:
 
-# Future Enhancements
+```bash
+npm run build
+```
 
-- **Angular Material Integration:** Implement ```MatCard```, ```MatChips```, and ```MatDialog``` to build out polished interactive project-demo modals.
-- **Server-Side Rendering (SSR)/Prerendering:** Enable ```Angular SSR``` to maximize ```SEO visibility``` so recruiters can find the site organically via Google.
-- **Dark Mode Toggle:** Use ```Angular Signals``` paired with ```SCSS CSS``` variables to build an optimized, flash-free dark mode toggle.
-- **Lighthouse Optimization:** Implement image lazy-loading (```NgOptimizedImage```) to guarantee a 100% performance score.
+To run the test suite:
+
+```bash
+npm test
+```
+
+The tests use Jasmine and Karma. Existing specs are primarily component-creation checks; the app component spec includes title and greeting assertions that do not match the current component, so the suite may need maintenance. Tests have not been independently verified as passing.
+
+## Configuration
+
+API configuration is defined in Angular environment files:
+
+- `src/environments/environment.development.ts` is used for development builds.
+- `src/environments/environment.ts` is used for production builds.
+
+Set `apiUrl` to the appropriate API base URL in the relevant file. For example:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: '<YOUR_API_BASE_URL>'
+};
+```
+
+Angular environment values are included in the browser build; they are not secret storage. Do not put credentials, private tokens, or other secrets in frontend configuration.
+
+## Deployment
+
+The GitHub Actions workflow builds the app for GitHub Pages when changes are pushed to `main` and can also be started manually. Its production build sets the `/portefeuille/` base path and deploys the generated site to the `gh-pages` branch. The workflow also makes a scheduled request to the configured backend service.
+
+> **Note:** Some API responses are decrypted in the browser. Any key or logic included in a browser application can be inspected by users, so client-side encryption should not be treated as access control or a way to keep data secret. Keep authorization and sensitive data protections on the backend.
 
 # References
 
 - **Canvas:** Custom structural images and wireframes.
-- **```web.dev```:** Modern ```CSS``` layouts and performance best practices.
-- **Open Source:** Structure ideas adapted from ```ngx-admin``` and ```ng-simple-slideshow```.
+- **`web.dev`:** Modern ```CSS``` layouts and performance best practices.
+- **Open Source:** Structure ideas adapted from `ngx-admin` and `ng-simple-slideshow`.
 
 Inspired by Nothing • Big fan of Nothing
