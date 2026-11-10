@@ -365,261 +365,197 @@ code {
           : 'default'
     });
   </script>
-<h1 align="center">
-  <img src="https://skillicons.dev/icons?i=spring" width="30" />
-  PORTFOLIO SERVICE
-</h1>
-<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
-<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
-<p>The backend engine powering my personal portfolio web application. This service exposes secure <code>REST</code> endpoints for managing my professional skills, projects, education and experiences.</p>
-<p><em><strong>Frontend Reference:</strong></em> Looking for the UI client? Check out the <a href="https://github.com/Kranthi0307/portefeuille">portfolio-ui</a> repository.</p>
-<h1 id="why">Why?</h1>
-<p>When I built my portfolio application, I didn’t just want a static site. I wanted to treat it like a real-world, production-grade product. It’s designed to show clients and teams how I build software that is secure, cost-effective and built to scale.</p>
-<p>Here is why it matters:</p>
+<h1 id="portfolio-service">Portfolio Service</h1>
+<p><img src="https://img.shields.io/badge/Java-17-orange?logo=openjdk&amp;logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-6DB33F?logo=springboot" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Spring_Security-OAuth2_Resource_Server-6DB33F?logo=springsecurity&amp;logoColor=white" alt="Spring Security">
+<img src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven" alt="Maven">
+<img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&amp;logoColor=white" alt="PostgreSQL">
+<img src="https://img.shields.io/badge/Liquibase-Migrations-2962FF?logo=liquibase&amp;logoColor=white" alt="Liquibase">
+<img src="https://img.shields.io/badge/Docker-Container-2496ED?logo=docker" alt="Docker">
+<img src="https://img.shields.io/badge/Swagger-Docs-6BA539?logo=swagger&amp;logoColor=white" alt="Swagger">
+<img src="https://img.shields.io/badge/OpenAPI-Docs-6BA539?logo=openapiinitiative&amp;logoColor=white" alt="OpenAPI">
+<img src="https://img.shields.io/badge/JUnit-Tests-25A162?logo=junit5&amp;logoColor=white" alt="JUnit">
+<img src="https://img.shields.io/badge/Mockito-Tests-25A162?logo=java&amp;logoColor=white" alt="Mockito"></p>
+<p>A Java API for delivering portfolio content to a frontend and managing that content through protected endpoints.</p>
+<h2 id="overview">Overview</h2>
+<p>Portfolio Service separates portfolio data and operations from the presentation layer. It provides public read endpoints
+for projects, skills, work experience, and education, alongside authenticated management endpoints for projects and
+skills.</p>
+<p>The application uses Spring Boot, PostgreSQL, and Spring Data JPA. Its layered design keeps HTTP handling, business
+logic, and persistence responsibilities separate. JWT authentication protects management operations, while request
+validation and OpenAPI documentation support development and client integration.</p>
+<p>Looking for the UI client? Check out the <a href="https://github.com/Kranthi0307/portefeuille">portfolio-ui</a> repository.</p>
+<h2 id="purpose">Purpose</h2>
+<p>This project provides the backend for a personal portfolio website. It keeps portfolio information, such as projects,
+skills, experience, and education in one place, so the website can present it consistently without hardcoding that
+content into the frontend. Protected management endpoints let an authorized administrator update selected information
+without changing the website’s code.</p>
+<h2 id="features">Features</h2>
 <ul>
-<li>Free cloud hosting is great, but apps usually fall asleep after 15 minutes of inactivity, causing frustrating 50+ second load times. I solved this by setting up a GitHub Actions CRON job that pings the backend every 5 minutes. Instant, lightning-fast loads for anyone visiting my site, with $0 in hosting costs. Thanks to <code>Render</code> and <code>Github Pages</code> for making this possible.</li>
-<li>I implemented a strictly stateless backend using OAuth2 and JWT validation. Because it doesn't rely on session cookies, it's naturally immune to traditional CSRF attacks. Plus, by using Java 17 Records for DTOs, I've locked down data transport to prevent over-posting and accidental data leaks.</li>
-<li>On the frontend, I skipped older patterns and went straight to Angular 19 Signals. This gives me fine-grained reactivity without the headache of manual unsubscriptions or messy RxJS boilerplate, resulting in a snappy, zero-lag user experience.</li>
-<li>Using PostgreSQL alongside Liquibase means database migrations are transactional. If a schema update ever fails halfway through, it rolls back cleanly, meaning zero risk of database corruption during deployments.</li>
-<li>From the moment I push code to GitHub, automated workflows build the Maven project, containerize it with Docker, push the image and trigger a Render webhook to deploy it. No manual SSH-ing, no human error, just smooth, automated delivery.</li>
+<li>Public endpoints for portfolio content, including a combined portfolio summary.</li>
+<li>Project and skill management endpoints, restricted to users with the <code>ADMIN</code> role.</li>
+<li>JWT-based authentication using a configured JWKS endpoint.</li>
+<li>Validation for management request payloads.</li>
+<li>Encrypted responses from selected portfolio detail endpoints.</li>
+<li>OpenAPI and Swagger UI support in the <code>dev</code> profile.</li>
+<li>Actuator endpoints and trace-aware logging.</li>
+<li>Liquibase changelog files for the database schema and initial data.</li>
 </ul>
-<h1 id="architecture--tech-stack">Architecture &amp; Tech Stack</h1>
+<h2 id="technology">Technology</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td>Java 17</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Spring Boot 3.5.5</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Spring Web, Springdoc OpenAPI</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Spring Security, OAuth2 Resource Server, JWT</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Spring Data JPA, Hibernate, PostgreSQL</td>
+</tr>
+<tr>
+<td>Schema changes</td>
+<td>Liquibase</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>Maven</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>Docker</td>
+</tr>
+</tbody>
+</table>
+<p>The build also depends on organization-specific Maven artifacts. Access to the package feed and suitable Maven
+credentials may be required.</p>
+<h2 id="architecture">Architecture</h2>
+<p>Resources handle HTTP requests and responses. Services implement application operations and map persistence entities to
+API-facing data objects. Repositories provide database access through Spring Data JPA.</p>
+<h2 id="api">API</h2>
+<p>The application uses <code>/portfolio</code> as its servlet context path. Endpoint paths below are shown relative to that context.</p>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Combined portfolio summary</td>
+<td><code>GET /public-api/v1/info</code></td>
+</tr>
+<tr>
+<td>Fetch projects</td>
+<td><code>GET /public-api/v1/getProjects</code></td>
+</tr>
+<tr>
+<td>Fetch skills</td>
+<td><code>GET /public-api/v1/getSkills</code></td>
+</tr>
+<tr>
+<td>Fetch work experience</td>
+<td><code>GET /public-api/v1/getWork</code></td>
+</tr>
+<tr>
+<td>Fetch education</td>
+<td><code>GET /public-api/v1/getEducation</code></td>
+</tr>
+</tbody>
+</table>
+<p>Project and skill management routes are under <code>/project-api/v1</code> and <code>/skill-api/v1</code>. They require a JWT with the <code>ADMIN</code>
+role. See the generated API documentation for the available operations and request schemas.</p>
+<p>In the <code>dev</code> profile, OpenAPI and Swagger UI are available at:</p>
 <ul>
-<li><strong>Database:</strong> <code>PostgreSQL</code> (Hosted on a free cloud instance)</li>
-<li><strong>Database Migration:</strong> <code>Liquibase</code> Core</li>
-<li><strong>Security:</strong> <code>Spring Security</code> (<code>OAuth2 Resource Server</code> via <code>JWT</code> validation)</li>
-<li><strong>Documentation:</strong> <code>springdoc-openapi</code> v2.7.0 (<code>Swagger UI</code> available in development)</li>
-<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling and custom validation groups)</li>
-<li><strong>Monitoring &amp; Lifecycle:</strong> <code>spring-boot-starter-actuator</code> (for zero-downtime deployment health checks)</li>
+<li>Swagger UI: <code>/portfolio/swagger-ui/index.html</code></li>
+<li>OpenAPI JSON: <code>/portfolio/v3/api-docs</code></li>
 </ul>
-<h1 id="architectural-decision-records-adr">Architectural Decision Records (ADR)</h1>
-<p><strong>ADR 1: PostgreSQL over MySQL</strong></p>
+<h2 id="data-and-migrations">Data and migrations</h2>
+<p>The Liquibase changelog defines tables for projects, skills, work experience, and education, along with initial data.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li><strong>Decision:</strong> Chose <code>PostgreSQL</code> as the primary database engine.</li>
-<li><strong>Rationale:</strong> <code>PostgreSQL</code> supports transactional <code>DDL</code>, meaning if a database migration (<code>Liquibase</code>) fails halfway through, the structural changes roll back cleanly. Furthermore, excellent free tiers are readily available for hosting small-scale <code>PostgreSQL</code> instances.</li>
+<li>Java 17</li>
+<li>PostgreSQL</li>
+<li>Maven, or the included Maven Wrapper</li>
+<li>Access to the service's shared-library and error-handling-library dependencies</li>
+<li>A JWKS endpoint and suitable JWT for exercising protected endpoints</li>
 </ul>
-<p><strong>ADR 2: Client-Generated Entity Keys (<code>my_key</code> via <code>UUID</code>)</strong></p>
-<ul>
-<li><strong>Decision:</strong> Use a business-layer generated <code>UUID</code> (<code>my_key</code>) instead of relying on auto-incrementing database primary keys for external references.</li>
-<li><strong>Rationale:</strong> Guarantees entity stability before the record hits the persistence layer. Prevents ID enumeration attacks and decouples the domain entities from database-specific auto-increment sequence side-effects.</li>
-</ul>
-<p><strong>ADR 3: Data Transfer Objects (<code>DTO</code>) Isolation via Java <code>Records</code></strong></p>
-<ul>
-<li><strong>Decision:</strong> Fully isolate the entity model layer. All <code>HTTP</code> requests and responses use <code>Java 17 Records</code>.</li>
-<li><strong>Rationale:</strong> Prevents entity-leaking side effects, enforces immutability for web transport, and limits over-posting/security vulnerabilities.</li>
-</ul>
-<p><strong>ADR 4: Stateless Authentication &amp; Targeted <code>CSRF</code> Disabling</strong></p>
-<ul>
-<li><strong>Decision:</strong> Application authentication is strictly <code>STATELESS</code>. And, <code>CSRF</code> protection is explicitely disabled (<code>.csrf(csrf -&gt; csrf.disable())</code>).</li>
-<li><strong>Rationale:</strong> Since the service is stateless and does not use session cookies for authentication, it is fundamentally immune to traditional <code>CSRF</code> attacks. While the client app runs on Angular, administrative (mutative) requests are guarded by <code>OAuth2 JWT tokens</code>, while the rest of the endpoints remain completely public.</li>
-</ul>
-<p><strong>ADR 5: OpenAPI &amp; Swagger UI for Development</strong></p>
-<ul>
-<li><strong>Decision:</strong> Expose Springdoc <code>OpenAPI</code>/<code>Swagger UI</code> endpoints exclusively during local development.</li>
-<li><strong>Rationale:</strong> It allows rapid endpoint testing, request/response verification using <code>Java Records</code> and quick frontend-to-backend integration without needing an external tool like <code>Postman</code>. These endpoints are strictly locked down or omitted in production profiles to avoid leaking <code>API</code> signatures.</li>
-</ul>
-<h1 id="code-conventions--design-patterns">Code Conventions &amp; Design Patterns</h1>
-<p><strong>Entity Lifecycle Hooks (<code>@PrePersist</code> and <code>@PreUpdate</code>)</strong></p>
-<p>To ensure auditing fields remain clean and automated, entities utilize JPA lifestyle annotations rather than manual controller/service-level date mapping.</p>
-<ul>
-<li><strong><code>@PrePersist</code>:</strong> Generates a random <code>UUID</code> for <code>my_key</code> and populates <code>created_at</code> with <code>Instant.now()</code>.</li>
-<li><strong><code>@PreUpdate</code>:</strong> Automatically overrides <code>updated_at</code> with <code>Instant.now()</code>.</li>
-</ul>
-<p><strong>Standardized Domain Handling</strong></p>
-<ul>
-<li><strong>Fixed Domain Values:</strong> <code>Enums</code> are enforced across models for strict categorization (e.g., <code>SkillType</code> for filtering skills by category).</li>
-<li><strong>Optimized Queries:</strong> Precise data queries are extracted directly using focused <code>JpaRepository</code> methods (e.g., <code>findBySkillType(SkillType type)</code>).</li>
-<li><strong>Logging:</strong> Enforced via Lombok's <code>@Slf4j</code> annotation for cohesive console/file outputs.</li>
-<li><strong>Web Response Structure:</strong> Every <code>REST</code> endpoint strictly standardizes execution outputs utilizing Spring's native <code>ResponseEntity.status(...).body(...)</code>.</li>
-</ul>
-<h1 id="database-migration-setup">Database Migration Setup</h1>
-<p>Liquibase handles all schema initializations and schema upgrades prior to application runtime bootstrap.</p>
-<p>Master Changelog (<code>src/main/resources/db/changelog/changelog-master.xml</code>)</p>
-<pre class="hljs"><code><div>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;databaseChangeLog
-        xmlns=&quot;http://www.liquibase.org/xml/ns/dbchangelog&quot;
-        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-        xsi:schemaLocation=&quot;http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd&quot;&gt;
-
-    &lt;include file=&quot;db/changelog/changelog-v1.0.sql&quot; /&gt;
-
-&lt;/databaseChangeLog&gt;
+<h2 id="local-development">Local development</h2>
+<p>Use the <code>dev</code> profile for local development.</p>
+<h3 id="1-create-a-postgresql-database">1. Create a PostgreSQL database</h3>
+<p>For example, create a local database named <code>portfolio_db</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span>
+DATABASE portfolio_db;
 </div></code></pre>
-<p><em><strong>NOTE:</strong></em> The referenced <code>.sql</code> changelog files must contain precise Liquibase SQL format headers (e.g., <code>--liquibase formatted sql</code>) followed by distinct changeSet IDs (<code>--changeset author:id</code>), otherwise the migration parser will crash during compilation.</p>
-<h1 id="logback-configuration">Logback Configuration</h1>
-<p>The system records console behaviors alongside rolling physical files partitioned on a monthly timeline.</p>
-<pre class="hljs"><code><div>&lt;configuration&gt;
-    &lt;appender name=&quot;CONSOLE&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
-        &lt;encoder&gt;
-            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
-        &lt;/encoder&gt;
-    &lt;/appender&gt;
-
-    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
-        &lt;file&gt;logs/portfolio_service.log&lt;/file&gt;
-        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
-            &lt;fileNamePattern&gt;logs/portfolio_service.%d{yyyy-MM}.log.gz&lt;/fileNamePattern&gt;
-            &lt;maxHistory&gt;12&lt;/maxHistory&gt;
-        &lt;/rollingPolicy&gt;
-        &lt;encoder&gt;
-            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
-        &lt;/encoder&gt;
-    &lt;/appender&gt;
-
-    &lt;root level=&quot;INFO&quot;&gt;
-        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;
-        &lt;appender-ref ref=&quot;FILE&quot;/&gt;
-    &lt;/root&gt;
-&lt;/configuration&gt;
+<p>The database must also have the schema required by the application.</p>
+<h3 id="2-run-the-application">2. Run the application</h3>
+<pre class="hljs"><code><div>mvn spring-boot:run -Dspring-boot.run.profiles=dev
 </div></code></pre>
-<h1 id="cicd-flow-from-local-dev-to-production"><code>CI/CD</code> Flow: From <code>Local Dev</code> to <code>Production</code></h1>
-<p><strong>Pipeline Overview</strong></p>
-<p>When a commit lands on the <code>render</code> branch, the automated <code>GitHub Actions</code> workflow kicks off:</p>
-<ul>
-<li>Sets up custom <code>settings.xml</code> on the runner to authorize access to the private <code>shared-service</code> repository using a <code>GitHub secret token</code>.</li>
-<li>Compiles and builds the runnable fat <code>.jar</code> file using <code>Maven</code>.</li>
-<li>Pushes the image tags (<code>latest</code> and <code>commit-sha</code>) to <code>Docker Hub</code>.</li>
-<li>Triggers a <code>Render Webhook</code> to notify the hosting instance to pull the updated image and restart.</li>
-</ul>
-<p><strong>Local Compilation</strong></p>
-<p>To compile the package locally (bypassing unit validations if necessary):</p>
-<pre class="hljs"><code><div>mvn clean package -DskipTests
+<p>The development profile uses port <code>8082</code> by default. With the servlet context path, the application base URL is:</p>
+<pre class="hljs"><code><div>http://localhost:8082/portfolio
 </div></code></pre>
-<p><strong>Production Resource Profile (<code>application-prod.yaml</code>)</strong></p>
-<p>Configured to seamlessly bind with the hosting infrastructure environment variables:</p>
-<pre class="hljs"><code><div>server:
-  port: ${PORT:8080}
-  address: 0.0.0.0
-
-spring:
-  datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: https://auth-server.com/.well-known/jwks.json
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
-  endpoint:
-    health:
-      show-details: never #Keeps it lightweight and secure for production
+<h2 id="build-and-tests">Build and tests</h2>
+<p>Build the application:</p>
+<pre class="hljs"><code><div>mvn clean package
 </div></code></pre>
-<p><em><strong>NOTE:</strong></em> Make sure <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_NAME</code>, <code>DB_USER</code> and <code>DB_PASSWORD</code> are configured securely within Render’s dashboard environment variables.</p>
-<p><strong>Dockerization (<code>Dockerfile</code>)</strong></p>
-<pre class="hljs"><code><div>FROM openjdk:25-ea-26-jdk-oraclelinux8
-
-ADD target/portfolio-service.jar portfolio-service.jar
-
-ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/portfolio-service.jar&quot;]
+<p>Run the test suite:</p>
+<pre class="hljs"><code><div>mvn <span class="hljs-built_in">test</span>
 </div></code></pre>
-<p><strong>Automated Pipeline Blueprint (<code>.github/workflows/deploy.yml</code>)</strong></p>
-<pre class="hljs"><code><div>name: Build, Push, Deploy
-
-on:
-  push:
-    branches:
-      - render
-
-jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout portfolio-service
-        uses: actions/checkout@v3
-
-      - name: Create Maven settings.xml
-        run: |
-          mkdir -p ~/.m2
-          cat &gt; ~/.m2/settings.xml &lt;&lt;EOF
-          &lt;settings&gt;
-            &lt;servers&gt;
-              &lt;server&gt;
-                &lt;id&gt;github&lt;/id&gt;
-                &lt;username&gt;Kranthi0307&lt;/username&gt;
-                &lt;password&gt;${{ secrets.SHARED_SERVICE }}&lt;/password&gt;
-              &lt;/server&gt;
-            &lt;/servers&gt;
-          &lt;/settings&gt;
-          EOF
-        
-      - name: Build portfolio-service
-        run: mvn clean package -DskipTests
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: |
-            docker.io/${{ secrets.DOCKER_USERNAME }}/portfolio-service:latest
-            docker.io/${{ secrets.DOCKER_USERNAME }}/portfolio-service:${{ github.sha }}
-
-      - name: Deploy to Render
-        run: |
-          curl -X POST \
-          -H &quot;Accept: application/json&quot; \
-          -H &quot;Authorization: Bearer ${{ secrets.RENDER_API_KEY }}&quot; \
-          -H &quot;Content-Type: application/json&quot; \
-          -d '{}' \
-          https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+<p>The service tests use JUnit and Mockito to exercise service behavior with mocked repositories. The suite also includes a
+Spring application-context and database connectivity smoke test. That test is gated on the <code>spring.profiles.active=test</code>
+system property and requires a reachable PostgreSQL database configured for the <code>test</code> profile:</p>
+<pre class="hljs"><code><div>mvn <span class="hljs-built_in">test</span> -Dspring.profiles.active=<span class="hljs-built_in">test</span>
 </div></code></pre>
-<h1 id="troubleshooting">Troubleshooting</h1>
-<ul>
-<li>
-<p><strong>Liquibase Migration Failures:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> Migration failed for <code>change set</code> or application crashes instantly at boot.</li>
-<li><strong>Fix:</strong> Verify that raw <code>SQL changesets</code> have valid headers (<code>--liquibase formatted sql</code>). If manual testing dirtied the metadata tracking schema, verify the status of the <code>DATABASECHANGELOG</code> tracking table directly.</li>
-</ul>
-</li>
-<li>
-<p><strong>The <code>CORS</code> Blocked Errors (<code>Development</code> vs. <code>Production</code>):</strong></p>
-<ul>
-<li><strong>Symptom:</strong> Angular application cannot fetch resources; browser console prints standard <code>CORS</code> error.</li>
-<li><strong>Fix:</strong> Separate configurations. In <code>Security</code> configuration, allow <code>localhost:4200</code> under an explicit <code>@Profile(&quot;dev&quot;)</code> bean, while reserving production configuration exclusively for <code>GitHub Pages deployment URL</code>.</li>
-</ul>
-</li>
-<li>
-<p><strong>Docker Registry Authentication Failures:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> <code>GitHub Action</code> logs fail at the <code>docker/login-action</code> step.</li>
-<li><strong>Fix:</strong> Ensure <code>DOCKER_ACCESS_TOKEN</code> is a <code>Personal Access Token (PAT)</code> generated from <code>Docker Hub settings</code> with write access, not the standard account password.</li>
-</ul>
-</li>
-<li>
-<p><strong>Render Deployment Timeout / Port Binding Error:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> <code>Render</code> logs state that the service failed to bind to a port within the allotted time.</li>
-<li><strong>Fix:</strong> Ensure <code>server.address</code> is configured exactly to <code>0.0.0.0</code> in production (as defined in <code>application-prod.yaml</code>), allowing the container to receive external routing traffic on Render's assigned dynamic port.</li>
-</ul>
-</li>
-</ul>
-<h1 id="future-enhancements">Future Enhancements</h1>
-<ul>
-<li><strong>Standardize Docker Base Image:</strong> Transition the <code>Dockerfile</code> from an <code>Early Access</code> build (<code>openjdk:25-ea-26-jdk-oraclelinux8</code>) to a stable, long-term support release runtime matching compilation settings (e.g., <code>eclipse-temurin:17-jre</code>).</li>
-<li><strong>Optimize CI Pipeline Steps:</strong> Modernize actions versions across <code>.github/workflows/deploy.yml</code> (e.g., updating checkout actions to <code>@v4</code> and <code>login/buildx</code> actions to eliminate deprecation warnings).</li>
-<li><strong>Custom Lightweight Health Endpoint:</strong> Implement a minimal <code>@RestController</code> mapping to <code>/health</code> that returns <code>ResponseEntity.status(HttpStatus.OK).body(&quot;Service is UP&quot;)</code> to satisfy Render's zero-downtime health check requirements without pulling in the full <code>spring-boot-starter-actuator</code> library.</li>
-<li><strong>Graceful Shutdown Integration:</strong> Add <code>server.shutdown: graceful</code> to <code>application-prod.yaml</code> to allow the portfolio service to cleanly wrap up any active in-flight <code>HTTP</code> requests before <code>Render</code> tears down the old container instance during a deployment.</li>
-</ul>
+<h2 id="project-layout">Project layout</h2>
+<pre class="hljs"><code><div>src/
+├── main/
+│   ├── java/com/.../
+│   │   ├── configurations/  Security and OpenAPI configuration
+│   │   ├── domains/          API request and response data types
+│   │   ├── exceptions/      Application-specific exceptions
+│   │   ├── listeners/       JPA entity lifecycle listeners
+│   │   ├── models/           Persistence entities
+│   │   ├── repositories/      Spring Data repositories
+│   │   ├── resources/        REST resources
+│   │   └── services/         Application logic
+│   └── resources/
+│       ├── application*.yaml
+│       ├── logback-spring.xml
+│       └── db/changelog/    Liquibase changelogs
+└── test/
+    ├── java/                Service and application tests
+    └── resources/           Test profile configuration
+
+docs/                         Development notes
+Dockerfile                    Container image definition
+pom.xml                       Maven build and dependencies
+</div></code></pre>
+<h2 id="docker">Docker</h2>
+<p>Build the application JAR, then build the image from the repository root:</p>
+<pre class="hljs"><code><div>mvn clean package
+docker build -t portfolio-service .
+</div></code></pre>
+<p>The container runs the packaged JAR. Supply the required database, JWT, and encryption configuration through the runtime
+environment.</p>
 
 </body>
 </html>
