@@ -122,7 +122,7 @@ The GitHub Actions workflow builds the app for GitHub Pages when changes are pus
 ## References
 
 - Canvas for custom images
-- web.dev for cssGithub projects like `ngx-admin`, ng-simple-slideshow`
-`
--   
+- web.dev for css
+- Github projects like `ngx-admin`, `ng-simple-slideshow`
+   
 Inspired by Nothing • Big fan of Nothing
