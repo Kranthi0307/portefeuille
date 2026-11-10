@@ -365,105 +365,195 @@ code {
           : 'default'
     });
   </script>
-<h1 align="center">
-  <img src="https://skillicons.dev/icons?i=spring" width="30" />
-  DATA MANAGEMENT SERVICE
-</h1>
-<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
-<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Gradle-blue" alt="Build"></p>
-<p>A private Spring Boot REST API designed for data management across the ecosystem. It uses a multi-tenant architecture to isolate data between different clients/tenants securely.</p>
-<p>Instead of managing ecosystem data (like products and categories) through manual SQL scripts, this service provides endpoints to create and manage these records dynamically.</p>
+<h1 id="data-management">Data Management</h1>
+<p><img src="https://img.shields.io/badge/Java-17-orange?logo=openjdk&amp;logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?logo=springboot&amp;logoColor=white" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Spring_Security-OAuth2_Resource_Server-6DB33F?logo=springsecurity&amp;logoColor=white" alt="Spring Security">
+<img src="https://img.shields.io/badge/Gradle-Build-02303A?logo=gradle&amp;logoColor=white" alt="Gradle">
+<img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&amp;logoColor=white" alt="PostgreSQL">
+<img src="https://img.shields.io/badge/Liquibase-Migrations-2962FF?logo=liquibase&amp;logoColor=white" alt="Liquibase">
+<img src="https://img.shields.io/badge/OpenAPI-Swagger-85EA2D?logo=swagger&amp;logoColor=white" alt="Swagger">
+<img src="https://img.shields.io/badge/JUnit-Tests-25A162?logo=junit5&amp;logoColor=white" alt="JUnit"></p>
+<p><img src="https://img.shields.io/badge/Angular-19-DD0031?logo=angular&amp;logoColor=white" alt="Angular 19">
+<img src="https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&amp;logoColor=white" alt="TypeScript 5.7">
+<img src="https://img.shields.io/badge/Angular_Material-UI-757575?logo=materialdesign&amp;logoColor=white" alt="Angular Material">
+<img src="https://img.shields.io/badge/SCSS-Styles-CF649A?logo=sass&amp;logoColor=white" alt="SCSS"></p>
+<p>A developer-facing data management application for maintaining products and their referential data. It combines an
+Angular web interface with a Spring Boot REST API backed by PostgreSQL.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Product and category data often needs to be changed as development work progresses. Managing those changes through
+manual database updates can be slow and difficult to track. This project provides a central interface and API for
+developers to manage product data and its supporting reference information, while keeping records organized by tenant
+and allowing archived records to be restored.</p>
+<p>The goal is to make routine data-management tasks easier to perform and maintain, not to replace the external processes
+that permanently clean up archived data.</p>
+<h2 id="overview">Overview</h2>
+<p>The application provides a UI and API for managing:</p>
+<ul>
+<li><strong>Referential types</strong> and <strong>referentials</strong>, which organize product categories and related reference data.</li>
+<li><strong>Products</strong>, including their descriptions, prices, details, and category associations.</li>
+<li><strong>Archived records</strong>, which can be listed and restored through API operations.</li>
+</ul>
+<p>Permanent deletion is handled by cron jobs configured externally; those jobs are not part of these repositories.</p>
+<h2 id="architecture">Architecture</h2>
+<p>The project is split across two repositories: the Angular UI (<code>dev-support-ui</code>) and the Spring Boot API (
+<code>dev-support-service</code>).</p>
+<p>The UI calls the API through Angular HTTP services and Gateway. Shared UI code handles authentication-related requests
+and adds request headers; protected UI routes use an authentication guard. On the backend, REST resources delegate to
+service classes, which use Spring Data JPA repositories to access the database.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Create and update products, referential types, and referentials.</li>
+<li>Browse and filter product and referential data in the UI.</li>
+<li>Archive records and restore archived records.</li>
+<li>Protect API routes with Spring Security and JWT-based authentication.</li>
+<li>Associate requests with tenant and user context.</li>
+<li>Generate OpenAPI documentation for the service.</li>
+</ul>
+<h2 id="technology-stack">Technology stack</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Technologies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI</td>
+<td>Angular 19, TypeScript, Angular Material, RxJS</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Java 17, Spring Boot 3.5, Spring MVC, Spring Data JPA</td>
+</tr>
+<tr>
+<td>Database and schema</td>
+<td>PostgreSQL, Liquibase</td>
+</tr>
+<tr>
+<td>API documentation</td>
+<td>springdoc OpenAPI / Swagger UI</td>
+</tr>
+<tr>
+<td>Build and tests</td>
+<td>Gradle Wrapper, npm, JUnit 5, Jasmine, Karma</td>
+</tr>
+</tbody>
+</table>
+<h2 id="repository-layout">Repository layout</h2>
+<p>The UI and service are maintained separately.</p>
+<pre class="hljs"><code><div>dev-support-ui/
+  src/app/
+    dashboard/             Dashboard page
+    login/                 Login page
+    product/               Product management and forms
+    referential/           Referential management and forms
+    referential-type/      Referential-type management and forms
+    shared/                Authentication, API services, guards,
+                           interceptors, shared models and components
+  src/environments/        Development and production UI configuration
+
+dev-support-service/
+  src/main/java/.../
+    configurations/        Security and OpenAPI configuration
+    filters/               Tenant request context
+    handlers/              Exception handling
+    models/                JPA entities
+    repositories/          Spring Data repositories
+    resources/             REST API resources
+    services/              Business operations
+  src/main/resources/
+    db/changelog/           Liquibase changelogs
+    application*.yaml       Service configuration
+  src/test/                 Service tests
+</div></code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Java 17</li>
+<li>Node.js and npm versions supported by Angular 19</li>
+<li>PostgreSQL for local service development</li>
+<li>Access to the service's shared-library dependency</li>
+</ul>
+<p>The service uses a shared library distributed through a package registry. For access and setup, consult that library's
+README.</p>
+<h2 id="getting-started">Getting started</h2>
+<h3 id="1-start-the-service">1. Start the service</h3>
+<p>From the service repository root:</p>
+<pre class="hljs"><code><div>gradle bootRun
+</div></code></pre>
+<p>Run the service tests with:</p>
+<pre class="hljs"><code><div>gradle <span class="hljs-built_in">test</span>
+</div></code></pre>
+<p>The service is configured to use the <code>dev</code> profile by default. Its current configuration sets the server port to <code>8085</code>
+and the context path to <code>/dev-service</code>; use environment-specific overrides as needed.</p>
+<p>The development tenant-context option can be enabled with <code>config.others.dev_mode=true</code> and configured with
+<code>config.others.tenant-id=&lt;tenant-id&gt;</code>. This lets the tenant filter use development context instead of reading tenant
+details from a JWT. The Spring Security configuration still enables JWT resource-server authentication for protected
+requests; configure the local security setup accordingly if you need to run those requests without an authentication
+issuer.</p>
+<h3 id="2-start-the-ui">2. Start the UI</h3>
+<p>From the UI repository root:</p>
+<pre class="hljs"><code><div>npm install
+npm start
+</div></code></pre>
+<p>The Angular development server runs at <code>http://localhost:4200</code> by default. The <code>start</code> script uses <code>proxy.config.json</code>
+to proxy API paths. That file currently targets port <code>2000</code>, while the service configuration uses port <code>8085</code>; align the
+proxy target with the service address you run locally.</p>
+<p>Build the UI with:</p>
+<pre class="hljs"><code><div>npm run build
+</div></code></pre>
+<p>The UI's development environment uses a relative API base URL and relies on the development proxy. Set an appropriate
+API base URL in the environment configuration used for deployment.</p>
+<h2 id="api-overview">API overview</h2>
+<p>The service groups its routes under these base paths, below the configured <code>/dev-service</code> context path:</p>
+<ul>
+<li><code>/product-api/v1</code> - product operations and product archive retrieval.</li>
+<li><code>/referential-api/v1</code> - referential and referential-type operations and archive retrieval.</li>
+<li><code>/archive-api/v1</code> - record restoration.</li>
+</ul>
+<p>API details are generated from the service's OpenAPI annotations. With the development configuration enabled, Swagger UI
+is typically available at:</p>
+<pre class="hljs"><code><div>http://localhost:8085/dev-service/swagger-ui/index.html
+</div></code></pre>
+<p>The service security configuration protects product and referential routes with role-based authorization. Configure
+valid local authentication as required by the active security setup.</p>
+<h2 id="authentication-and-tenant-context">Authentication and tenant context</h2>
+<p>The UI has shared authentication code for login, status checks, logout, and token refresh. Its HTTP interceptor attaches
+available authorization, tenant, and XSRF headers, and attempts a refresh after an unauthorized response.</p>
+<p>The service validates JWTs through Spring Security. Its tenant filter reads tenant and user information from the
+authenticated request, or uses configured development context when development mode is enabled. Do not use development
+tenant settings as a substitute for production authentication and tenant isolation.</p>
+<h2 id="database-and-archive-behavior">Database and archive behavior</h2>
+<p>Liquibase changesets define tables for products, product details, referentials, referential types, and the recycle bin.
+The product and referential records include tenant and audit fields; the recycle bin stores serialized record data for
+restoration.</p>
+<p>Archiving and restoration are exposed by this service. Permanent cleanup is external: scheduled cron jobs are configured
+outside these repositories.</p>
+<h2 id="testing">Testing</h2>
+<ul>
+<li><strong>Service:</strong> <code>gradle test</code> runs JUnit tests.</li>
+</ul>
+<h2 id="current-limitations">Current limitations</h2>
+<ul>
+<li>The service depends on a shared library that requires separate package access and setup.</li>
+<li>Existing automated tests provide a starting point; additional service and feature-level UI tests would improve
+coverage.</li>
+</ul>
+<!-- Check out the [Tenant Isolation](/data-management-clips/data-management.mp4), [RBAC](/data-management-clips/data-management.mp4) and [Archive Features](/data-management-clips/archive-feature.mp4) demo video to see a live demonstration of multi-tenant data separation, role-based access enforcement and the soft-delete/archive lifecycle in action. -->
+<p>Check out
+the <a href="../data-management-clips/data-management.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">
+Tenant
+Isolation</a>, <a href="../data-management-clips/data-management.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">
+RBAC</a>
+and <a href="../data-management-clips/archive-feature.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">
+Archive Features</a> demo video to see a live demonstration of multi-tenant data separation, role-based access
+enforcement and the soft-delete/archive lifecycle in action.</p>
 <!-- Example -->
 <!--
 [REFERENTIAL_TYPE] (e.g., PRODUCT_TYPE)
        └── [REFERENTIAL] (e.g., LAPTOPS, SMART-PHONES)
                 └── [PRODUCT] (e.g., HP, DELL, SAMSUNG, GOOGLE)
 -->
-<h1 id="why">Why?</h1>
-<ul>
-<li>Built with industry-standard OAuth2 and JWT validation + strict code-level permission checks. You won't have to worry about unauthorized access or security gaps.</li>
-<li>Features automated multi-tenancy that safely separates data for different users behind the scenes. Tenants will never accidentally (or intentionally) see each other's information.</li>
-<li>Instead of dealing with messy manual database scripts every time products or categories change, this provides clean, dynamic endpoints to manage data instantly.</li>
-<li>With advanced database configuration (like turning off Open-in-View(OSIV) to protect connection pools and using PostgreSQL for safe rollbacks), the service stays fast and stable even under heavy traffic. Additionally, automated audit logging tracks who did what and when.</li>
-<li>Fully documented with interactive Swagger UI and clear code comments, meaning any future developer can jump in, understand how it works and start building immediately without a steep learning curve.</li>
-</ul>
-<h1 id="latest-features">Latest Features</h1>
-<ul>
-<li>Added endpoints to archive, restore, or permanently delete records.</li>
-</ul>
-<h1 id="key-features">Key Features</h1>
-<ul>
-<li><strong>OAuth2 Resource Server:</strong> Secures endpoints out-of-the-box by validating incoming JWTs against the identity provider using the configured <code>jwk-set-uri</code>.</li>
-<li><strong>Multi-Tenancy:</strong> Automatically pulls the <code>tenant-id</code> claim from the user's JWT and binds it to a request-scoped <code>ThreadLocal</code> context so tenants never cross paths.</li>
-<li><strong>Audit Logging:</strong> Keeps track of who did what and when by automatically populating <code>created_by</code>, <code>updated_by</code>, <code>created_at</code> and <code>updated_at</code> fields on the entities.</li>
-<li><strong>Method-Level Security:</strong> Secures business logic directly at the code level using Spring Security annotations like <code>@PreAuthorize</code> based on token claims and roles.</li>
-<li><strong>Swagger/OpenAPI Documentation:</strong> Comes with interactive API docs generated automatically, making it easy to test endpoints right in the browser.</li>
-<li><strong>Javadocs:</strong> Well-documented codebase with clear JavaDoc comments explaining core custom filters, resources, services, domain models, etc.</li>
-</ul>
-<h1 id="technology-stack">Technology Stack</h1>
-<ul>
-<li><strong>Database:</strong> <code>PostgreSQL</code></li>
-<li><strong>Migration Tool:</strong> <code>Liquibase</code></li>
-<li><strong>Security:</strong> <code>Spring Security</code> (<code>OAuth2 Resource Server</code> via <code>JWT</code> validation)</li>
-<li><strong>Documentation:</strong> <code>springdoc-openapi</code> v2.7.0 (<code>Swagger UI</code> available in development)</li>
-<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling, and custom validation groups)</li>
-</ul>
-<h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
-<p><strong>ADR 1: PostgreSQL over MySQL</strong></p>
-<ul>
-<li><strong>Decision:</strong> Chose <code>PostgreSQL</code> as the primary relational database for this service's data hierarchy.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li><strong>Transactional DDL:</strong> Liquibase migrations execute safely. If a migration fails midway, PostgreSQL rolls back the entire schema change automatically (avoiding MySQL's risk of leaving the database in a partially broken state).</li>
-<li><strong>JSONB Support:</strong> Offers native, highly indexable JSON querying for flexible, semi-structured referential properties.</li>
-<li><strong>Index Efficiency:</strong> Provides optimized B-Tree indexing models that reduce RAM and storage overhead during heavy read operations.</li>
-</ul>
-</li>
-</ul>
-<p><strong>ADR 2: <code>OSIV</code> Disabled (<code>spring.jpa.open-in-view: false</code>)</strong></p>
-<ul>
-<li><strong>Decision:</strong> Restrict database connection streams to remain open exclusively during active database transactions.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li>Streamlines the request/response lifecycle and prevents connection pool starvation under heavy load.</li>
-<li>DTO mapping must occur strictly inside transactional boundaries to prevent <code>LazyInitializationException</code> issues.</li>
-</ul>
-</li>
-</ul>
-<p><strong>ADR 3: Domain Identity via <code>my_key</code></strong></p>
-<ul>
-<li><strong>Decision:</strong> Separate physical database auto-increment/sequence IDs from logical domain keys.</li>
-<li><strong>Rationale:</strong>
-<ul>
-<li>Ensures identity stability and reliable data mapping across cross-environment migrations, staging syncs and distributed state replication.</li>
-</ul>
-</li>
-</ul>
-<h1 id="support">Support</h1>
-<ul>
-<li>
-<p><strong>Liquibase Migration Failures:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> Migration failed for <code>change set</code> or application crashes instantly at boot.</li>
-<li><strong>Fix:</strong> Verify that raw <code>SQL changesets</code> have valid headers (<code>--liquibase formatted sql</code>). If manual testing dirtied the metadata tracking schema, verify the status of the <code>DATABASECHANGELOG</code> tracking table directly.</li>
-</ul>
-</li>
-<li>
-<p><strong>Cross-Tenant Access Issue:</strong></p>
-<ul>
-<li><strong>Symptom:</strong> API requests return empty arrays (<code>[]</code>) or <code>404 Not Found</code>, even though the data exists in the database.</li>
-<li><strong>Fix:</strong> Verify that the global tenant filter is active and correctly capturing the tenant-id of the currently logged-in user. If testing locally, ensure development mode is enabled so the application properly handles mock or local tenant contexts. If dev-mode is misconfigured, the filter might default to a tenant ID that doesn't contain the test data.</li>
-</ul>
-</li>
-</ul>
-<h1 id="future-enhancements">Future Enhancements</h1>
-<ul>
-<li><strong>Library Migration:</strong> Decouple and migrate global infrastructure pieces (<code>TenantFilter</code>, <code>JwtAuthenticationConverter</code> and <code>OpenAPI</code> config) directly into a library to keep this business microservice lightweight.</li>
-<li><strong>Smart Updates:</strong> Transition updating logic from being solely field-name-based to utilizing a structured system key (<code>my_key</code>), enabling safer modifications including all field renames.</li>
-</ul>
-<!-- Check out the [Tenant Isolation](/data-management-clips/data-management.mp4), [RBAC](/data-management-clips/data-management.mp4) and [Archive Features](/data-management-clips/archive-feature.mp4) demo video to see a live demonstration of multi-tenant data separation, role-based access enforcement and the soft-delete/archive lifecycle in action. -->
-<p>Check out the <a href="../data-management-clips/data-management.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">Tenant Isolation</a>, <a href="../data-management-clips/data-management.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">RBAC</a> and <a href="../data-management-clips/archive-feature.mp4" target="_blank" style="display: inline-block; background-color: #f1f3f5; color: #333; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; text-decoration: none; font-weight: 500;">Archive Features</a> demo video to see a live demonstration of multi-tenant data separation, role-based access enforcement and the soft-delete/archive lifecycle in action.</p>
-
 </body>
 </html>

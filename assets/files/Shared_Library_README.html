@@ -365,377 +365,209 @@ code {
           : 'default'
     });
   </script>
-<h1 align="center">
-  <img src="https://skillicons.dev/icons?i=spring" width="30" />
-  SHARED LIBRARY
-</h1>
-<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
-<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
-<h1 id="project-overview">Project Overview</h1>
-<p>This shared library serves as the foundational backbone in a microservices ecosystem. It encapsulates reusable domain models, utility classes, validation groups and robust error-handling mechanisms to ensure consistency, eliminate code duplication and enforce best practices across both Servlet and Reactive microservices.</p>
-<h1 id="why">Why?</h1>
-<p>If you’ve ever managed a multi-service microservices architecture, you know how quickly things can get messy. Every new service ends up copying and pasting the same security filters, tenant resolution logic and validation rules. Before you know it, you’re spending half your sprint fixing slight discrepancies across services instead of building features.</p>
-<p>I built this shared library to completely take that friction out of the equation. Here is the actual impact it has on day-to-day engineering:</p>
+<h1 id="shared-service">Shared Service</h1>
+<p><img src="https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&amp;logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?logo=springboot&amp;logoColor=white" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&amp;logoColor=white" alt="Build: Maven">
+<img src="https://img.shields.io/badge/Packaging-JAR-4B5563" alt="Packaging: JAR"></p>
+<p>A reusable Java library for sharing common Spring components, configuration properties, tenant-context utilities, and
+persistence helpers across services.</p>
+<h2 id="overview">Overview</h2>
+<p>This library packages code intended to reduce duplication across the Spring services I build. It is distributed as a JAR
+and uses Spring Boot auto-configuration to register selected components in Servlet/Reactive-based applications.</p>
+<p>The library provides shared building blocks; consuming services remain responsible for their application-specific
+security, API behavior, persistence setup, and configuration.</p>
+<h2 id="purpose">Purpose</h2>
+<p>When multiple services need the same common capabilities, teams can end up building and maintaining them separately.
+This project brings selected shared components into one reusable library, making them easier to apply consistently and
+update in one place. It provides common building blocks; each service still controls its own business rules and
+security.</p>
+<h2 id="features">Features</h2>
 <ul>
-<li>When a team spins up a new microservice, they shouldn't have to spend a week wiring up standard security, multi-tenancy and error responses. With our zero-touch auto-configuration, a new service inherits all enterprise plumbing the second it adds the dependency, no manual <code>@Enable</code> annotations or boilerplate configuration files required.</li>
-<li>Whether a service is built on blocking Spring MVC (Servlet) or non-blocking Spring WebFlux (Reactive), the error responses, validation structures and tenant rules look and act identical. This makes life infinitely easier for frontend developers and external clients consuming the APIs.</li>
-<li>Handling data isolation across tenants can get complicated fast, especially with Hibernate hooks and thread contexts. This library bakes thread-safe tenancy straight into the core, meaning developers don't have to reinvent the wheel or risk cross-tenant data leaks, every time they write a database query.</li>
-<li>If we need to patch a security flaw, update an error-handling rule or tweak our tenant resolution logic, we don't have to touch ten different microservices. We update it in one place, bump the library version and the entire ecosystem gets the fix instantly.</li>
+<li><strong>Spring Boot auto-configuration</strong> for selected Servlet/Reactive application components and configuration properties.</li>
+<li><strong>Tenant context utilities</strong> using a <code>ThreadLocal</code> to make request-scoped user and tenant information available to
+downstream code.</li>
+<li><strong>Hibernate tenant identifier resolution</strong> based on the current tenant context, with a fallback identifier during
+application startup.</li>
+<li><strong>JPA auditing base classes and listeners</strong> for creation and update timestamps and usernames.</li>
+<li><strong>Reusable types and utilities</strong>, including response and user-information records, validation-group markers,
+date/string helpers, and custom exception types.</li>
 </ul>
-<p>Ultimately, this library lets product teams stop worrying about infrastructure boilerplate and focus entirely on shipping business features.</p>
-<h1 id="technology-stack--compatibility">Technology Stack &amp; Compatibility</h1>
+<h3 id="scope-and-limitations">Scope and limitations</h3>
 <ul>
-<li><strong>Core Dependency:</strong> <code>spring-boot-autoconfigure</code></li>
-<li><strong>Optional Dependencies:</strong>
-<ul>
-<li><code>spring-boot-configuration-processor</code></li>
-<li><code>spring-boot-starter-web</code></li>
-<li><code>spring-boot-starter-webflux</code></li>
-<li><code>spring-boot-starter-data-jpa</code></li>
+<li>Reactive/WebFlux support is not implemented, to use <code>ThreadLocal</code>.</li>
+<li>This library does not provide API endpoints or a global HTTP exception handler.</li>
+<li>Configuration-property records are provided, but defining a property does not by itself configure a corresponding
+security or CORS policy.</li>
+<li>The tenant filter is not an authentication mechanism. Review its behavior and integration with the consuming
+application before enabling it.</li>
+<li>The repository does not currently contain test sources.</li>
 </ul>
-</li>
-<li><strong>Compatibility Matrix:</strong> Fully compatible with Spring Boot 3.5.x and Java 17+</li>
-</ul>
-<h1 id="key-features">Key Features</h1>
-<p><strong>Zero-Touch Activation &amp; Configuration</strong></p>
-<ul>
-<li><em><strong>config:</strong></em> Holds internal <code>@AutoConfiguration</code> files targeting specific runtime profiles.</li>
-<li><em><strong>Zero-Touch Activation:</strong></em> Automatically wires up beans depending on the host application's environment without requiring manual bean declarations.</li>
-<li><em><strong>properties:</strong></em> Provides resilient, type-safe configuration classes utilizing <code>Java 17 records</code> for modern, immutable property mapping.</li>
-</ul>
-<p><strong>Multi-Tenancy &amp; Context Management</strong></p>
-<ul>
-<li><em><strong>Multi-Tenancy Support:</strong></em> Enables multi-tenant data isolation by dynamically resolving tenant identifiers during database operations.</li>
-<li><em><strong>TenantIdentifierResolver:</strong></em> Plugs directly into Hibernate (<code>CurrentTenantIdentifierResolver</code> and <code>HibernatePropertiesCustomizer</code>) to enforce tenant boundary checks. Defaults to a fallback tenant (<code>0L</code>) during system bootstrap before switching to strict security verification.</li>
-<li><em><strong>UserInfoContext:</strong></em> A thread-safe, <code>ThreadLocal</code> backed context holder storing execution-scoped user and tenant metadata (<code>UserInfo</code>) across service calls.</li>
-<li><em><strong>AppStartup:</strong></em> A lifecycle component that listens for Spring's <code>ContextRefreshedEvent</code> to ensure startup tasks operate safely before enforcing tenant access checks.</li>
-</ul>
-<p><strong>Stack Support</strong></p>
-<ul>
-<li><em><strong>Dual-Stack Support:</strong></em> Offers specialized conditional configurations tailored for both MVC (Servlet) and WebFlux (Reactive) environments.</li>
-<li><em><strong>exceptions:</strong></em> Defines a core operational hierarchy containing abstract base exceptions to ensure unified error structures.</li>
-</ul>
-<p><strong>Reusable Domains &amp; Utils</strong></p>
-<ul>
-<li><em><strong>Reusable Domains &amp; Utils:</strong></em> Centralizes common data models and high-efficiency utility classes shared across the ecosystem.</li>
-<li><em><strong>domains:</strong></em> Houses shared entities, DTOs and global models to maintain data contract consistency across multiple microservices.</li>
-<li><em><strong>utils:</strong></em> Delivers high-performance, thread-safe utility classes optimized for shared ecosystem tasks.</li>
-</ul>
-<p><strong>Advanced Validation</strong></p>
-<ul>
-<li><em><strong>Advanced Validation:</strong></em> Implements pre-configured validation groups for fine-grained request lifecycle control.</li>
-<li><em><strong>validation:</strong></em> Contains custom validation markers, constraints and validation groups to enforce robust data integrity at the edge.</li>
-</ul>
-<h1 id="developer-authentication-setup">Developer Authentication Setup</h1>
-<p>Before consuming or deploying this library, one must authenticate Maven or Gradle with GitHub Packages using a Personal Access Token (PAT).</p>
-<p><strong>Generating Token</strong></p>
-<ul>
-<li>In the GitHub UI, navigate to: GitHub Settings → Developer Settings → Personal Access Tokens → Tokens (classic).</li>
-<li>Click Generate new token (classic).</li>
-<li>Select the write:packages and read:packages scopes.</li>
-<li>Copy the generated token (ghp_ACCESS_TOKEN).</li>
-</ul>
-<p><em>For Maven project:</em>
-Copy the token into global <code>~/.m2/settings.xml</code> file:</p>
-<h6 id="settingsxml">settings.xml</h6>
-<pre class="hljs"><code><div>&lt;settings&gt;
-  &lt;servers&gt;
-    &lt;server&gt;
-      &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
-      &lt;username&gt;GITHUB_USERNAME&lt;/username&gt;
-      &lt;password&gt;ghp_ACCESS_TOKEN&lt;/password&gt;
-    &lt;/server&gt;
-  &lt;/servers&gt;
-&lt;/settings&gt;
-</div></code></pre>
-<p><em>For Gradle project:</em>
-Copy the token into global<code>~/.gradle/gradle.properties</code> file:</p>
-<h6 id="gradleproperties">gradle.properties</h6>
-<pre class="hljs"><code><div>gpr.user=GITHUB_USERNAME
-gpr.key=ghp_ACCESS_TOKEN
-</div></code></pre>
-<h1 id="deployment">Deployment</h1>
-<p>To publish this library to private package registry,</p>
-<p><em>For Maven</em>, add <code>maven-deploy-plugin</code> plugin and configure <code>distributionManagement</code> inside <code>pom.xml</code></p>
-<pre class="hljs"><code><div>&lt;distributionManagement&gt;
-    &lt;repository&gt;
-        &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
-        &lt;name&gt;GitHub Packages&lt;/name&gt;
-        &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/distributionManagement&gt;
-
-&lt;build&gt;
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
-            &lt;version&gt;3.1.1&lt;/version&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build&gt;
-</div></code></pre>
-<p><em>For Gradle</em>, add <code>maven-publish</code> plugin and configure the <code>publishing</code> block inside <code>build.gradle</code></p>
-<pre class="hljs"><code><div>plugins {
-    id 'maven-publish'
-    id 'java'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name = &quot;GitHubPackages&quot;
-            url = uri(&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;)
-            credentials {
-                username = project.findProperty(&quot;gpr.user&quot;)
-                password = project.findProperty(&quot;gpr.key&quot;)
-            }
-        }
-    }
-}
-</div></code></pre>
-<p>Run the following command to deploy securely via CI/CD pipeline:
-<br>
-<br></p>
-<p><em>For Maven</em>,</p>
-<p><code>mvn clean deploy</code></p>
-<p><em>For Gradle</em>,</p>
-<p><code>gradle clean publish</code></p>
+<h2 id="architecture">Architecture</h2>
+<p>In a Servlet application, the tenant-related components can work together as follows. The host application is
+responsible for supplying appropriate request identity and tenant information and integrating the filter with its
+request-processing setup.</p>
+<p><code>TenantIdentifierResolver</code> returns the startup fallback tenant identifier before the application context is initialized.
+At runtime, it obtains the tenant identifier from <code>UserInfoContext</code>; if there is no tenant in the context, it throws an
+<code>IllegalStateException</code>.</p>
+<h2 id="technology-stack">Technology stack</h2>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Version / role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java</td>
+<td>17</td>
+</tr>
+<tr>
+<td>Spring Boot</td>
+<td>3.5.5</td>
+</tr>
+<tr>
+<td>Maven</td>
+<td>Build and dependency management</td>
+</tr>
+<tr>
+<td>Spring MVC / Servlet</td>
+<td>Servlet-specific auto-configuration and filter</td>
+</tr>
+<tr>
+<td>Hibernate / JPA</td>
+<td>Tenant identifier resolution and entity lifecycle callbacks</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
-<p>Update the version before deploying.</p>
+<p>The project has not been tested against additional Java or Spring Boot versions.</p>
 </blockquote>
-<h1 id="installation">Installation</h1>
-<p>Integrating the library is seamless. Simply add the following dependency to the hosting application:</p>
-<blockquote>
-<p>Authentication and the source of library needs to be configured</p>
-</blockquote>
-<p><em>For Maven</em></p>
-<pre class="hljs"><code><div>&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;<span class="hljs-built_in">id</span>&gt;github&lt;/id&gt;
-        &lt;url&gt;https://maven.pkg.github.com/Kranthi0307/shared-service&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
+<h2 id="project-structure">Project structure</h2>
+<pre class="hljs"><code><div>src/main/java/com/.../
+├── components/   # Application lifecycle and Hibernate tenant resolution
+├── config/       # Spring Boot auto-configuration
+├── contexts/     # Thread-local user and tenant context
+├── domains/      # Shared records and response types
+├── enums/        # Shared enumerations
+├── exceptions/   # Custom runtime exception hierarchy
+├── filters/      # Servlet tenant filter
+├── listeners/    # JPA lifecycle callbacks
+├── models/       # JPA mapped superclasses for audit fields
+├── properties/   # Typed configuration properties
+├── services/     # Shared service components
+├── utils/        # Constants and date/string utilities
+└── validation/   # Validation groups
 
-&lt;dependency&gt;
-  &lt;groupId&gt;com.kranthi&lt;/groupId&gt;
-  &lt;artifactId&gt;shared-service&lt;/artifactId&gt;
-  &lt;version&gt;1.x.x&lt;/version&gt;
-&lt;/dependency&gt;
-</div></code></pre>
-<p><em>For Gradle</em></p>
-<pre class="hljs"><code><div>repositories {
-    mavenCentral()
-    maven {
-        url = uri(<span class="hljs-string">&quot;https://maven.pkg.github.com/Kranthi0307/shared-service&quot;</span>)
-        credentials {
-            username = project.findProperty(<span class="hljs-string">&quot;gpr.user&quot;</span>)
-            password = project.findProperty(<span class="hljs-string">&quot;gpr.key&quot;</span>)
-        }
-    }
-}
+src/main/resources/META-INF/spring/
+└── org.springframework.boot.autoconfigure.AutoConfiguration.imports
 
-implementation <span class="hljs-string">&#x27;com.kranthi:shared-service:1.x.x&#x27;</span>
+docs/             # Component and package notes
 </div></code></pre>
-<blockquote>
-<p>No additional annotations (like <code>@Enable*</code>) or explicit configuration scans are required. The library autoconfigures itself upon building the application.</p>
-</blockquote>
-<h1 id="prerequisites--configuration">Prerequisites &amp; Configuration</h1>
-<p>To provide compilation-time IDE support (like autocomplete for configuration properties) in hosting applications, ensure the <code>spring-boot-configuration-processor</code> is included in the build.</p>
-<p><strong>Intelligent Defaults:</strong> The library utilizes <code>@ConfigurationProperties</code> bundled with <code>@DefaultValue</code> to provide plug-and-play defaults (e.g., config.web.public-end-points=&quot;/actuator/health&quot;) without polluting the host application's properties file.</p>
-<pre class="hljs"><code><div>@ConfigurationProperties(prefix = <span class="hljs-string">&quot;config.web&quot;</span>)
-public record WebProperties(
-        @DefaultValue(<span class="hljs-string">&quot;/actuator/health&quot;</span>)
-        String[] publicEndPoints
-) {
-}
-</div></code></pre>
-<h1 id="project-structure">Project Structure</h1>
-<pre class="hljs"><code><div>├───config/ #Framework AutoConfigurations
-├───domains/ #Reusable domains, DTOs and common models
-├───exceptions/ #Abstract ecosystem RuntimeExceptions
-├───properties/ #Java 17 configuration records
-├───utils/ #Common thread-safe helper utilities
-└───validation/ #Validation groups (CreateValidation, UpdateValidation)
-</div></code></pre>
-<h3 id="reference-implementation-examples">Reference Implementation Examples</h3>
-<p><strong>Validation Groups</strong></p>
-<pre class="hljs"><code><div>public interface CreateValidation {}
-public interface UpdateValidation {}
-</div></code></pre>
-<p><strong>Domain</strong></p>
-<pre class="hljs"><code><div>public record ResponseRecord&lt;T&gt;(String message,
-                                T data) {
-}
-</div></code></pre>
-<p><strong>Exception</strong></p>
-<pre class="hljs"><code><div>public abstract class BaseException extends RuntimeException {
-
-    private final String errorCode;
-
-    protected BaseException(String message, String errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
-
-    protected BaseException(String message, String errorCode, Throwable cause) {
-        super(message, cause);
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-}
-</div></code></pre>
-<p><strong>Handler</strong></p>
-<pre class="hljs"><code><div>@RestControllerAdvice
-public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(BaseException.class)
-    public ResponseEntity&lt;ResponseRecord&lt;String&gt;&gt; handleBaseException(BaseException exception) {
-        HttpStatus status;
-        //My exceptions Logic
-        <span class="hljs-built_in">return</span> ResponseEntity.status(status)
-                .body(new ResponseRecord&lt;&gt;(
-                        exception.getMessage(),
-                        exception.getErrorCode()
-                ));
-    }
-}
-</div></code></pre>
-<h1 id="local-development">Local Development</h1>
-<p>To make changes to this library and test them locally in a hosting application:</p>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>Clone the repository.</li>
-<li>Build and publish the artifact to the local .m2 repository:</li>
+<li>JDK 17</li>
+<li>A shell that can run the Maven wrapper</li>
 </ul>
+<h2 id="build-and-test">Build and test</h2>
+<p>Build the JAR locally:</p>
+<pre class="hljs"><code><div>mvn clean package
+</div></code></pre>
+<p>To install the artifact into your local Maven repository for use by another local project:</p>
 <pre class="hljs"><code><div>mvn clean install
 </div></code></pre>
-<ul>
-<li>Update the version in the hosting application if necessary and re-import dependencies.</li>
-</ul>
-<h1 id="decision-log-architecture-decision-records">Decision Log (Architecture Decision Records)</h1>
-<p><strong>ADR 1: Decoupled Architecture via Optional Dependencies</strong></p>
-<ul>
-<li><em><strong>Context:</strong></em> We need to keep this core library lightweight and decoupled from rigid transitive dependency chains.</li>
-<li><em><strong>Decision:</strong></em> Used <code>&lt;optional&gt;true&lt;/optional&gt;</code> for non-mandatory core dependencies. Hosting applications retain full control over their dependency versions without pollution.</li>
-</ul>
-<p><strong>ADR 2: Avoided <code>@PropertySource</code> for Default Configurations</strong></p>
-<ul>
-<li><em><strong>Context:</strong></em> Loading properties via <code>@PropertySource</code> is a known anti-pattern in modern Spring Boot ecosystems.</li>
-<li><em><strong>Decision:</strong></em> Avoided <code>@PropertySource</code> entirely. It breaks smooth integration with Java 17 configuration record types and messes with Spring Boot's natural property loading order. Instead, we lean on <code>@ConfigurationProperties</code> with <code>@DefaultValue</code>.</li>
-</ul>
-<p><strong>ADR 3: Auto-Configuration Split (Servlet vs. Reactive)</strong></p>
-<ul>
-<li>
-<p><em><strong>Context:</strong></em> The library must safely support both WebMVC (Servlet) and WebFlux (Reactive) microservices without causing runtime bean definition conflicts or forcing developers to manually configure their stack type.</p>
-</li>
-<li>
-<p><em><strong>Decision:</strong></em> I made it easy for both Servlet and Reactive environments to work smoothly out of the box by leveraging Spring Boot's modern auto-configuration loading mechanism. The auto-configurations are registered via: <code>resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>. Inside the configuration classes, beans are dynamically and cleanly isolated using conditional boundaries based on the host application's runtime environment:</p>
-<ul>
-<li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)</code></li>
-<li><code>@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)</code></li>
-</ul>
-<p>This ensures that hosting applications automatically get the correct bean implementations with zero manual setup.</p>
-</li>
-</ul>
-<p><strong>ADR 4: Thread-Safe State Management in Multi-Tenant</strong></p>
-<ul>
-<li>
-<p><em><strong>Context:</strong></em> Tenant identification depends on the application's lifecycle state (<code>isAppStarted</code>). Because Hibernate lifecycle hooks (<code>CurrentTenantIdentifierResolver</code>) invoke tenant resolution requests early during context creation, early web requests or background threads could read stale initialization states. Furthermore, exposing this logic via a shared library introduces risks of cross-context test pollution if shared global memory states are utilized.</p>
-</li>
-<li>
-<p><em><strong>Decision:</strong></em> Eliminate global static variables in favor of a Spring-managed bean instance. Mark the state variable as volatile to enforce cross-thread visibility, register it via Spring Boot auto-configuration mechanism and utilize lazy dependency injection (<code>ObjectProvider&lt;T&gt;</code>) at the resolution layer.</p>
-</li>
-<li>
-<p><em><strong>Consequence:</strong></em></p>
-<ul>
-<li>Consuming applications automatically wire the lifecycle state without modifying explicit configuration packages.</li>
-<li>CPU-level caching is bypassed, forcing runtime worker threads to read real-time context states directly from main memory.</li>
-<li>Integration test suites executing multiple Spring Contexts sequentially or concurrently within a single <code>JVM</code> can run reliably without shared-state leaks or cross-contamination.</li>
-<li>Direct object injection during the early Hibernate boot pipeline is safely decoupled via lazy loading proxies to avoid circular dependencies.</li>
-</ul>
-</li>
-</ul>
-<p><strong>ADR 5: Decoupled Multi-Tenancy Data Dependencies</strong></p>
-<ul>
-<li><em><strong>Context:</strong></em> The shared library introduces a global <code>CurrentTenantIdentifierResolver</code> component hook for database isolation routing. However, this library is imported by multiple downstream microservices, some of which may be purely reactive (e.g., <code>WebFlux API Gateway</code>) or non-relational services that do not require full relational database management (<code>RDBMS</code>) drivers or Hibernate engines.</li>
-<li><em><strong>Decision:</strong></em> Declare the <code>spring-boot-starter-data-jpa</code> dependency utilizing both the <code>&lt;scope&gt;provided&lt;/scope&gt;</code> and <code>&lt;optional&gt;true&lt;/optional&gt;</code> configuration scopes.</li>
-</ul>
-<pre class="hljs"><code><div>&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
-    &lt;optional&gt;true&lt;/optional&gt;
-    &lt;scope&gt;provided&lt;/scope&gt; 
-&lt;/dependency&gt;
+<p>The Maven coordinates declared by this project are:</p>
+<pre class="hljs"><code><div>com.kranthi:shared-service:1.2.0
 </div></code></pre>
+<p>A local consumer can then declare the dependency in its <code>pom.xml</code>:</p>
+<pre class="hljs"><code><div>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.kranthi<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>shared-service<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</div></code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>The auto-configuration enables these typed property groups:</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config.web</code></td>
+<td>Public and administrative endpoint path patterns</td>
+</tr>
+<tr>
+<td><code>config.others</code></td>
+<td>Development mode and tenant-related settings</td>
+</tr>
+<tr>
+<td><code>config.cors</code></td>
+<td>CORS-related property values</td>
+</tr>
+</tbody>
+</table>
+<p>Example configuration using safe, illustrative values:</p>
+<pre class="hljs"><code><div><span class="hljs-attr">config:</span>
+  <span class="hljs-attr">others:</span>
+    <span class="hljs-attr">dev-mode:</span> <span class="hljs-literal">false</span>
+    <span class="hljs-attr">tenant-id:</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">tenant-enabled:</span> <span class="hljs-literal">false</span>
+    <span class="hljs-attr">tenant-excluded-paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/actuator/health</span>
+  <span class="hljs-attr">cors:</span>
+    <span class="hljs-attr">allowed-origins:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">https://example.com</span>
+    <span class="hljs-attr">allowed-methods:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">GET</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">POST</span>
+    <span class="hljs-attr">allowed-headers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">Authorization</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">Content-Type</span>
+    <span class="hljs-attr">exposed-headers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">Authorization</span>
+    <span class="hljs-attr">allow-credentials:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">max-age:</span> <span class="hljs-number">3600</span>
+</div></code></pre>
+<p>Property defaults are defined in the library and can vary by version. Set values explicitly for the consuming service
+rather than relying on defaults.</p>
+<blockquote>
+<p><strong>Tenant filter caution:</strong> The Servlet tenant filter uses the configured development-mode and tenant settings and
+supplies a development username. Do not treat it as production authentication or authorization. Check the filter’s
+registration and ordering in the host application, and use the host application’s security configuration for access
+control.</p>
+</blockquote>
+<p><code>UserInfoContext</code> uses a thread-local value. Code that sets the context must ensure it is cleared when processing
+finishes; the provided tenant filter clears it in a <code>finally</code> block.</p>
+<h2 id="persistence-helpers">Persistence helpers</h2>
+<p>The <code>Events</code> mapped superclass provides <code>created_at</code> and <code>updated_at</code> fields, populated by a JPA lifecycle listener.
+<code>EventInfo</code> extends it with <code>created_by</code> and <code>updated_by</code>, populated from <code>UserInfoContext</code>.</p>
+<p>These are reusable base classes, not concrete entities. Consuming applications provide their own entities, repositories,
+database configuration, and schema management.</p>
+<h2 id="version-history">Version history</h2>
+<h3 id="v120">v1.2.0</h3>
+<p>This release included:</p>
 <ul>
-<li><em><strong>Consequence:</strong></em>
-<ul>
-<li><em><strong>No Transit Drag:</strong></em> Downstream microservices inheriting this library will not have the bulky <code>JPA/Hibernate</code> libraries forced into their dependency graphs unless they explicitly declare a JPA starter themselves.</li>
-<li><em><strong>Gateway Stability:</strong></em> Avoids runtime class loader pollution or database driver initialization errors inside Netty-based <code>Spring Cloud Gateway</code> applications.</li>
-<li><em><strong>Compile-Time Safety:</strong></em> Provides the required Hibernate engine classes (<code>CurrentTenantIdentifierResolver</code>) during the shared library's internal build lifecycle so it compiles seamlessly.</li>
+<li><strong>Auto-configuration for Servlet/Reactive applications:</strong> Registers the startup component and shared service, and
+conditionally provides tenant-related beans when tenant support is enabled.</li>
+<li><strong>Tenant context and Hibernate integration:</strong> Provides <code>UserInfoContext</code> and <code>TenantIdentifierResolver</code> for resolving
+the current tenant from thread-bound context.</li>
+<li><strong>Servlet tenant filter:</strong> Provides a filter that sets development tenant context when development mode is enabled. It
+is not an authentication mechanism; consuming applications must configure security and filter integration
+appropriately.</li>
+<li><strong>Shared data types:</strong> Includes <code>ResponseRecord&lt;T&gt;</code> and <code>UserInfo</code>.</li>
+<li><strong>JPA audit base classes:</strong> Includes <code>Events</code> and <code>EventInfo</code> with lifecycle listeners for timestamps and username
+fields.</li>
+<li><strong>Configuration properties:</strong> Includes <code>SharedWebProperties</code>, <code>SharedDevProperties</code>, and <code>SharedCorsProperties</code>.</li>
+<li><strong>Shared exception types:</strong> Includes <code>BaseException</code> and domain-specific subclasses.</li>
+<li><strong>Validation markers and utilities:</strong> Includes create/update validation groups, constants, and date/string helper
+methods.</li>
 </ul>
-</li>
-</ul>
-<h1 id="troubleshooting">Troubleshooting</h1>
-<ul>
-<li><strong>Properties not auto-completing in IDE:</strong> Ensure the host application has the <code>spring-boot-configuration-processor</code> plugin active and IDE's annotation processing is enabled.</li>
-<li><strong>Bean conflicts between MVC and WebFlux:</strong> Ensure that both reactive and servlet dependencies on the host application's classpath are not mixed, which might confuse the conditional auto-configurations.</li>
-<li><strong>Stale code or version mismatch when switching versions:</strong> If switching from a newer version of the library back to an older version and the hosting application is picking up the wrong code, the local <code>.m2 cache</code> is likely polluted. Do not delete the entire <code>.m2 folder</code>. Instead, delete only this specific library's cache by navigating to <code>~/.m2/repository/</code> and deleting the specific library or version folder. After deleting, re-import the dependencies in the hosting application to pull the correct version.</li>
-</ul>
-<h1 id="future-enhancements">Future Enhancements</h1>
-<p>The following capabilities are planned for upcoming releases:</p>
-<ul>
-<li>Global Security Configurations &amp; Filters.</li>
-<li>Centralized OpenAPI/Swagger documentation configurations.</li>
-<li>Standardized Jackson Customizer/Object Mapper configurations</li>
-</ul>
-<h1 id="versions">Versions</h1>
-<p><em><strong>v1.2.0</strong></em></p>
-<ul>
-<li><strong>Domains:</strong> <code>ResponseRecord&lt;T&gt;</code> and <code>UserInfo</code></li>
-<li><strong>Models:</strong> <code>Events</code> and <code>EventInfo</code></li>
-<li><strong>Listeners:</strong> <code>EventsListener</code> and <code>EventInfoListener</code></li>
-<li><strong>Exceptions:</strong> <code>BaseException</code> that extends <code>RuntimeException</code> with other re-usable classes extending <code>BaseException</code>.</li>
-<li><strong>Properties:</strong> <code>SharedWebProperties</code>, <code>SharedDevProperties</code> and <code>SharedCorsProperties</code> with default properties are autoconfigured.</li>
-<li><strong>Components:</strong>
-<ul>
-<li><code>TenantIdentifierResolver</code> which is responsible to resolve the current tenant identifier for multi-tenant database operations and customizes Hibernate properties accordingly.</li>
-<li><code>AppStartup</code> that is responsible for tracking the initialization and startup lifecycle of the Spring application context.</li>
-</ul>
-</li>
-<li><strong>Filters:</strong>
-<ul>
-<li><code>TenantFilter</code> that extends <code>OncePerRequestFilter</code> responsible to set the tenant information.</li>
-</ul>
-</li>
-<li><strong>Context:</strong>
-<ul>
-<li><code>UserInfoContext</code> represents a thread-safe context holder utilizing a thread-local variable.</li>
-</ul>
-</li>
-<li><strong>Configuration:</strong>
-<ul>
-<li>Configured the following beans:<br>
-For Servlet,
-<ul>
-<li><code>AppStartup</code> if one is not already present in the application context.</li>
-<li><code>TenantIdentifierResolver</code> if the required property is set to true and if one is not already present in the application context.</li>
-<li><code>TenantFilter</code> if the required property is set to true and if one is not already present in the application context.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>Note:</strong> Register the <code>TenantFilter</code> in Security Configuration if needed.</p>
 
 </body>
 </html>

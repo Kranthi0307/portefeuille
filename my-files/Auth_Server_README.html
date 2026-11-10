@@ -365,50 +365,306 @@ code {
           : 'default'
     });
   </script>
-<h1 align="center">
-  <img src="https://skillicons.dev/icons?i=spring" width="30" />
-  AUTHENTICATION SERVER
-</h1>
-<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
-<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
-<p>I built a production-ready, highly secure multi-tenant backend that serves as the single source of truth for enterprise applications. It’s designed to handle strict data isolation, custom security flows and clean code practices out of the box.</p>
-<h1 id="why">Why?</h1>
+<h1 id="authentication-server">Authentication Server</h1>
+<p><img src="https://img.shields.io/badge/Java-17-orange?logo=openjdk&amp;logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-6DB33F?logo=spring&amp;logoColor=white" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Spring Security-Authentication-6DB33F?logo=spring&amp;logoColor=white" alt="Spring Security">
+<img src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&amp;logoColor=white" alt="Maven">
+<img src="https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&amp;logoColor=white" alt="MySQL">
+<img src="https://img.shields.io/badge/Liquibase-Migrations-2962FF?logo=liquibase&amp;logoColor=white" alt="Liquibase">
+<img src="https://img.shields.io/badge/JWT-RSA signed-000000?logo=jsonwebtokens&amp;logoColor=white" alt="JWT"></p>
+<p>A Spring Boot service for user registration and authentication, with JWT issuance, refresh-token handling, tenant-aware
+request context, and a JWKS endpoint.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Applications need a way to confirm who a user is before granting access. This project explores a shared authentication
+service that handles sign-in and issues time-limited access tokens that other services can verify.</p>
+<p>It also includes tenant-aware request handling, so requests can be associated with the right organization or customer.
+The goal is to keep common identity and access tasks in one service rather than implementing them separately in each
+application.</p>
+<p>This is under development project, as some management operations are still being developed.</p>
+<h2 id="overview">Overview</h2>
+<p>The service uses Spring Security for authentication, stores application data in MySQL through Spring Data JPA, and
+manages database schema changes with Liquibase. Access tokens are signed with an RSA private key; the corresponding
+public keys are exposed as a JSON Web Key Set (JWKS).</p>
+<p>The application is configured to start with its <code>dev</code> profile by default. This README describes development setup; it
+does not imply production readiness.</p>
+<h2 id="features">Features</h2>
 <ul>
-<li>Built with Hibernate 6 multi-tenancy, meaning one can scale to multiple clients efficiently without spinning up separate database instances for everyone.</li>
-<li>Implements modern OAuth2 standards with custom JWT claims and a public JWKS endpoint so the microservices or client applications can easily and securely validate user tokens.</li>
-<li>Uses a custom shared library for reusable domains, properties and utils, which cuts down on boilerplate code and speeds up future feature rollouts.</li>
-<li>Every database update is tracked, tested and deployed safely using Liquibase, preventing nasty production migration bugs.</li>
+<li>Authenticate users and issue signed JWT access tokens.</li>
+<li>Issue and validate refresh tokens; the refresh token is returned in a cookie.</li>
+<li>Publish public RSA keys at <code>GET /.well-known/jwks.json</code>.</li>
+<li>Register users and provide user, tenant, role, and privilege API resources.</li>
+<li>Resolve a tenant from the <code>X-TENANT</code> request header for tenant-scoped requests and clear the request context
+afterward.</li>
+<li>Apply Spring Security rules for public and authenticated endpoints.</li>
+<li>Apply Liquibase changelogs automatically at startup.</li>
 </ul>
-<h1 id="key-features">Key Features</h1>
+<h2 id="technology-stack">Technology stack</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td>Java 17</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Spring Boot 3.5.5</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>Maven Wrapper</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Spring Data JPA, MySQL</td>
+</tr>
+<tr>
+<td>Schema migrations</td>
+<td>Liquibase</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Spring Security</td>
+</tr>
+<tr>
+<td>Tokens</td>
+<td>JJWT, RSA signing</td>
+</tr>
+<tr>
+<td>Shared types and utilities</td>
+<td><code>shared-service</code> dependency</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>shared-service</code> dependency must be available to Maven to build the application. For its setup and documentation,
+refer to that library's README.</p>
+<h2 id="architecture-and-request-flow">Architecture and request flow</h2>
+<p>For tenant-scoped requests, <code>TenantFilter</code> reads the <code>X-TENANT</code> header, resolves the tenant, and stores its ID in
+<code>TenantContext</code> for the duration of the request. The context is cleared after the request is processed.</p>
+<p><code>AuthResource</code> delegates credential authentication to Spring Security, creates an access token through <code>JwtService</code>, and
+creates a refresh token through <code>RefreshTokenService</code>. <code>JwksController</code> returns public RSA key data for clients that
+need to verify tokens.</p>
+<h2 id="project-structure">Project structure</h2>
+<pre class="hljs"><code><div>src/main/java/com/.../
+├── configurations/  Spring Security and keystore configuration
+├── contexts/        Request-scoped tenant context
+├── controllers/     JWKS endpoint
+├── domains/         Request and response data types
+├── filters/         Tenant request filter
+├── handlers/        Authentication and exception handlers
+├── models/          JPA persistence models
+├── properties/      Typed application configuration
+├── repositories/    Spring Data repositories
+├── resources/       Authentication and management REST resources
+├── services/        User, tenant, role, token, and key operations
+└── utils/           Application utilities
+
+src/main/resources/
+├── application.yaml         Common configuration
+├── application-dev.yaml     Development profile configuration
+└── db/changelog/            Liquibase changelogs
+</div></code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>Used Hibernate 6's <code>@TenantId</code> paired with a custom <code>OncePerRequestFilter</code> to automatically catch tenant headers on incoming requests and route data to the right place.</li>
-<li>Configured <code>io.jsonwebtoken</code> to issue tokens with modified, business-specific claims and exposed a secure <code>/.well-known/jwks.json</code> endpoint for seamless token validation.</li>
-<li>Built a flexible authorization layer(RBAC) to ensure users only access the endpoints and data they’re allowed to.</li>
-<li>Integrated my own custom shared-library to keep core domains, utilities and properties DRY (Don't Repeat Yourself) across projects/services.</li>
-<li>Configured MySQL alongside Liquibase to keep database schemas version-controlled and synchronized effortlessly.</li>
+<li>JDK 17</li>
+<li>MySQL</li>
+<li>Access to the Maven artifact repository that provides <code>shared-service</code></li>
+<li>A development PKCS#12 keystore for JWT signing</li>
 </ul>
-<h1 id="technology-stack">Technology Stack</h1>
-<ul>
-<li><strong>Database:</strong> <code>MySQL</code></li>
-<li><strong>Migration Tool:</strong> <code>Liquibase</code></li>
-<li><strong>Dependencies:</strong>
-<ul>
-<li><code>spring-boot-starter-web</code></li>
-<li><code>spring-boot-starter-data-jpa</code></li>
-<li><code>spring-boot-starter-validation</code></li>
-<li><strong>Security:</strong>
-<ul>
-<li><code>spring-boot-starter-security</code></li>
-<li><code>spring-boot-starter-oauth2-client</code></li>
-<li><code>io.jsonwebtoken (jjwt-api, jjwt-impl, jjwt-jackson)</code></li>
-</ul>
+<h2 id="development-setup">Development setup</h2>
+<ol>
+<li>
+<p>Create a local MySQL database and a database user with the required permissions.</p>
 </li>
-<li><code>mysql-connector-j</code></li>
-<li><code>liquibase-core</code></li>
-</ul>
+<li>
+<p>Ensure the <code>shared-service</code> artifact is available to Maven. Consult that library's README for setup details.</p>
 </li>
-<li><strong>Shared Infrastructure:</strong> <code>shared-service</code> (Internal dependency for re-usable domains, global exception handling, and custom validation groups)</li>
+<li>
+<p>Configure the application using environment variables. Do not put credentials or private keys in source control.</p>
+</li>
+<li>
+<p>Run the application:</p>
+<pre class="hljs"><code><div>mvn spring-boot:run
+</div></code></pre>
+</li>
+</ol>
+<p>To build the application without starting it:</p>
+<pre class="hljs"><code><div>mvn clean package
+</div></code></pre>
+<p>The application uses the <code>dev</code> Spring profile by default. Liquibase is enabled and reads changelogs from
+<code>db/changelog/changelog.yaml</code> during startup.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The development profile needs a MySQL datasource and a PKCS#12 keystore. Set local values through environment variables
+rather than copying credentials into YAML:</p>
+<table>
+<thead>
+<tr>
+<th>Environment variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SPRING_DATASOURCE_URL</code></td>
+<td>JDBC URL for the local MySQL database</td>
+</tr>
+<tr>
+<td><code>SPRING_DATASOURCE_USERNAME</code></td>
+<td>Local database username</td>
+</tr>
+<tr>
+<td><code>SPRING_DATASOURCE_PASSWORD</code></td>
+<td>Local database password</td>
+</tr>
+<tr>
+<td><code>CONFIG_KEYS_KEYSTORE</code></td>
+<td>Keystore resource location, such as <code>file:/path/to/dev-keystore.p12</code></td>
+</tr>
+<tr>
+<td><code>CONFIG_KEYS_PASSWORD</code></td>
+<td>Password for the development keystore</td>
+</tr>
+<tr>
+<td><code>CONFIG_KEYS_TYPE</code></td>
+<td>Keystore type, normally <code>PKCS12</code></td>
+</tr>
+<tr>
+<td><code>CONFIG_KEYS_ACTIVE_ALIAS</code></td>
+<td>Alias used to sign access tokens</td>
+</tr>
+<tr>
+<td><code>CONFIG_JWT_ACCESS_EXPIRATION</code></td>
+<td>Access-token expiration setting</td>
+</tr>
+</tbody>
+</table>
+<p>Example shell configuration (replace every placeholder with a local development value):</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">export</span> SPRING_DATASOURCE_URL=<span class="hljs-string">&#x27;jdbc:mysql://localhost:3306/&lt;database&gt;&#x27;</span>
+<span class="hljs-built_in">export</span> SPRING_DATASOURCE_USERNAME=<span class="hljs-string">&#x27;&lt;local-database-user&gt;&#x27;</span>
+<span class="hljs-built_in">export</span> SPRING_DATASOURCE_PASSWORD=<span class="hljs-string">&#x27;&lt;local-database-password&gt;&#x27;</span>
+<span class="hljs-built_in">export</span> CONFIG_KEYS_KEYSTORE=<span class="hljs-string">&#x27;file:/path/to/dev-keystore.p12&#x27;</span>
+<span class="hljs-built_in">export</span> CONFIG_KEYS_PASSWORD=<span class="hljs-string">&#x27;&lt;development-keystore-password&gt;&#x27;</span>
+<span class="hljs-built_in">export</span> CONFIG_KEYS_TYPE=<span class="hljs-string">&#x27;PKCS12&#x27;</span>
+<span class="hljs-built_in">export</span> CONFIG_KEYS_ACTIVE_ALIAS=<span class="hljs-string">&#x27;&lt;development-key-alias&gt;&#x27;</span>
+<span class="hljs-built_in">export</span> CONFIG_JWT_ACCESS_EXPIRATION=<span class="hljs-string">&#x27;&lt;expiration-value&gt;&#x27;</span>
+</div></code></pre>
+<p><code>CONFIG_JWT_ACCESS_EXPIRATION</code> is passed to the token service as a number of minutes. The development configuration
+currently sets it to <code>5</code>.</p>
+<p>The repository's development YAML also contains settings beyond this table. Keep OAuth client credentials, database
+credentials, and all signing material out of public files and version control.</p>
+<h2 id="api-surface-and-implementation-status">API surface and implementation status</h2>
+<p>The servlet context path is <code>/auth</code>. The following paths are defined in the current application:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/login</code></td>
+<td>Authenticates credentials and returns an access token; sets a refresh-token cookie.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/refresh</code></td>
+<td>Validates the refresh-token cookie and returns a new access token.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/logout</code></td>
+<td>Configured as a Spring Security logout endpoint.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/register</code></td>
+<td>Registers a user.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/auth/.well-known/jwks.json</code></td>
+<td>Returns public key data in JWKS format.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/tenant-api/v1/createTenant</code></td>
+<td>Creates a tenant.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/user-api/v1/createUser</code></td>
+<td>Creates a user.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/auth/user-api/v1/fetchUsers</code></td>
+<td>Fetches users.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/role-api/v1/createRole</code></td>
+<td>Creates a role.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/role-api/v1/assignRole</code></td>
+<td>Route exists, but assignment logic is currently commented out.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/role-api/v1/unAssignRole</code></td>
+<td>Route exists, but unassignment logic is currently commented out.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/auth/role-api/v1/fetchRoles</code></td>
+<td>Fetches roles.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/privilege-api/v1/createPrivilege</code></td>
+<td>Creates a privilege.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/privilege-api/v1/assignPrivilege</code></td>
+<td>Assigns a privilege to a role.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/privilege-api/v1/unAssignPrivilege</code></td>
+<td>Removes a privilege from a role.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/auth/privilege-api/v1/fetchPrivileges</code></td>
+<td>Fetches privileges.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/company-api/v1/createCompany</code></td>
+<td>Route exists, but persistence logic is currently commented out.</td>
+</tr>
+</tbody>
+</table>
+<p>Request and response details are defined by the resource classes and domain types. Some management routes may require
+authentication or tenant context according to the security configuration and request filter.</p>
+<h2 id="security-notes">Security notes</h2>
+<ul>
+<li>The keystore is for development only. Do not use it to sign production tokens.</li>
+<li>Keep production private keys in a private secret store and provide them to the application through deployment
+configuration.</li>
+<li>Never publish keystore files, passwords, OAuth client secrets, database credentials, or other tokens.</li>
+<li>The JWKS endpoint exposes public key material, not the signing private key.</li>
 </ul>
 
 </body>

@@ -365,122 +365,137 @@ code {
           : 'default'
     });
   </script>
-<p><img src="https://img.shields.io/badge/Java-17-orange" alt="Java 17">
-<img src="https://img.shields.io/badge/Spring Boot-3.5.5-green" alt="Spring Boot 3.5.5">
-<img src="https://img.shields.io/badge/Build-Maven-blue" alt="Build"></p>
-<h1 id="error-handling-library">ERROR HANDLING LIBRARY</h1>
-<p>A spring boot library, for an enterprise-level error handling.</p>
-<h1 id="why">Why?</h1>
+<h1 id="error-handling-library">Error Handling Library</h1>
+<p><img src="https://img.shields.io/badge/Java-17-orange?logo=openjdk&amp;logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring Boot-3.5.5-6DB33F?logo=springboot&amp;logoColor=white" alt="Spring Boot 3.5.5">
+<img src="https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&amp;logoColor=white" alt="Maven">
+<img src="https://img.shields.io/badge/Spring-MVC-6DB33F?logo=spring&amp;logoColor=white" alt="Spring MVC">
+<img src="https://img.shields.io/badge/Spring-WebFlux-6DB33F?logo=spring&amp;logoColor=white" alt="Spring WebFlux">
+<img src="https://img.shields.io/badge/Spring-Security-6DB33F?logo=spring&amp;logoColor=white" alt="Spring Security">
+<img src="https://img.shields.io/badge/Logging-SLF4J-blue?logo=slf4j&amp;logoColor=white" alt="SLF4J">
+<img src="https://img.shields.io/badge/Logging-Logback-yellow" alt="Logback">
+<img src="https://img.shields.io/badge/Tracing-Micrometer-00A98F?logo=micrometer&amp;logoColor=white" alt="Micrometer Tracing"></p>
+<p><img src="https://img.shields.io/badge/Status-In Development-yellow" alt="Status: In Development"></p>
+<p>A Java library exploring consistent error handling for Spring MVC and Spring WebFlux applications.</p>
+<h2 id="overview">Overview</h2>
+<p>The project explores how to provide consistent HTTP error responses across servlet and reactive Spring applications. It
+is organized as a multi-module Maven project, separating shared functionality from web-stack integrations and supporting
+components.</p>
+<p>The tests covers request validation, Spring Security failures, exception handling, and
+creation of Spring <code>ProblemDetail</code> responses.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Applications need to explain errors to users and operators in a consistent way. This project explores a reusable
+approach for Spring MVC and reactive applications, so developers can handle common failures more consistently instead of
+building the same patterns separately for each application.</p>
+<h2 id="architecture-and-modules">Architecture and modules</h2>
+<p>The servlet and reactive implementations have separate integration modules. Shared Spring and core modules provide
+reusable pieces; starter modules collect dependencies for each web stack.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error-handling-shared</code></td>
+<td>Shared types used by other modules.</td>
+</tr>
+<tr>
+<td><code>error-handling-core</code></td>
+<td>Core library functionality.</td>
+</tr>
+<tr>
+<td><code>error-handling-spring-core</code></td>
+<td>Shared Spring integration, including <code>ProblemDetail</code> and trace-ID provider abstractions.</td>
+</tr>
+<tr>
+<td><code>error-handling-servlet</code></td>
+<td>Servlet / Spring MVC error-handling integration.</td>
+</tr>
+<tr>
+<td><code>error-handling-reactive</code></td>
+<td>Reactive / Spring WebFlux error-handling integration.</td>
+</tr>
+<tr>
+<td><code>error-handling-logback</code></td>
+<td>Logback-related integration.</td>
+</tr>
+<tr>
+<td><code>error-handling-micrometer-tracing</code></td>
+<td>Micrometer tracing integration; currently not included in the root Maven aggregator.</td>
+</tr>
+<tr>
+<td><code>error-handling-servlet-starter</code></td>
+<td>Dependency bundle for servlet applications.</td>
+</tr>
+<tr>
+<td><code>error-handling-reactive-starter</code></td>
+<td>Dependency bundle for reactive applications.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tested-behavior">Tested behavior</h2>
+<p>The module tests provide examples of the project’s current behavior:</p>
 <ul>
-<li><strong>Native Multi-Stack Support:</strong> Eliminate the friction of forcing reactive applications into servlet wrappers or
-dealing with clunky bridging logic. Both Servlet and Reactive worlds get native, first-class error handling.</li>
-<li><strong>Modular Flexibility:</strong> Avoid monolithic, tangled error handlers. By cleanly separating concerns into Security, Web
-and others modules, applications only adopt the exact slices they actually need.</li>
-<li><strong>Zero-Conflict Control:</strong> Stop worrying about drop-in libraries stepping on existing code. Granular
-<code>@ConfigurationProperties</code> toggles give developers the power to enable or disable any piece of the library on the fly
-without breaking custom setups.</li>
-<li><strong>Enterprise Consistency:</strong> Establish a predictable, standardized error structure(<code>ProblemDetail</code>) across teams and
-microservices right out of the box.</li>
-</ul>
-<h1 id="key-features">Key Features</h1>
-<ul>
-<li><strong>Dual-Stack Native Support (Servlet &amp; WebFlux):</strong> Built from the ground up for both worlds. Whether your application
-runs on traditional Spring MVC (Tomcat) or non-blocking reactive Spring WebFlux (Netty), it gets idiomatic,
-high-performance error handling without forced bridges or blocking wrappers.</li>
-<li><strong>Layered Modular Architecture:</strong> Cleanly separated into logical modules so you only include or reason about what you
-need:
-<ul>
-<li><strong>Security Module:</strong> Out-of-the-box, clean mapping for authentication (401 Unauthorized) and authorization (403
-Forbidden) failures.</li>
-<li><strong>Web Module:</strong> Seamless wrapping of framework-level issues (type mismatches, missing parameters, method
-arguments) using Spring’s <code>ResponseEntityExceptionHandler</code> equivalents.</li>
-<li><strong>Common Module:</strong> Reliable handling for custom domain exceptions, low-level database errors (
-<code>DataAccessException</code>) and global catch-all fallback safety nets.</li>
-</ul>
-</li>
-<li><strong>Granular <code>@ConfigurationProperties</code> Toggles:</strong> Total control at your fingertips. Every single sub-module across both
-Servlet and Reactive stacks can be independently enabled or disabled (true/false) in your <code>application.yml</code>,
-preventing conflicts with existing application code.</li>
-<li><strong>Standardized RFC 7807 (Problem Details) Responses:</strong> Ensures all error payloads follow a consistent,
-machine-readable standard (type, title, status, detail, instance) making life easier for API clients and frontend
-consumers.</li>
-<li><strong>Zero-Magic, Non-Invasive Integration:</strong> Designed to drop into enterprise projects seamlessly. It respects your
-application's existing configurations and custom overrides, letting you adopt it piece-by-piece.</li>
-</ul>
-<h1 id="architectural-decision-records">Architectural Decision Records</h1>
-<h3 id="adr-1-dual-stack-support-servlet-vs-reactive-architecture">ADR 1: Dual-Stack Support (Servlet vs. Reactive Architecture)</h3>
-<ul>
-<li><strong>Context:</strong> Spring developers are split across two worlds: the traditional Servlet world (Spring MVC with Tomcat) and
-the newer, non-blocking Reactive world (Spring WebFlux with Netty). Because these two environments handle exceptions
-completely differently under the hood, a one-size-fits-all approach doesn't work.</li>
-<li><strong>Decision:</strong> Instead of forcing a messy bridge between the two, I built two parallel tracks right from the start:
-<code>servlet</code> and <code>reactive</code>. Each stack uses its own native Spring error-handling mechanisms.</li>
-<li><strong>Pros:</strong> MVC developers get clean, idiomatic MVC code and WebFlux developers get true non-blocking reactive handling.
-Nobody suffers from slow performance or leaky abstractions.</li>
-<li><strong>Cons:</strong> We do have to maintain equivalent logic in two parallel places.</li>
-</ul>
-<h3 id="adr-2-modular-component-separation-security-web-etc">ADR 2: Modular Component Separation (Security, Web, etc.)</h3>
-<ul>
-<li><strong>Context:</strong> Error handling happens at different layers of an application. Security failures (like a 401 or 403) look
-very different from framework validation errors, which in turn look different from database crashes or custom domain
-rules. If we threw everything into one giant class, it would turn into a maintenance nightmare.</li>
-<li><strong>Decision:</strong> I split each stack into three clear, bite-sized modules:
-<ul>
-<li><strong>security:</strong> Manages authentication and permission issues (401s and 403s).</li>
-<li><strong>web:</strong> Handles all the standard framework headaches like missing request params, bad types and validation
-failures.</li>
-<li><strong>Others:</strong> Catches custom business logic exceptions, database errors (<code>DataAccessException</code>) and acts as the
-safety net for unexpected crashes.</li>
-</ul>
-</li>
-<li><strong>Pros:</strong> It keeps code clean, focused and super easy to test. It also means applications can pick and choose what
-they actually want to use.</li>
-</ul>
-<h3 id="adr-3-granular-feature-toggling-via-configurationproperties">ADR 3: Granular Feature Toggling via <code>@ConfigurationProperties</code></h3>
-<ul>
-<li><strong>Context:</strong> Drop-in libraries can sometimes be a little too aggressive. If an auto-configured error handler steps on
-the toes of an application's existing custom setup, it causes annoying startup conflicts or unexpected response
-changes.</li>
-<li><strong>Decision:</strong> I gave developers an escape hatch. Every single sub-module (servlet vs. reactive, across security, web
-and others) comes with its own <code>@ConfigurationProperties</code> toggle so you can flip them <code>true</code> or <code>false</code> independently.</li>
-<li><strong>Pros:</strong> Complete flexibility. If an application wants to use this web error handlers but keep its own custom
-security rules, it can just switch security off in the configuration. No magic friction.</li>
-</ul>
-<h1 id="future-enhancements">Future Enhancements</h1>
-<ul>
-<li><strong>Out-of-the-Box Observability:</strong> Automatically attach live Micrometer <code>traceId</code> values to every error response to
-drastically cut down debugging time in distributed systems.</li>
-<li><strong>Proactive Security &amp; Masking:</strong> Intercept and sanitize sensitive query parameters, secrets, raw SQL exceptions and
-internal stack traces before they leak out to clients.</li>
-<li><strong>Seamless Localization:</strong> Dynamically resolve error titles and descriptions based on incoming <code>Accept-Language</code>
-headers using standard Spring <code>MessageSource</code> configurations.</li>
-<li><strong>Advanced SPIs &amp; Custom Hooks:</strong> Expand Service Provider Interfaces (SPIs) and <code>@ConditionalOnMissingBean</code>
-integrations to let teams easily swap default behaviors for advanced enterprise rules.</li>
-</ul>
-<h1 id="versions">Versions</h1>
-<p><em><strong>v0.1.0</strong></em></p>
-<ul>
-<li><strong>Domains:</strong>
-<ul>
-<li><code>BusinessException</code> that serves as the parent for all custom, domain-specific exceptions throughout the ecosystem.</li>
-<li><code>ValidationError</code> with field and its message.</li>
-</ul>
-</li>
-<li><strong>Properties:</strong> Each property has enabled field making it accessible to disable the beans that are not needed.</li>
-<li><strong>Configurations:</strong>
-<ul>
-<li>For Servlet, beans enabled by default are <code>globalExceptionHandler</code>, <code>businessExceptionHandler</code>, <code>servletPersistenceExceptionHandler</code>, <code>servletAuthenticationEntryPoint</code>, <code>servletAccessDeniedHandler</code> and <code>servletWebExceptionHandler</code></li>
-<li>For Reactive, beans  enabled by default are <code>globalExceptionHandler</code>, <code>businessExceptionHandler</code>, <code>reactiveAuthenticationEntryPoint</code> and <code>reactiveAccessDeniedHandler</code></li>
-</ul>
-</li>
+<li><strong>Shared Spring functionality:</strong> tests cover the default and custom <code>ProblemDetailFactory</code> and <code>TraceIdProvider</code>. The
+default factory tests check status, timestamp, correlation ID, and optional trace ID properties.</li>
+<li><strong>Servlet integration:</strong> tests exercise default handler and locale-resolver bean registration, a successful request,
+request validation errors, unauthenticated and forbidden requests, and an unexpected-exception response.</li>
+<li><strong>Reactive integration:</strong> tests exercise default handler and locale-resolver bean registration, a successful request,
+missing parameters, validation errors, unauthenticated and forbidden requests, and an unexpected-exception response.</li>
+<li><strong>Logging integration:</strong> tests exercise a servlet test application and authenticated and unauthenticated request
+paths.</li>
+<li><strong>Tracing integration:</strong> a test class covers trace-provider selection scenarios. The module is not included in the
+root aggregator, and the current test setup should be reviewed before treating this integration as verified.</li>
 </ul>
 <blockquote>
-<p>If <code>error.handling.reactive.security.enabled=true</code> or <code>error.handling.servlet.security.enabled=true</code>, the respective
-Security Configurations are to be implemented in the application.</p>
-<p>For example:</p>
-<pre class="hljs"><code><div>.authenticationEntryPoint(authenticationEntryPoint)
-.accessDeniedHandler(accessDeniedHandler)
+<p>These tests are not a guarantee that every error category or configuration is supported. For example, some test cases
+inspect that a response body exists without asserting its complete contents. Needs to be developed/implemented.</p>
+</blockquote>
+<h2 id="technology-stack">Technology stack</h2>
+<ul>
+<li>Java 17</li>
+<li>Maven and the Maven Wrapper</li>
+<li>Spring Boot dependency management 3.5.5</li>
+<li>Spring MVC and Spring WebFlux</li>
+<li>Spring Security and Jakarta Validation APIs</li>
+<li>SLF4J and Logback</li>
+<li>Micrometer Tracing module</li>
+</ul>
+<p>The project uses Spring Boot dependency management; this does not by itself establish compatibility with every Spring
+Boot release.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>JDK 17</li>
+<li>The Maven Wrapper</li>
+</ul>
+<h2 id="build-and-tests">Build and tests</h2>
+<p>From the repository root, run the Maven wrapper to build the reactor and execute the tests Maven discovers:</p>
+<pre class="hljs"><code><div>mvn clean verify
 </div></code></pre>
+<h2 id="configuration-notes">Configuration notes</h2>
+<p>The properties needs to be enabled to use a specific feature, as follows:</p>
+<pre class="hljs"><code><div><span class="hljs-attr">error.handling.servlet.enabled</span>=<span class="hljs-string">true</span>
+<span class="hljs-attr">error.handling.reactive.enabled</span>=<span class="hljs-string">true</span>
+</div></code></pre>
+<h2 id="project-structure">Project structure</h2>
+<pre class="hljs"><code><div>.
+├── error-handling-core/
+├── error-handling-shared/
+├── error-handling-spring-core/
+├── error-handling-servlet/
+├── error-handling-reactive/
+├── error-handling-logback/
+├── error-handling-micrometer-tracing/
+├── error-handling-servlet-starter/
+├── error-handling-reactive-starter/
+├── docs/
+└── pom.xml
+</div></code></pre>
+<blockquote>
+<p><strong>Note:</strong> This project is maintained privately for learning and not yet planned to publish as a public library.</p>
 </blockquote>
 
 </body>
