@@ -119,10 +119,10 @@ The GitHub Actions workflow builds the app for GitHub Pages when changes are pus
 
 > **Note:** Some API responses are decrypted in the browser. Any key or logic included in a browser application can be inspected by users, so client-side encryption should not be treated as access control or a way to keep data secret. Keep authorization and sensitive data protections on the backend.
 
-## References
+# References
 
-- Canvas for custom images
-- web.dev for css
-- Github projects like `ngx-admin`, `ng-simple-slideshow`
-   
+- **Canvas:** Custom structural images and wireframes.
+- **`web.dev`:** Modern ```CSS``` layouts and performance best practices.
+- **Open Source:** Structure ideas adapted from `ngx-admin` and `ng-simple-slideshow`.
+
 Inspired by Nothing • Big fan of Nothing
