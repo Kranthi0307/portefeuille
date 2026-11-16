@@ -1,10 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+type AppLanguage = 'en' | 'fr' | 'es';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule],
+  imports: [RouterModule, TranslatePipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -28,11 +31,37 @@ import { RouterModule } from '@angular/router';
   ]
 })
 export class HeaderComponent {
-  isOpen = false;
-  toggleMenu() {
-    this.isOpen = !this.isOpen;
+
+  protected is_open = false;
+  protected current_language: AppLanguage = 'en';
+
+  constructor(private translate_service: TranslateService) {
+    const savedLanguage = localStorage.getItem('language');
+
+    if (savedLanguage === 'en' || savedLanguage === 'fr' || savedLanguage === 'es') {
+      this.current_language = savedLanguage;
+    }
+
+    this.setLanguage(this.current_language);
   }
-  closeMenu() {
-    this.isOpen = false;
+
+  protected setLanguage(language: AppLanguage): void {
+    this.current_language = language;
+    this.translate_service.use(language);
+    localStorage.setItem('language', language);
+    document.documentElement.lang = language;
+  }
+
+  protected onLanguageChange(event: Event): void {
+    const language = (event.target as HTMLSelectElement).value as AppLanguage;
+    this.setLanguage(language);
+  }
+
+  protected toggleMenu() {
+    this.is_open = !this.is_open;
+  }
+
+  protected closeMenu() {
+    this.is_open = false;
   }
 }

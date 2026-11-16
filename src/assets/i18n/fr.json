@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "skills": "Compétences",
+    "projects": "Projets",
+    "education": "Formation",
+    "experience": "Expérience",
+    "close": "Fermer"
+  },
+  "language": {
+    "label": "Langue"
+  }
+}
