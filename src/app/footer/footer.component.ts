@@ -1,9 +1,8 @@
-import { DatePipe } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
-  imports: [DatePipe],
+  //imports: [DatePipe],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })

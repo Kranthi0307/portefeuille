@@ -2,19 +2,29 @@
   <div class="header-content" (click)="toggleMenu()">
     KRANTHI
   </div>
+
+  <label class="language-switcher">
+    <!--span class="visually-hidden">{{ 'language.label' | translate }}</span-->
+    <select [value]="current_language" (change)="onLanguageChange($event)"
+      [attr.aria-label]="'language.label' | translate">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
+  </label>
 </header>
 
-@if (isOpen) {
+@if (is_open) {
 <div class="overlay" (click)="closeMenu()"></div>
 }
 
-<div class="menu-container" [@slideDown]="isOpen ? 'open' : 'closed'">
+<div class="menu-container" [@slideDown]="is_open ? 'open' : 'closed'">
   <ul>
-    <li routerLink="/home" (click)="closeMenu()">Home</li>
-    <li routerLink="/skills" (click)="closeMenu()">Skills</li>
-    <li routerLink="/projects" (click)="closeMenu()">Projects</li>
-    <li routerLink="/education" (click)="closeMenu()">Education</li>
-    <li routerLink="/experience" (click)="closeMenu()">Experience</li>
-    <li class="close-option" (click)="closeMenu()">Close</li>
+    <li routerLink="/home" (click)="closeMenu()">{{ 'nav.home' | translate }}</li>
+    <li routerLink="/skills" (click)="closeMenu()">{{ 'nav.skills' | translate }}</li>
+    <li routerLink="/projects" (click)="closeMenu()">{{ 'nav.projects' | translate }}</li>
+    <li routerLink="/education" (click)="closeMenu()">{{ 'nav.education' | translate }}</li>
+    <li routerLink="/experience" (click)="closeMenu()">{{ 'nav.experience' | translate }}</li>
+    <li class="close-option" (click)="closeMenu()">{{ 'nav.close' | translate }}</li>
   </ul>
 </div>

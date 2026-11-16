@@ -6,6 +6,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { timeoutInterceptor } from './common/interceptors/timeout.interceptor';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +17,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([timeoutInterceptor])
     ),
-    provideAnimations()
+    provideAnimations(),
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({
+        prefix: './assets/i18n/',
+        suffix: '.json'
+      }),
+      lang: 'en',
+      fallbackLang: 'en'
+    })
   ]
 };

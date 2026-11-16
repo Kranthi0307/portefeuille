@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Home",
+    "skills": "Skills",
+    "projects": "Projects",
+    "education": "Education",
+    "experience": "Experience",
+    "close": "Close"
+  },
+  "language": {
+    "label": "Language"
+  }
+}

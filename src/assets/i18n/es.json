@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "skills": "Habilidades",
+    "projects": "Proyectos",
+    "education": "Educación",
+    "experience": "Experiencia",
+    "close": "Cerrar"
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}
